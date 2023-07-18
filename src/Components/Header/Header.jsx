@@ -1,30 +1,31 @@
 import {React, useState} from 'react';
 
-import {AppBar, Toolbar, Box, Button} from '@mui/material';
+import {AppBar, Toolbar, Tooltip, Box, Button, IconButton, Avatar} from '@mui/material';
+import {Typography} from '@mui/material';
+import {Menu, MenuItem} from '@mui/material';
 import {Grid, Tabs, Tab} from '@mui/material';
 
 import logo from "../../assets/3.png"
 
-function LinkTab(props) {
-    return (
-      <Tab
-        component="a"
-        onClick={(event) => {
-          event.preventDefault();
-        }}
-        {...props}
-      />
-    );
-  }
-
 export default function Header() {
     const pages = ['inicio', 'transacciones', 'depositos', 'inversiones'];
-    const [value, setValue] = useState(0);
+    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
     
+    const [value, setValue] = useState(0);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+ 
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
     
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
     return (
         <AppBar
             position='absolute'>
@@ -50,13 +51,42 @@ export default function Header() {
                                     ))}
                             </Tabs>
                     </Grid>
-                    <Grid item xs={1}/>
-                    <Grid item sx={{marginLeft:'auto'}}>
+                    <Grid item xs={2}/>
+                    <Grid item>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar/>
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                            >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">{setting}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Grid>
+                    {/* <Grid item sx={{marginLeft:'auto'}}>
                             <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>                        
                     </Grid>
                     <Grid item sx={{marginLeft:'auto'}}>
                             <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>                        
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Toolbar>
         </AppBar>
