@@ -60,7 +60,8 @@ export default function Footer() {
             <Link href="https://www.twitter.com/bbva" color="inherit">
               <Twitter />
               </Link>
-            <Link href="https://github.com/alkemyTech/BBVA-FS-W3-Front-T3" color="inherit">
+            <Link href="https://github.com/alkemyTech/BBVA-FS-W3-Front-T3" color="inherit"
+            sx={{ pl: 1}}>
               <GitHub />
             </Link>
           </Grid>
