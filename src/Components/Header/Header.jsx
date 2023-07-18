@@ -1,37 +1,61 @@
 import {React, useState} from 'react';
-import {AppBar, Toolbar, Box, Typography, Button} from '@mui/material';
+
+import {AppBar, Toolbar, Box, Button} from '@mui/material';
 import {Grid, Tabs, Tab} from '@mui/material';
-import {List, ListItem, ListItemButton, ListItemText, ListItemAvatar, ListItemIcon} from '@mui/material';
+
 import logo from "../../assets/3.png"
 
-export default function Header() {
-    const pages = ['Inicio', 'Transacciones', 'Inversiones'];
-    const [value, setValue] = useState(0);
+function LinkTab(props) {
+    return (
+      <Tab
+        component="a"
+        onClick={(event) => {
+          event.preventDefault();
+        }}
+        {...props}
+      />
+    );
+  }
 
+export default function Header() {
+    const pages = ['inicio', 'transacciones', 'depositos', 'inversiones'];
+    const [value, setValue] = useState(0);
+    
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
+    
     return (
         <AppBar
             position='absolute'>
             <Toolbar>
-                <Grid container>
-                    <Grid item xs={2}>
+                <Grid container sx={{placeItems:'center'}}>
+                    <Grid item xs={1}>
                         <Box
                             component="img"
-                            sx={{ flexGrow: 0, height: 30}}
+                            sx={{height: 30}}
                             alt="Your logo."
                             src={logo}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={8}>
                         <Tabs
                             indicatorColor='secondary'
                             textColor='inherit'
                             value={value}
-                            onChange={(e, val) => setValue(val)}
+                            onChange={handleChange}
                             >
                                 {pages.map((page, index) => (
-                                    <Tab key={index} label={page} />
+                                    <Tab key={index} label={page} href={"/"+page}/>
                                     ))}
                             </Tabs>
+                    </Grid>
+                    <Grid item xs={1}/>
+                    <Grid item sx={{marginLeft:'auto'}}>
+                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>                        
+                    </Grid>
+                    <Grid item sx={{marginLeft:'auto'}}>
+                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>                        
                     </Grid>
                 </Grid>
             </Toolbar>
