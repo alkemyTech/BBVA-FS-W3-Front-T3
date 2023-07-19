@@ -1,4 +1,5 @@
 import {React, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import {AppBar, Toolbar, Tooltip, Box, IconButton, Avatar} from '@mui/material';
 import {Typography} from '@mui/material';
@@ -9,11 +10,9 @@ import logo from "../../assets/3.png"
 import CustomAvatar from '../Icons/CustomAvatar';
 
 export default function Header() {
-    const pages = ['inicio', 'transacciones', 'depositos', 'inversiones'];
-    const settings = ['Logout'];
-    
     const [value, setValue] = useState(0);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const navigate = useNavigate();
  
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -26,6 +25,30 @@ export default function Header() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const handleClickAccount = () => {
+        navigate('/account');
+    }
+
+    const handleClickLogOut = () => {
+        navigate('/logout');
+    }
+
+    const handleClickInicio = () => {
+        navigate('/inicio');
+    }
+
+    const handleClickTransferencias = () => {
+        navigate('/transferencias');
+    }
+
+    const handleClickDepositos = () => {
+        navigate('/depositos');
+    }
+
+    const handleClickInversiones = () => {
+        navigate('/inversiones');
+    }
 
     return (
         <AppBar
@@ -47,10 +70,11 @@ export default function Header() {
                             value={value}
                             onChange={handleChange}
                             >
-                                {pages.map((page, index) => (
-                                    <Tab key={index} label={page} href={"/"+page}/>
-                                    ))}
-                            </Tabs>
+                                <Tab label="Inicio" onClick={handleClickInicio} />
+                                <Tab label="Transferencias" onClick={handleClickTransferencias} />
+                                <Tab label="Depositos" onClick={handleClickDepositos} />
+                                <Tab label="Inversiones" onClick={handleClickInversiones} />
+                        </Tabs>
                     </Grid>
                     <Grid item xs={2}/>
                     <Grid item sx={{placeContent:'left'}}>
@@ -76,11 +100,12 @@ export default function Header() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                             >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">{setting}</Typography>
+                                <MenuItem onClick={handleClickAccount}>
+                                    <Typography textAlign="center">Cuenta</Typography>
                                 </MenuItem>
-                            ))}
+                                <MenuItem onClick={handleClickLogOut}>
+                                    <Typography textAlign="center">Log Out</Typography>
+                                </MenuItem>
                         </Menu>
                     </Grid>
                     {/* <Grid item sx={{marginLeft:'auto'}}>
