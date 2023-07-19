@@ -11,13 +11,12 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: '#45b5c4',
-        color: 'white',
-        padding: '20px',
-        textAlign: 'center',
-        marginTop: 'auto',
-      }
-    }
+        backgroundColor: "#45b5c4",
+        color: "white",
+        padding: "20px",
+        textAlign: "center",
+        marginTop: "auto",
+      }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={5}>
@@ -25,21 +24,21 @@ export default function Footer() {
             <Typography variant="h6" color="text.primary" gutterBottom>
               Información
             </Typography>
-            <Typography variant="body2" sx= {{color:"white"}}>
-             Somos ViKatCode y empezamos con este proyecto en julio de 2023
+            <Typography variant="body2" sx={{ color: "white" }}>
+              Somos ViKatCode y empezamos con este proyecto en julio de 2023
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Contactos
             </Typography>
-            <Typography variant="body2" sx= {{color:"white"}}>
-             Torre BBVA Buenos Aires Argentina
+            <Typography variant="body2" sx={{ color: "white" }}>
+              Torre BBVA Buenos Aires Argentina
             </Typography>
-            <Typography variant="body2" sx= {{color:"white"}}>
+            <Typography variant="body2" sx={{ color: "white" }}>
               Email: ViKatCode@bbva.com
             </Typography>
-            <Typography variant="body2" sx= {{color:"white"}}>
+            <Typography variant="body2" sx={{ color: "white" }}>
               Tel: 45 7656 2131
             </Typography>
           </Grid>
@@ -47,7 +46,10 @@ export default function Footer() {
             <Typography variant="h6" color="text.primary" gutterBottom>
               Redes Sociales
             </Typography>
-            <Link href="https://www.facebook.com/bbva.argentina" color="inherit">
+            <Link
+              href="https://www.facebook.com/bbva.argentina"
+              color="inherit"
+            >
               <Facebook />
             </Link>
             <Link
@@ -59,9 +61,12 @@ export default function Footer() {
             </Link>
             <Link href="https://www.twitter.com/bbva" color="inherit">
               <Twitter />
-              </Link>
-            <Link href="https://github.com/alkemyTech/BBVA-FS-W3-Front-T3" color="inherit"
-            sx={{ pl: 1}}>
+            </Link>
+            <Link
+              href="https://github.com/alkemyTech/BBVA-FS-W3-Front-T3"
+              color="inherit"
+              sx={{ pl: 1 }}
+            >
               <GitHub />
             </Link>
           </Grid>

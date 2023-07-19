@@ -1,5 +1,5 @@
 import Header from '../components/Header/Header';
-import Footer from '../Components/Footer/Footer';
+import Footer from '../components/Footer/Footer';
 const Page = (props) => {
     return (
       <>
@@ -11,4 +11,3 @@ const Page = (props) => {
   }
   
   export default Page;
-  
