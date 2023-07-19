@@ -1,6 +1,6 @@
 import {React, useState} from 'react';
 
-import {AppBar, Toolbar, Tooltip, Box, IconButton} from '@mui/material';
+import {AppBar, Toolbar, Tooltip, Box, IconButton, Avatar} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Menu, MenuItem} from '@mui/material';
 import {Grid, Tabs, Tab} from '@mui/material';
@@ -56,7 +56,7 @@ export default function Header() {
                     <Grid item sx={{placeContent:'left'}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu}>
-                                <CustomAvatar color='#45b5c4'/>
+                                <Avatar sx={{bgcolor:'#1693a5'}} >RS</Avatar>
                             </IconButton>
 
                         </Tooltip>
