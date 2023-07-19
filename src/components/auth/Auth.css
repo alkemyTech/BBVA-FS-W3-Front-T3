@@ -1,6 +1,18 @@
+.img_auth_logo {
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
+  padding-top: 1%;
+ 
+}
+
+.imgForm{
+  border-radius: 10%;
+}
+
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin:  auto;
   padding: 2rem;
   text-align: center;
 }
@@ -32,9 +44,15 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-
+.Box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
 .card {
-  padding: 2em;
+  padding: 1.5em;
 }
 
 .read-the-docs {
@@ -51,3 +69,4 @@
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
 }
+
