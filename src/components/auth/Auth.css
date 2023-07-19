@@ -3,16 +3,15 @@
   height: 50%;
   object-fit: cover;
   padding-top: 1%;
- 
 }
 
-.imgForm{
+.imgForm {
   border-radius: 10%;
 }
 
 #root {
   max-width: 1280px;
-  margin:  auto;
+  margin: auto;
   padding: 2rem;
   text-align: center;
 }
@@ -69,4 +68,3 @@
   font-size: calc(10px + 2vmin);
   color: rgb(0, 0, 0);
 }
-
