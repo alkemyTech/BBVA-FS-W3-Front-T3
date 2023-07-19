@@ -1,4 +1,5 @@
 import "./App.css";
+import Deposit from './components/deposit/deposit'
 
 
 
@@ -6,6 +7,7 @@ import "./App.css";
 function App() {
   return (
     <>    
+    <Deposit/>
     </>
   );
 }
