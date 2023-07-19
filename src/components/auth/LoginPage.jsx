@@ -23,6 +23,8 @@ const ContentBox = styled(Box)(() => ({
 }));
 
 const JWTRoot = styled(Box)(() => ({
+  marginTop:"5%",
+  marginBottom:"2%",
   background: '#45b5c4',
   borderRadius: 12,
   display: 'flex',
@@ -161,11 +163,7 @@ const LoginPage = () => {
                                 checked={values.remember}
                                 sx={{ padding: 0 }}
                               /> Recordar
-
-
                             </FlexBox>
-
-
                           </FlexBox>
 
                           <LoadingButton
@@ -175,8 +173,6 @@ const LoginPage = () => {
                           >
                             Login
                           </LoadingButton>
-
-
                         </form>
                       )}
                     </Formik>
@@ -189,6 +185,4 @@ const LoginPage = () => {
       </JWTRoot>
     </>);
 };
-
-
 export default LoginPage;

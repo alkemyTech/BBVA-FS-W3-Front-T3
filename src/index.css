@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -10,4 +10,3 @@ body {
   background: -webkit-linear-gradient(to right, #e9e4f0, #d3cce3);
   background: linear-gradient(to right, #ffffff, #cacaca);
 }
-

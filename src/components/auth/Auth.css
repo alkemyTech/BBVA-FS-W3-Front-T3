@@ -1,3 +1,5 @@
+
+
 .img_auth_logo {
   width: 50%;
   height: 50%;
@@ -43,12 +45,12 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-.Box {
+Box {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 50%;
 }
 .card {
   padding: 1.5em;
