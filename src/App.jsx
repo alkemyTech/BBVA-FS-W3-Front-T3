@@ -19,9 +19,6 @@ function App() {
         <Route path="/inversiones/simuladorplazofijo" element={<SimuladorPlazoFijo/>} />
       </Routes>
     </Page>
-    <>   
-    <Tranferencia/> 
-    </>
   );
 }
 export default App;
