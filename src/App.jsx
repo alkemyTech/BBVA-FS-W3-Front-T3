@@ -1,7 +1,10 @@
+
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./components/auth/LoginPage";
+
 import Deposit from "./components/deposit/Deposit";
 import Page from "./pages/index.jsx";
+import RegisterPage from "./Components/auth/RegisterPage";
 
 function App() {
   return (
