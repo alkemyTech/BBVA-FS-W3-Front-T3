@@ -5,6 +5,9 @@ import Deposit from "./components/deposit/Deposit";
 import Page from "./pages/index.jsx";
 import Transferencia from "./pages/Transferencia";
 import SimuladorPlazoFijo from './pages/SimuladorPlazoFijo'
+import Tranferencia from './components/tranferencia/Tranferencia'
+
+
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route path="/inversiones/simuladorplazofijo" element={<SimuladorPlazoFijo/>} />
       </Routes>
     </Page>
+    <>   
+    <Tranferencia/> 
+    </>
   );
 }
 export default App;
