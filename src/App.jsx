@@ -7,7 +7,12 @@ function App() {
   return (
     <Page>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage/>}/>
+        <Route path="/register" />
+        <Route path="/inicio"/>
+        <Route path="/transacciones"/>
+        <Route path="/depositos"/>
+        <Route path="/inversiones"/>
       </Routes>
     </Page>
   );
