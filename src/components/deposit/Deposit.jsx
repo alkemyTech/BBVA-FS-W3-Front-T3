@@ -5,8 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import image from "../../assets/3.png";
+import { useState } from "react";
 import styled from "styled-components";
 
 const Deposit = () => {
@@ -50,7 +49,9 @@ const Deposit = () => {
     padding: "20px",
     borderRadius: "8px",
     maxWidth: "400px",
-    margin: "0 auto",
+    margin: "auto auto",
+    marginTop: "100px",
+    marginBottom: "100px",
   };
 
   const messageStyle = {
@@ -79,7 +80,7 @@ const Deposit = () => {
 
   return (
     <Box style={formStyle}>
-      <DepositTitle variant="h1" sx={{ fontFamily: "Helvetica" }}>
+      <DepositTitle variant="h2" sx={{ fontFamily: "Helvetica" }}>
         Depósito
       </DepositTitle>
       <form onSubmit={formik.handleSubmit}>
@@ -174,17 +175,6 @@ const Deposit = () => {
           Dinero depositado con éxito!
         </Typography>
       )}
-      <img
-        src={image}
-        alt="Imagen"
-        style={{
-          marginTop: "20px",
-          maxWidth: "100%",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      />
     </Box>
   );
 };

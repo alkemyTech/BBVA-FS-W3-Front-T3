@@ -59,7 +59,7 @@ export default function Header() {
 
   return (
     <AppBar position="absolute">
-      <Toolbar>
+      <Toolbar sx={{backgroundColor: (theme) => theme.palette.mode === "light" ? theme.palette.primary.darker : theme.palette.grey[800] }}>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1}>
             <Box
@@ -86,7 +86,7 @@ export default function Header() {
           <Grid item sx={{ placeContent: "left" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Avatar sx={{ bgcolor: "#1693a5" }}>RS</Avatar>
+                <Avatar sx={{ backgroundColor: (theme) => theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.grey[800]}}>RS</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
