@@ -1,15 +1,16 @@
 import {React, useState} from 'react';
 
-import {AppBar, Toolbar, Tooltip, Box, Button, IconButton, Avatar} from '@mui/material';
+import {AppBar, Toolbar, Tooltip, Box, IconButton} from '@mui/material';
 import {Typography} from '@mui/material';
 import {Menu, MenuItem} from '@mui/material';
 import {Grid, Tabs, Tab} from '@mui/material';
 
 import logo from "../../assets/3.png"
+import CustomAvatar from '../Icons/CustomAvatar';
 
 export default function Header() {
     const pages = ['inicio', 'transacciones', 'depositos', 'inversiones'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    const settings = ['Logout'];
     
     const [value, setValue] = useState(0);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -30,7 +31,7 @@ export default function Header() {
         <AppBar
             position='absolute'>
             <Toolbar>
-                <Grid container sx={{placeItems:'center'}}>
+                <Grid container sx={{placeItems:'center'}} spacing={2}>
                     <Grid item xs={1}>
                         <Box
                             component="img"
@@ -52,11 +53,12 @@ export default function Header() {
                             </Tabs>
                     </Grid>
                     <Grid item xs={2}/>
-                    <Grid item>
+                    <Grid item sx={{placeContent:'left'}}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar/>
+                            <IconButton onClick={handleOpenUserMenu}>
+                                <CustomAvatar color='#45b5c4'/>
                             </IconButton>
+
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
