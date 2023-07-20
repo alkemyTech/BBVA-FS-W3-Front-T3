@@ -62,7 +62,7 @@ const validationSchema = Yup.object().shape({
     .email("La dirección de Email no es valida")
     .required("El Email es necesario!"),
   password: Yup.string()
-    .min(6, "La contraseña debe ser mayor a 6 digitos")
+    .min(3, "La contraseña debe ser mayor a 3 digitos")
     .required("La contraseña es obligatoria!"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
