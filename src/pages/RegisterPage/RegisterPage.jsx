@@ -3,10 +3,12 @@ import { Card, Checkbox, Grid, TextField } from "@mui/material";
 import { Box, styled, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import "../LoginPage/Auth.css";
-import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeEmail } from "../../redux/userSlice.js";
 import { useNavigate } from "react-router-dom";
+import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
+import "../LoginPage/Auth.css";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -69,7 +71,7 @@ const validationSchema = Yup.object().shape({
     .required("Se necesita confirmación!"),
 });
 
-const RegisterLink = styled("a")(() => ({
+const LogInLink = styled("a")(() => ({
   color: "#1693a5",
   fontWeight: "bold", // Color blanco para el enlace
   textDecoration: "underline", // Subrayar el enlace
@@ -94,6 +96,7 @@ const CustomCheckbox = styled(Checkbox)(() => ({
 }));
 
 const RegisterPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
@@ -107,6 +110,11 @@ const RegisterPage = () => {
   };
 
   const handleClickRegister = () => {
+    navigate("/home");
+  };
+
+  const handleClickLogIn = (email) => {
+    dispatch(changeEmail(email));
     navigate("/");
   };
 
@@ -127,11 +135,6 @@ const RegisterPage = () => {
               <Grid item sm={6} xs={12}>
                 <RegisterTitle>Regístrate</RegisterTitle>
                 <Typography>
-                  ¿Ya tienes una cuenta?{" "}
-                  <RegisterLink onClick={handleClickRegister}>
-                    Iniciar sesión
-                  </RegisterLink>
-                  .
                   <ImageContainer p={4} height="100%">
                     <img
                       src="/src/assets/gato-pc.jpg"
@@ -279,8 +282,18 @@ const RegisterPage = () => {
                             variant="contained"
                             sx={{ my: 2, backgroundColor: "#1693a5" }}
                           >
-                            Register
+                            Registrar
                           </LoadingButton>
+
+                          <FlexBox>
+                            <FlexBox gap={1}>
+                              ¿Ya tienes una cuenta?{" "}
+                              <LogInLink onClick={() => handleClickLogIn(values.email)}>
+                                Iniciar sesión
+                              </LogInLink>
+                            </FlexBox>
+                          </FlexBox>
+
                           <TermsAndConditionsModal
                             open={openTermsModal}
                             onClose={handleCloseTermsModal}
