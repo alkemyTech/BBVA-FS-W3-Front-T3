@@ -6,7 +6,7 @@ import RegisterPage from "./RegisterPage/RegisterPage.jsx";
 
 const Page = (props) => {
   const user = useSelector((state) => state.user);
-  console.log(user);
+
   return (
     <>
       {user.token && user.token.trim().length > 0 ? (

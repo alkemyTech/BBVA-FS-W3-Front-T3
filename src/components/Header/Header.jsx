@@ -15,6 +15,7 @@ import { Menu, MenuItem } from "@mui/material";
 import { Grid, Tabs, Tab } from "@mui/material";
 
 import logo from "../../assets/3.png";
+import titulo from "../../assets/titulo.svg";
 
 function stringToColor(string) {
   let hash = 0;
@@ -102,16 +103,26 @@ export default function Header() {
     navigate("/inversiones");
   };
 
+  function handleLogoClick() {
+    return navigate("/inicio");
+  }
+
   return (
     <AppBar position="absolute">
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
-          <Grid item xs={1}>
+          <Grid item xs={1} onClick={handleLogoClick}>
             <Box
               component="img"
               sx={{ height: 30 }}
               alt="Your logo."
               src={logo}
+            />
+            <Box
+              component="img"
+              sx={{ height: 20 }}
+              alt="Your logo."
+              src={titulo}
             />
           </Grid>
           <Grid item xs={8}>
@@ -163,10 +174,10 @@ export default function Header() {
             </Menu>
           </Grid>
           {/* <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>                        
+                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>
                     </Grid>
                     <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>                        
+                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>
                     </Grid> */}
         </Grid>
       </Toolbar>
