@@ -15,7 +15,10 @@ export default function Footer() {
         color: "white",
         padding: "20px",
         textAlign: "center",
-        marginTop: "auto",
+        position: "absolute",
+        bottom: 0,
+        left: 0,    
+        width: "100%",   
       }}
     >
       <Container maxWidth="lg">
