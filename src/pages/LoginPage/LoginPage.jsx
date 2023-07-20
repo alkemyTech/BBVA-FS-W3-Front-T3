@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addUser, changeEmail } from "../../redux/userSlice.js";
+import api from "../../api/axios.js";
 import * as Yup from "yup";
 
 import "./Auth.css";
