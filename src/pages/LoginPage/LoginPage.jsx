@@ -81,9 +81,9 @@ const LoginPage = () => {
   const handleClickRegister = (email) => {
     navigate("/register");
     dispatch(
-        addUser({
-          email: email,
-        }),
+      addUser({
+        email: email,
+      }),
     );
   };
   const handleLogin = (values) => {
@@ -229,14 +229,17 @@ const LoginPage = () => {
                           </Button>
 
                           <FlexBox>
-                            <FlexBox gap={1} >
+                            <FlexBox gap={1}>
                               Si no estás registrado, puedes{" "}
                               <RegisterLink
-                                  onClick={() => handleClickRegister(values.email)}
-                              >registrarte aquí</RegisterLink>
+                                onClick={() =>
+                                  handleClickRegister(values.email)
+                                }
+                              >
+                                registrarte aquí
+                              </RegisterLink>
                             </FlexBox>
                           </FlexBox>
-
                         </form>
                       )}
                     </Formik>

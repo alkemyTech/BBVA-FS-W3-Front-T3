@@ -15,10 +15,10 @@ const Page = (props) => {
           <div>{props.children}</div>
           <Footer />
         </>
+      ) : user.email && user.email.trim().length > 0 ? (
+        <RegisterPage />
       ) : (
-          (user.email && user.email.trim().length > 0) ? (
-              <RegisterPage/>
-          ) : (<LoginPage/>)
+        <LoginPage />
       )}
     </>
   );
