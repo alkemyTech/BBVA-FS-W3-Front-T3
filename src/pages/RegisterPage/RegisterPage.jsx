@@ -3,10 +3,14 @@ import { Card, Checkbox, Grid, TextField } from "@mui/material";
 import { Box, styled, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import "../LoginPage/Auth.css";
-import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addUser, changeEmail } from "../../redux/userSlice.js";
 import { useNavigate } from "react-router-dom";
+import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
+import api from "../../api/axios.js";
+import "../LoginPage/Auth.css";
+import { toast } from "react-toastify";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -62,14 +66,14 @@ const validationSchema = Yup.object().shape({
     .email("La dirección de Email no es valida")
     .required("El Email es necesario!"),
   password: Yup.string()
-    .min(6, "La contraseña debe ser mayor a 6 digitos")
+    .min(3, "La contraseña debe ser mayor a 3 digitos")
     .required("La contraseña es obligatoria!"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
     .required("Se necesita confirmación!"),
 });
 
-const RegisterLink = styled("a")(() => ({
+const LogInLink = styled("a")(() => ({
   color: "#1693a5",
   fontWeight: "bold", // Color blanco para el enlace
   textDecoration: "underline", // Subrayar el enlace
@@ -94,6 +98,7 @@ const CustomCheckbox = styled(Checkbox)(() => ({
 }));
 
 const RegisterPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
@@ -106,7 +111,57 @@ const RegisterPage = () => {
     setOpenTermsModal(false);
   };
 
-  const handleClickRegister = () => {
+  const handleRegister = (values) => {
+    api
+      .post("/auth/register", {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+      })
+      .then((res) => res.data)
+      .then((data) =>
+        dispatch(
+          addUser({
+            token: data.token,
+            fistName: data.user.firstName,
+            lastName: data.user.lastName,
+            password: data.user.password,
+          }),
+        ),
+      )
+      .then(() => {
+        toast("Registro exitoso", { type: "success", autoClose: 2000 });
+        navigate("/");
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data.errors.includes("DUPLICATED_VALUE")
+        ) {
+          toast("Ya existe cuenta con ese email. Logeate", {
+            type: "warning",
+            autoClose: 2000,
+          });
+          dispatch(changeEmail(null));
+          navigate("/");
+          return;
+        } else if (
+          error.response &&
+          error.response.data.errors.includes("INVALID_VALUE")
+        ) {
+          toast(
+            "Campo " + error.response.data.data + "invalido",
+            error.response.data.err,
+          );
+        }
+        console.log(error);
+        toast(" Contraseña invalida", { type: "error", autoClose: 2000 });
+      });
+  };
+
+  const handleClickLogIn = (email) => {
+    dispatch(changeEmail(email));
     navigate("/");
   };
 
@@ -127,11 +182,6 @@ const RegisterPage = () => {
               <Grid item sm={6} xs={12}>
                 <RegisterTitle>Regístrate</RegisterTitle>
                 <Typography>
-                  ¿Ya tienes una cuenta?{" "}
-                  <RegisterLink onClick={handleClickRegister}>
-                    Iniciar sesión
-                  </RegisterLink>
-                  .
                   <ImageContainer p={4} height="100%">
                     <img
                       src="/src/assets/gato-pc.jpg"
@@ -151,6 +201,7 @@ const RegisterPage = () => {
                     <Formik
                       initialValues={initialValues}
                       validationSchema={validationSchema}
+                      onSubmit={handleRegister}
                     >
                       {({
                         values,
@@ -279,8 +330,20 @@ const RegisterPage = () => {
                             variant="contained"
                             sx={{ my: 2, backgroundColor: "#1693a5" }}
                           >
-                            Register
+                            Registrar
                           </LoadingButton>
+
+                          <FlexBox>
+                            <FlexBox gap={1}>
+                              ¿Ya tienes una cuenta?{" "}
+                              <LogInLink
+                                onClick={() => handleClickLogIn(values.email)}
+                              >
+                                Iniciar sesión
+                              </LogInLink>
+                            </FlexBox>
+                          </FlexBox>
+
                           <TermsAndConditionsModal
                             open={openTermsModal}
                             onClose={handleCloseTermsModal}
