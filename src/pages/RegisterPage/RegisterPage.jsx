@@ -5,10 +5,12 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeEmail } from "../../redux/userSlice.js";
+import { addUser, changeEmail } from "../../redux/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
+import api from "../../api/axios.js";
 import "../LoginPage/Auth.css";
+import { toast } from "react-toastify";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -64,7 +66,7 @@ const validationSchema = Yup.object().shape({
     .email("La dirección de Email no es valida")
     .required("El Email es necesario!"),
   password: Yup.string()
-    .min(6, "La contraseña debe ser mayor a 6 digitos")
+    .min(3, "La contraseña debe ser mayor a 3 digitos")
     .required("La contraseña es obligatoria!"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
@@ -109,8 +111,53 @@ const RegisterPage = () => {
     setOpenTermsModal(false);
   };
 
-  const handleClickRegister = () => {
-    navigate("/home");
+  const handleRegister = (values) => {
+    api
+      .post("/auth/register", {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+      })
+      .then((res) => res.data)
+      .then((data) =>
+        dispatch(
+          addUser({
+            token: data.token,
+            fistName: data.user.firstName,
+            lastName: data.user.lastName,
+            password: data.user.password,
+          }),
+        ),
+      )
+      .then(() => {
+        toast("Registro exitoso", { type: "success", autoClose: 2000 });
+        navigate("/");
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data.errors.includes("DUPLICATED_VALUE")
+        ) {
+          toast("Ya existe cuenta con ese email. Logeate", {
+            type: "warning",
+            autoClose: 2000,
+          });
+          dispatch(changeEmail(null));
+          navigate("/");
+          return;
+        } else if (
+          error.response &&
+          error.response.data.errors.includes("INVALID_VALUE")
+        ) {
+          toast(
+            "Campo " + error.response.data.data + "invalido",
+            error.response.data.err,
+          );
+        }
+        console.log(error);
+        toast(" Contraseña invalida", { type: "error", autoClose: 2000 });
+      });
   };
 
   const handleClickLogIn = (email) => {
@@ -154,6 +201,7 @@ const RegisterPage = () => {
                     <Formik
                       initialValues={initialValues}
                       validationSchema={validationSchema}
+                      onSubmit={handleRegister}
                     >
                       {({
                         values,

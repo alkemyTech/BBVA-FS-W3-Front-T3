@@ -88,7 +88,7 @@ const LoginPage = () => {
         email: values.email,
         password: values.password,
       })
-      .then((res) => res.json())
+      .then((res) => res.data)
       .then((data) =>
         dispatch(
           addUser({
@@ -104,7 +104,6 @@ const LoginPage = () => {
         navigate("/inicio");
       })
       .catch((error) => {
-        console.log(error.response.data.errors);
         if (
           error.response &&
           error.response.data.errors.includes("USER_NOT_FOUND")
