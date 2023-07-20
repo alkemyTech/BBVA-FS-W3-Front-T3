@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Deposit = () => {
+export default function DepositPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const DepositTitle = styled(Typography)(() => ({
@@ -48,9 +48,8 @@ const Deposit = () => {
     backgroundColor: "#45b5c4",
     padding: "20px",
     borderRadius: "8px",
-    maxWidth: "600px", 
-    margin: "0 auto",
-    width: "100%", 
+    maxWidth: "600px",
+    width: "100%",
   };
 
   const messageStyle = {
@@ -71,7 +70,7 @@ const Deposit = () => {
   const inputStyle = {
     backgroundColor: "#c7ede8",
     color: "black",
-    width: "100%", 
+    width: "100%",
   };
 
   const labelStyle = {
@@ -81,9 +80,7 @@ const Deposit = () => {
   return (
     <CenteredContainer>
       <Box style={formStyle}>
-        <DepositTitle variant="h1" sx={{ fontFamily: "Helvetica" }}>
-          Depósito
-        </DepositTitle>
+        <DepositTitle>Depósito</DepositTitle>
         <form onSubmit={formik.handleSubmit}>
           <div style={{ marginBottom: "20px" }}>
             <TextField
@@ -167,7 +164,12 @@ const Deposit = () => {
               }}
             />
           </div>
-          <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
+          <Button
+            variant="contained"
+            style={buttonStyle}
+            type="submit"
+            fullWidth
+          >
             Enviar
           </Button>
         </form>
@@ -179,12 +181,10 @@ const Deposit = () => {
       </Box>
     </CenteredContainer>
   );
-};
+}
 const CenteredContainer = styled.div`
-  display: flex ;
+  display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; 
+  min-height: 50vh;
 `;
-
-export default Deposit;
