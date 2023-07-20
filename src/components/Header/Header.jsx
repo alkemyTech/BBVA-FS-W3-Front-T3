@@ -48,9 +48,9 @@ function stringAvatar(name) {
   }
 
   const initials = name
-      .split(" ")
-      .map((part) => part[0])
-      .join("");
+    .split(" ")
+    .map((part) => part[0])
+    .join("");
 
   return {
     sx: {
@@ -130,14 +130,13 @@ export default function Header() {
           <Grid item xs={2} />
           <Grid item sx={{ placeContent: "left" }}>
             {user ? ( // Check if user is not null or undefined
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu}>
-                    <Avatar {...stringAvatar(user.name)}>
-                    </Avatar>
-                  </IconButton>
-                </Tooltip>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu}>
+                  <Avatar {...stringAvatar(user.name)}></Avatar>
+                </IconButton>
+              </Tooltip>
             ) : (
-                <Avatar /> // Replace with your custom fallback avatar component
+              <Avatar /> // Replace with your custom fallback avatar component
             )}
             <Menu
               sx={{ mt: "45px" }}

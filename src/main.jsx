@@ -1,8 +1,9 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { store } from "./redux/store.js";
 import App from "./App.jsx";
 
@@ -48,6 +49,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+        <ToastContainer autoClose={2000} />
         <App />
       </ThemeProvider>
     </Provider>

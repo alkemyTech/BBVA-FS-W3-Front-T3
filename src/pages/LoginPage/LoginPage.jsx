@@ -1,10 +1,13 @@
-import { LoadingButton } from "@mui/lab";
 import { Card, Checkbox, Grid, TextField } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { addUser, changeEmail } from "../../redux/userSlice.js";
 import * as Yup from "yup";
 import "./Auth.css";
+import Button from "@mui/material/Button";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -48,7 +51,7 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, "Password must be 6 character length")
+    .min(3, "Password must be 3 character length")
     .required("Password is required!"),
   email: Yup.string()
     .email("Invalid Email address")
@@ -73,11 +76,52 @@ const ImageContainer = styled(JustifyBox)(() => ({
   maxWidth: "100%", // Ajusta el tamaño máximo de la imagen
 }));
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleClickRegister = () => {
+  const handleClickRegister = (email) => {
     navigate("/register");
+    dispatch(changeEmail(email));
   };
-
+  const handleLogin = (values) => {
+    fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Set the "Content-Type" to JSON
+      },
+      body: JSON.stringify({
+        email: values.email,
+        password: values.password,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 409) {
+          toast("Deberias Registrarte primero", {
+            type: "error",
+            autoClose: 2000,
+          });
+          handleClickRegister(values.email);
+          return;
+        }
+        return res.json();
+      })
+      .then((data) =>
+        dispatch(
+          addUser({
+            token: data.token,
+            fistName: data.user.firstName,
+            lastName: data.user.lastName,
+            email: data.user.email,
+          }),
+        ),
+      )
+      .then(() => {
+        toast("Logged In", { type: "success", autoClose: 2000 });
+        navigate("/home");
+      })
+      .catch((error) => {
+        toast(error.message, { type: "error", autoClose: 2000 });
+      });
+  };
   return (
     <>
       <JWTRoot>
@@ -96,11 +140,6 @@ const LoginPage = () => {
               <Grid item sm={6} xs={12}>
                 <LoginTitle>Ingresa a tu cuenta</LoginTitle>
                 <Typography>
-                  Si no estás registrado, puedes{" "}
-                  <RegisterLink onClick={handleClickRegister}>
-                    registrarte aquí
-                  </RegisterLink>
-                  .
                   <ImageContainer p={4} height="100%">
                     <img
                       className="imgForm"
@@ -121,6 +160,7 @@ const LoginPage = () => {
                     <Formik
                       initialValues={initialValues}
                       validationSchema={validationSchema}
+                      onSubmit={handleLogin}
                     >
                       {({
                         values,
@@ -129,6 +169,7 @@ const LoginPage = () => {
                         handleChange,
                         handleBlur,
                         handleSubmit,
+                        isSubmitting,
                       }) => (
                         <form onSubmit={handleSubmit}>
                           <TextField
@@ -174,13 +215,27 @@ const LoginPage = () => {
                             </FlexBox>
                           </FlexBox>
 
-                          <LoadingButton
+                          <Button
                             type="submit"
+                            disabled={isSubmitting}
                             variant="contained"
                             sx={{ my: 2, backgroundColor: "#1693a5" }}
                           >
                             Login
-                          </LoadingButton>
+                          </Button>
+
+                          <FlexBox>
+                            <FlexBox gap={1}>
+                              Si no estás registrado, puedes{" "}
+                              <RegisterLink
+                                onClick={() =>
+                                  handleClickRegister(values.email)
+                                }
+                              >
+                                registrarte aquí
+                              </RegisterLink>
+                            </FlexBox>
+                          </FlexBox>
                         </form>
                       )}
                     </Formik>
