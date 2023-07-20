@@ -3,8 +3,8 @@ import { Card, Checkbox, Grid, TextField } from "@mui/material";
 import { Box, styled, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import "./Auth.css";
-import TermsAndConditionsModal from "../terms/TermsAndConditionsModal";
+import "../LoginPage/Auth.css";
+import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
