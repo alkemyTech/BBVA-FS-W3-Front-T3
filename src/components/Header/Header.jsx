@@ -13,9 +13,11 @@ import {
 import { Typography } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
 import { Grid, Tabs, Tab } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/userSlice.js";
+import { toast } from "react-toastify";
 
 import logo from "../../assets/3.png";
-import titulo from "../../assets/titulo.svg";
 
 function stringToColor(string) {
   let hash = 0;
@@ -66,6 +68,7 @@ export default function Header() {
   const [value, setValue] = useState(0);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -83,8 +86,23 @@ export default function Header() {
     navigate("/account");
   };
 
+
   const handleClickLogOut = () => {
-    navigate("/logout");
+    
+    localStorage.removeItem("userData");
+
+    dispatch(logoutUser());
+
+    toast.success("¡Cerraste sesión correctamente!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    navigate("/");
   };
 
   const handleClickInicio = () => {
@@ -103,26 +121,16 @@ export default function Header() {
     navigate("/inversiones");
   };
 
-  function handleLogoClick() {
-    return navigate("/inicio");
-  }
-
   return (
     <AppBar position="absolute">
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
-          <Grid item xs={1} onClick={handleLogoClick}>
+          <Grid item xs={1}>
             <Box
               component="img"
               sx={{ height: 30 }}
               alt="Your logo."
               src={logo}
-            />
-            <Box
-              component="img"
-              sx={{ height: 20 }}
-              alt="Your logo."
-              src={titulo}
             />
           </Grid>
           <Grid item xs={8}>
@@ -174,10 +182,10 @@ export default function Header() {
             </Menu>
           </Grid>
           {/* <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>
+                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>                        
                     </Grid>
                     <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>
+                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>                        
                     </Grid> */}
         </Grid>
       </Toolbar>
