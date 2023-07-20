@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addUser } from "../../redux/userSlice.js";
-
 import * as Yup from "yup";
 import "./Auth.css";
 import Button from "@mui/material/Button";
@@ -78,10 +77,14 @@ const ImageContainer = styled(JustifyBox)(() => ({
 }));
 const LoginPage = () => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-  const handleClickRegister = () => {
+  const handleClickRegister = (email) => {
     navigate("/register");
+    dispatch(
+        addUser({
+          email: email,
+        }),
+    );
   };
   const handleLogin = (values) => {
     fetch("http://localhost:8080/auth/login", {
@@ -100,12 +103,7 @@ const LoginPage = () => {
             type: "error",
             autoClose: 2000,
           });
-          navigate("/register");
-          dispatch(
-              addUser({
-                email: values.email,
-              }),
-          );
+          handleClickRegister(values.email);
           return;
         }
         return res.json();
@@ -146,11 +144,6 @@ const LoginPage = () => {
               <Grid item sm={6} xs={12}>
                 <LoginTitle>Ingresa a tu cuenta</LoginTitle>
                 <Typography>
-                  Si no estás registrado, puedes{" "}
-                  <RegisterLink onClick={handleClickRegister}>
-                    registrarte aquí
-                  </RegisterLink>
-                  .
                   <ImageContainer p={4} height="100%">
                     <img
                       className="imgForm"
@@ -234,6 +227,16 @@ const LoginPage = () => {
                           >
                             Login
                           </Button>
+
+                          <FlexBox>
+                            <FlexBox gap={1} >
+                              Si no estás registrado, puedes{" "}
+                              <RegisterLink
+                                  onClick={() => handleClickRegister(values.email)}
+                              >registrarte aquí</RegisterLink>
+                            </FlexBox>
+                          </FlexBox>
+
                         </form>
                       )}
                     </Formik>
