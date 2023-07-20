@@ -288,7 +288,9 @@ const RegisterPage = () => {
                           <FlexBox>
                             <FlexBox gap={1}>
                               ¿Ya tienes una cuenta?{" "}
-                              <LogInLink onClick={() => handleClickLogIn(values.email)}>
+                              <LogInLink
+                                onClick={() => handleClickLogIn(values.email)}
+                              >
                                 Iniciar sesión
                               </LogInLink>
                             </FlexBox>

@@ -1,13 +1,14 @@
-import { Card, Checkbox, Grid, TextField } from "@mui/material";
+import { Card, Checkbox, Grid, TextField, Button } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addUser } from "../../redux/userSlice.js";
+import api from "../../api/axios.js";
 import * as Yup from "yup";
+
 import "./Auth.css";
-import Button from "@mui/material/Button";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -81,33 +82,18 @@ const LoginPage = () => {
   const handleClickRegister = (email) => {
     navigate("/register");
     dispatch(
-        addUser({
-          email: email,
-        }),
+      addUser({
+        email: email,
+      }),
     );
   };
   const handleLogin = (values) => {
-    fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Set the "Content-Type" to JSON
-      },
-      body: JSON.stringify({
+    api
+      .post("/auth/login", {
         email: values.email,
         password: values.password,
-      }),
-    })
-      .then((res) => {
-        if (res.status === 409) {
-          toast("Deberias Registrarte primero", {
-            type: "error",
-            autoClose: 2000,
-          });
-          handleClickRegister(values.email);
-          return;
-        }
-        return res.json();
       })
+      .then((res) => res.json())
       .then((data) =>
         dispatch(
           addUser({
@@ -120,10 +106,22 @@ const LoginPage = () => {
       )
       .then(() => {
         toast("Logged In", { type: "success", autoClose: 2000 });
-        navigate("/home");
+        navigate("/inicio");
       })
       .catch((error) => {
-        toast(error.message, { type: "error", autoClose: 2000 });
+        console.log(error.response.data.errors);
+        if (
+          error.response &&
+          error.response.data.errors.includes("USER_NOT_FOUND")
+        ) {
+          toast("No tienes cuenta. Deberias registrarte primero", {
+            type: "error",
+            autoClose: 2000,
+          });
+          handleClickRegister(values.email);
+          return;
+        }
+        toast(" Contraseña invalida", { type: "error", autoClose: 2000 });
       });
   };
   return (
@@ -173,7 +171,6 @@ const LoginPage = () => {
                         handleChange,
                         handleBlur,
                         handleSubmit,
-                        isSubmitting,
                       }) => (
                         <form onSubmit={handleSubmit}>
                           <TextField
@@ -221,7 +218,6 @@ const LoginPage = () => {
 
                           <Button
                             type="submit"
-                            disabled={isSubmitting}
                             variant="contained"
                             sx={{ my: 2, backgroundColor: "#1693a5" }}
                           >
@@ -229,14 +225,17 @@ const LoginPage = () => {
                           </Button>
 
                           <FlexBox>
-                            <FlexBox gap={1} >
+                            <FlexBox gap={1}>
                               Si no estás registrado, puedes{" "}
                               <RegisterLink
-                                  onClick={() => handleClickRegister(values.email)}
-                              >registrarte aquí</RegisterLink>
+                                onClick={() =>
+                                  handleClickRegister(values.email)
+                                }
+                              >
+                                registrarte aquí
+                              </RegisterLink>
                             </FlexBox>
                           </FlexBox>
-
                         </form>
                       )}
                     </Formik>
