@@ -97,7 +97,7 @@ const CustomCheckbox = styled(Checkbox)(() => ({
   color: "black", // O el color que desees para el checkbox
 }));
 
-const RegisterPage = () => {
+const RegisterPage = ({ setNavigation }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -133,6 +133,7 @@ const RegisterPage = () => {
       .then(() => {
         toast("Registro exitoso", { type: "success", autoClose: 2000 });
         navigate("/");
+        setNavigation(false);
       })
       .catch((error) => {
         if (
@@ -143,8 +144,8 @@ const RegisterPage = () => {
             type: "warning",
             autoClose: 2000,
           });
-          dispatch(changeEmail(null));
           navigate("/");
+          setNavigation(false);
           return;
         } else if (
           error.response &&
@@ -161,7 +162,7 @@ const RegisterPage = () => {
   };
 
   const handleClickLogIn = (email) => {
-    dispatch(changeEmail(email));
+    setNavigation(false);
     navigate("/");
   };
 
