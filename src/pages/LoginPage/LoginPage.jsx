@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { addUser } from "../../redux/userSlice.js";
+import { addUser, changeEmail } from "../../redux/userSlice.js";
 import * as Yup from "yup";
 import "./Auth.css";
 import Button from "@mui/material/Button";
@@ -80,11 +80,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const handleClickRegister = (email) => {
     navigate("/register");
-    dispatch(
-      addUser({
-        email: email,
-      }),
-    );
+    dispatch(changeEmail(email));
   };
   const handleLogin = (values) => {
     fetch("http://localhost:8080/auth/login", {
