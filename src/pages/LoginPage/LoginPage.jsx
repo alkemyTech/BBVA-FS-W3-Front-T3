@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addUser, changeEmail } from "../../redux/userSlice.js";
 import * as Yup from "yup";
-import api from '../../api/axios.js'
+import api from "../../api/axios.js";
+
 
 import "./Auth.css";
 
