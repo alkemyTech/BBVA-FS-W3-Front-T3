@@ -5,14 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import styled from "styled-components";
 
 import "./DepositPage.css";
 
 export default function DepositPage() {
-  const [submitted, setSubmitted] = useState(false);
-
   const DepositTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
@@ -36,7 +33,6 @@ export default function DepositPage() {
   });
 
   const onSubmit = (values) => {
-    setSubmitted(true);
   };
 
   const formik = useFormik({
@@ -44,15 +40,6 @@ export default function DepositPage() {
     validationSchema,
     onSubmit,
   });
-
-  const messageStyle = {
-    backgroundColor: "#7ececa",
-    color: "black",
-    padding: "10px",
-    borderRadius: "4px",
-    marginTop: "20px",
-    textAlign: "center",
-  };
 
   const inputStyle = {
     backgroundColor: "white",
@@ -65,7 +52,7 @@ export default function DepositPage() {
   };
 
   return (
-    <Box className="box">
+    <Box className="transactionBox">
       <Box className="formStyle">
         <DepositTitle>INGRESAR DINERO</DepositTitle>
         <form onSubmit={formik.handleSubmit}>
@@ -85,7 +72,8 @@ export default function DepositPage() {
             fullWidth
             InputProps={{
               style: inputStyle,
-              inputMode: "numeric", pattern: "[0-9]*"
+              inputMode: "numeric",
+              pattern: "[0-9]*",
             }}
             InputLabelProps={{
               style: labelStyle,
@@ -149,11 +137,6 @@ export default function DepositPage() {
             Enviar
           </Button>
         </form>
-        {submitted && (
-          <Typography variant="body1" style={messageStyle}>
-            Dinero depositado con éxito!
-          </Typography>
-        )}
       </Box>
     </Box>
   );
