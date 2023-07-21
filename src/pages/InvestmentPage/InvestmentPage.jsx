@@ -4,7 +4,8 @@ import LoanCard from "../../components/InvestmentCard/LoanCard/LoanCard.jsx";
 import ExchangeCard from "../../components/InvestmentCard/ExchangeCard/ExchangeCard.jsx";
 export default function BasicCard() {
   return (
-    <Grid container direction="row" spacing={3} sx={{ padding: 4 }}>
+    <Grid container direction="row" spacing={2} className="grid" pt={20}>
+      <Grid item xs={2} />
       <Grid item xs={3}>
         <LoanCard />
       </Grid>
