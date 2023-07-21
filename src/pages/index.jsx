@@ -3,10 +3,11 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "./RegisterPage/RegisterPage.jsx";
+import { useState } from "react";
 
 const Page = (props) => {
   const user = useSelector((state) => state.user);
-
+  const [isRegistering, setIsRegistering] = useState(false);
   return (
     <>
       {user.token && user.token.trim().length > 0 ? (
@@ -15,10 +16,10 @@ const Page = (props) => {
           <div>{props.children}</div>
           <Footer />
         </>
-      ) : user.email && user.email.trim().length > 0 ? (
-        <RegisterPage />
+      ) : isRegistering ? (
+        <RegisterPage setNavigation={setIsRegistering} />
       ) : (
-        <LoginPage />
+        <LoginPage setNavigation={setIsRegistering} />
       )}
     </>
   );
