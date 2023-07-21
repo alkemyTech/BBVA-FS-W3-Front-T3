@@ -44,11 +44,11 @@ const Transferencia = () => {
   });
 
   const formStyle = {
-    backgroundColor: '#45b5c4',
-    padding: '20px',
-    borderRadius: '8px',
-    maxWidth: '400px',
-    margin: '0 auto',
+    backgroundColor: "#45b5c4",
+    padding: "20px",
+    borderRadius: "8px",
+    maxWidth: "600px",
+    width: "100%",
   };
 
   const messageStyle = {
@@ -69,6 +69,7 @@ const Transferencia = () => {
   const inputStyle = {
     backgroundColor: '#c7ede8',
     color: 'black',
+    width: "100%",
   };
 
   const labelStyle = {
@@ -76,111 +77,120 @@ const Transferencia = () => {
   };
 
   return (
-    <Box style={formStyle}>
-     <TranferenciaTitle variant="h2" sx = {{fontFamily : "Helvetica"}}>
-    Tranferencia
-    </TranferenciaTitle>
-      <form onSubmit={formik.handleSubmit}>
-      <div style={{ marginBottom: '20px' }}>
-          <TextField
-            label="Id de Cuenta"
-            name="IddeCuenta"
-            variant="filled"
-            value={formik.values.IddeCuenta}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? true : false}
-            helperText={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? formik.errors.IddeCuenta : ''}
-            type="text"
-            inputProps={{ inputMode: 'text' }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-          />
-        </div>
+    <CenteredContainer>
+      <Box style={formStyle}>
+      <TranferenciaTitle variant="h2" sx = {{fontFamily : "Helvetica"}}>
+      Tranferencia
+      </TranferenciaTitle>
+        <form onSubmit={formik.handleSubmit}>
         <div style={{ marginBottom: '20px' }}>
-          <TextField
-            variant="filled"
-            label="Monto"
-            name="monto"
-            value={formik.values.monto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.monto && formik.errors.monto ? true : false}
-            helperText={formik.touched.monto && formik.errors.monto ? formik.errors.monto : ''}
-            type="text"
-            inputProps={{ inputMode: 'numeric' }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-          />
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <TextField
-            select
-            label="Tipo"
-            name="tipo"
-            variant="filled"
-            value={formik.values.tipo}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.tipo && formik.errors.tipo ? true : false}
-            helperText={formik.touched.tipo && formik.errors.tipo ? formik.errors.tipo : ''}
-            fullWidth
-            SelectProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-          >
-            <MenuItem value="">
-              <em>Seleccionar</em>
-            </MenuItem>
-            <MenuItem value="ARS">ARS</MenuItem>
-            <MenuItem value="USD">USD</MenuItem>
-          </TextField>
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <TextField
-            label="Concepto"
-            name="concepto"
-            variant="filled"
-            value={formik.values.concepto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.concepto && formik.errors.concepto ? true : false}
-            helperText={formik.touched.concepto && formik.errors.concepto ? formik.errors.concepto : ''}
-            type="text"
-            inputProps={{ inputMode: 'text' }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-          />
-        </div>
-        <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
-          Enviar
-        </Button>
-      </form>
-      {submitted && formik.isValid && ( // Agregamos la validación de formik.isValid
-        <Typography variant="body1" style={messageStyle}>
-          Transferencia realizada con éxito!
-        </Typography>
-      )}
-    </Box>
+            <TextField
+              label="Id de Cuenta"
+              name="IddeCuenta"
+              variant="filled"
+              value={formik.values.IddeCuenta}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? true : false}
+              helperText={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? formik.errors.IddeCuenta : ''}
+              type="text"
+              inputProps={{ inputMode: 'text' }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              variant="filled"
+              label="Monto"
+              name="monto"
+              value={formik.values.monto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.monto && formik.errors.monto ? true : false}
+              helperText={formik.touched.monto && formik.errors.monto ? formik.errors.monto : ''}
+              type="text"
+              inputProps={{ inputMode: 'numeric' }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              select
+              label="Tipo"
+              name="tipo"
+              variant="filled"
+              value={formik.values.tipo}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.tipo && formik.errors.tipo ? true : false}
+              helperText={formik.touched.tipo && formik.errors.tipo ? formik.errors.tipo : ''}
+              fullWidth
+              SelectProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+            >
+              <MenuItem value="">
+                <em>Seleccionar</em>
+              </MenuItem>
+              <MenuItem value="ARS">ARS</MenuItem>
+              <MenuItem value="USD">USD</MenuItem>
+            </TextField>
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              label="Concepto"
+              name="concepto"
+              variant="filled"
+              value={formik.values.concepto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.concepto && formik.errors.concepto ? true : false}
+              helperText={formik.touched.concepto && formik.errors.concepto ? formik.errors.concepto : ''}
+              type="text"
+              inputProps={{ inputMode: 'text' }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+            />
+          </div>
+          <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
+            Enviar
+          </Button>
+        </form>
+        {submitted && formik.isValid && ( // Agregamos la validación de formik.isValid
+          <Typography variant="body1" style={messageStyle}>
+            Transferencia realizada con éxito!
+          </Typography>
+        )}
+      </Box>
+    </CenteredContainer>
   );
 };
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  padding: 5rem;
+`;
 
 export default Transferencia;
