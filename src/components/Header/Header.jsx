@@ -49,7 +49,6 @@ function stringAvatar(name) {
       children: "U", // You can set any default value here, like "U" for "Unknown."
     };
   }
-
   const initials = name
     .split(" ")
     .map((part) => part[0])
@@ -86,13 +85,12 @@ export default function Header() {
     navigate("/account");
   };
 
-
   const handleClickLogOut = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-  
+
     dispatch(logoutUser());
-  
+
     toast.success("¡Cerraste sesión correctamente!", {
       position: "top-right",
       autoClose: 3000,
@@ -101,7 +99,7 @@ export default function Header() {
       pauseOnHover: true,
       draggable: true,
     });
-  
+
     navigate("/");
   };
 
