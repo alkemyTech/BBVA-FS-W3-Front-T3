@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addUser, changeEmail } from "../../redux/userSlice.js";
 import * as Yup from "yup";
+import api from '../../api/axios.js'
 
 import "./Auth.css";
 
@@ -104,6 +105,7 @@ const LoginPage = () => {
         navigate("/inicio");
       })
       .catch((error) => {
+        console.log(error)
         if (
           error.response &&
           error.response.data.errors.includes("USER_NOT_FOUND")
