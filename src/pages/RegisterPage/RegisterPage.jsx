@@ -84,7 +84,7 @@ const ImageContainer = styled(JustifyBox)(() => ({
   maxWidth: "100%", // Ajusta el tamaño máximo de la imagen
 }));
 
-const RegisterPage = ({ setNavigation }) => {
+const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -119,7 +119,7 @@ const RegisterPage = ({ setNavigation }) => {
       .then(() => {
         toast("Registro exitoso", { type: "success", autoClose: 2000 });
         navigate("/");
-        setNavigation(false);
+      
       })
       .catch((error) => {
         if (
@@ -131,7 +131,6 @@ const RegisterPage = ({ setNavigation }) => {
             autoClose: 2000,
           });
           navigate("/");
-          setNavigation(false);
           return;
         } else if (
           error.response &&
@@ -148,7 +147,6 @@ const RegisterPage = ({ setNavigation }) => {
   };
 
   const handleClickLogIn = () => {
-    setNavigation(false);
     navigate("/");
   };
 

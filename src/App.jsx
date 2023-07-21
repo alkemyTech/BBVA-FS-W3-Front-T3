@@ -6,7 +6,9 @@ import InvestmentPage from "./pages/InvestmentPage/InvestmentPage.jsx";
 import Transferencias from "./pages/TransferenciaPage/Transferencia.jsx";
 import Page from "./pages/index.jsx";
 
+
 function App() {
+
   return (
     <Page>
       <Routes>

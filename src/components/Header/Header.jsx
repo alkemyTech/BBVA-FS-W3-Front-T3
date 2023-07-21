@@ -88,11 +88,11 @@ export default function Header() {
 
 
   const handleClickLogOut = () => {
-    
-    localStorage.removeItem("userData");
-
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  
     dispatch(logoutUser());
-
+  
     toast.success("¡Cerraste sesión correctamente!", {
       position: "top-right",
       autoClose: 3000,
@@ -101,7 +101,7 @@ export default function Header() {
       pauseOnHover: true,
       draggable: true,
     });
-
+  
     navigate("/");
   };
 
