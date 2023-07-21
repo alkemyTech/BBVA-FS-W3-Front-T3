@@ -15,8 +15,12 @@ import { addUser } from "../../redux/userSlice.js";
 import api from "../../api/axios.js";
 import * as Yup from "yup";
 import "./LoginPage.css";
+
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
+import "./LoginPage.css";
+
 
 const initialValues = {
   email: "",
