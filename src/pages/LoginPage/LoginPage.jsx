@@ -4,7 +4,6 @@ import {
   Grid,
   TextField,
   Button,
-  Radio,
   IconButton,
 } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
@@ -12,7 +11,7 @@ import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { addUser, changeEmail } from "../../redux/userSlice.js";
+import { addUser } from "../../redux/userSlice.js";
 import api from "../../api/axios.js";
 import * as Yup from "yup";
 
@@ -60,7 +59,7 @@ const LoginPage = ({ setNavigation }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const handleClickRegister = (email) => {
+  const handleClickRegister = () => {
     navigate("/register");
     setNavigation(true);
   };
@@ -104,9 +103,7 @@ const LoginPage = ({ setNavigation }) => {
     <>
       <Box className="registerBox">
         <Box className="contextBox">
-          <Box
-            className="flexBox justifyBox"
-          >
+          <Box className="flexBox justifyBox">
             <img
               className="img_auth_logo"
               src="/src/assets/logo-no-background.svg"
@@ -205,18 +202,23 @@ const LoginPage = ({ setNavigation }) => {
                         <Button
                           type="submit"
                           variant="contained"
-                          sx={{ mx: "40%", my: 2, backgroundColor: "#1693a5", alignSelf: "center" }}
+                          sx={{
+                            mx: "40%",
+                            my: 2,
+                            backgroundColor: "#1693a5",
+                            alignSelf: "center",
+                          }}
                         >
                           Login
                         </Button>
 
-                          <Box sx={{mx:"15%"}}>
-                            Si no estás registrado, puedes{" "}
-                            <RegisterLink
-                              onClick={() => handleClickRegister(values.email)}
-                            >
-                              registrarte aquí
-                            </RegisterLink>
+                        <Box sx={{ mx: "15%" }}>
+                          Si no estás registrado, puedes{" "}
+                          <RegisterLink
+                            onClick={() => handleClickRegister(values.email)}
+                          >
+                            registrarte aquí
+                          </RegisterLink>
                         </Box>
                       </form>
                     )}
