@@ -83,9 +83,7 @@ const Transferencia = () => {
   return (
     <CenteredContainer>
       <Box style={formStyle}>
-        <TranferenciaTitle variant="h2" sx={{ fontFamily: "Helvetica" }}>
-          Tranferencia
-        </TranferenciaTitle>
+        <TranferenciaTitle variant="h2">Tranferencia</TranferenciaTitle>
         <form onSubmit={formik.handleSubmit}>
           <div style={{ marginBottom: "20px" }}>
             <TextField
@@ -95,9 +93,7 @@ const Transferencia = () => {
               value={formik.values.IddeCuenta}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                !!(formik.touched.IddeCuenta && formik.errors.IddeCuenta)
-              }
+              error={!!(formik.touched.IddeCuenta && formik.errors.IddeCuenta)}
               helperText={
                 formik.touched.IddeCuenta && formik.errors.IddeCuenta
                   ? formik.errors.IddeCuenta
@@ -177,9 +173,7 @@ const Transferencia = () => {
               value={formik.values.concepto}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                !!(formik.touched.concepto && formik.errors.concepto)
-              }
+              error={!!(formik.touched.concepto && formik.errors.concepto)}
               helperText={
                 formik.touched.concepto && formik.errors.concepto
                   ? formik.errors.concepto
