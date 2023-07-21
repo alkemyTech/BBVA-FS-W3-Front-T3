@@ -13,7 +13,6 @@ export default function Footer() {
       sx={{
         backgroundColor: "#1693a5",
         color: "white",
-        padding: "20px",
         textAlign: "center",
         position: "absolute",
         bottom: 0,
@@ -22,7 +21,7 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5}>
+        <Grid container spacing={5} sx={{paddingTop: 2}}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Información
@@ -74,7 +73,7 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Box mt={5}>
+        <Box mt={1}>
           <Typography variant="body" color="text.secondary" align="center">
             {"Copyright © "}
             <Link color="inherit" href="https://BBVA.com/">
