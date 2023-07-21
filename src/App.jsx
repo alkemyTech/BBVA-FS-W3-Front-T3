@@ -15,10 +15,12 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/inicio" />
         <Route path="/transacciones" />
-        <Route path="/inversiones/simuladorplazofijo" element={<SimuladorPlazoFijo />} />
+        <Route path="/inversiones" element={<InvestmentPage />} />
+        <Route path="/inversiones">
+          <Route path = "simularplazofijo" element={<SimuladorPlazoFijo />}> </Route>
+        </Route>
         <Route path="/depositos" element={<DepositPage />} />
         <Route path="/transferencias" element={<Transferencias />} />
-        <Route path="/inversiones" element={<InvestmentPage />} />
         <Route path="/account" />
       </Routes>
     </Page>

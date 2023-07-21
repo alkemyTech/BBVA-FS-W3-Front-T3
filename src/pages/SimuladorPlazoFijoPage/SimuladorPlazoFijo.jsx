@@ -96,70 +96,80 @@ const SimuladorPlazoFijo = () => {
   };
 
   return (
-    <Box style={formStyle}>
-      <PlazoFijoTitle variant="h4" sx={{ fontFamily: 'Helvetica' }}>
-        Simulador Plazo Fijo
-      </PlazoFijoTitle>
-      <form onSubmit={formik.handleSubmit}>
-        <div style={{ marginBottom: '20px' }}>
-          <TextField
-            variant="filled"
-            label="Monto"
-            name="monto"
-            value={formik.values.monto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.monto && formik.errors.monto ? true : false}
-            helperText={formik.touched.monto && formik.errors.monto ? formik.errors.monto : ''}
-            type="text"
-            inputProps={{ inputMode: 'numeric' }}
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            fullWidth
-          />
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <TextField
-            variant="filled"
-            label="Fecha de Finalización"
-            name="fechaFinalizacion"
-            value={formik.values.fechaFinalizacion}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.fechaFinalizacion && formik.errors.fechaFinalizacion ? true : false
-            }
-            helperText={
-              formik.touched.fechaFinalizacion && formik.errors.fechaFinalizacion
-                ? formik.errors.fechaFinalizacion
-                : ''
-            }
-            type="date"
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-          />
-        </div>
-        <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
-          Enviar
-        </Button>
-      </form>
-      {submitted && message && ( // Mostramos el mensaje si hay uno y si el formulario ha sido enviado
-        <Typography variant="body1" style={messageStyle}>
-          {message}
-        </Typography>
-      )}
-    </Box>
+    <CenteredContainer>
+      <Box style={formStyle}>
+        <PlazoFijoTitle variant="h4" sx={{ fontFamily: 'Helvetica' }}>
+          Simulador Plazo Fijo
+        </PlazoFijoTitle>
+        <form onSubmit={formik.handleSubmit}>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              variant="filled"
+              label="Monto"
+              name="monto"
+              value={formik.values.monto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.monto && formik.errors.monto ? true : false}
+              helperText={formik.touched.monto && formik.errors.monto ? formik.errors.monto : ''}
+              type="text"
+              inputProps={{ inputMode: 'numeric' }}
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              fullWidth
+            />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              variant="filled"
+              label="Fecha de Finalización"
+              name="fechaFinalizacion"
+              value={formik.values.fechaFinalizacion}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.fechaFinalizacion && formik.errors.fechaFinalizacion ? true : false
+              }
+              helperText={
+                formik.touched.fechaFinalizacion && formik.errors.fechaFinalizacion
+                  ? formik.errors.fechaFinalizacion
+                  : ''
+              }
+              type="date"
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx = {{paddingTop: 1.3}}
+            />
+          </div>
+          <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
+            Enviar
+          </Button>
+        </form>
+        {submitted && message && ( // Mostramos el mensaje si hay uno y si el formulario ha sido enviado
+          <Typography variant="body1" style={messageStyle}>
+            {message}
+          </Typography>
+        )}
+      </Box>
+    </CenteredContainer>
   );
 };
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  padding: 5rem;
+`;
 
 
 export default SimuladorPlazoFijo;
