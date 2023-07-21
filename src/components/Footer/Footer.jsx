@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 
 export default function Footer() {
   return (
-    <Box
+    <Box 
       component="footer"
       sx={{
         backgroundColor: "#1693a5",
@@ -16,6 +16,7 @@ export default function Footer() {
         padding: "20px",
         textAlign: "center",
         marginTop: "auto",
+        
       }}
     >
       <Container maxWidth="lg">
