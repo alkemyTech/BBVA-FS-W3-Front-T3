@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 import { addUser } from "../../redux/userSlice.js";
 import api from "../../api/axios.js";
 import * as Yup from "yup";
+import api from "../../api/axios.js";
+
 
 import "./LoginPage.css";
 import { useState } from "react";
@@ -85,6 +87,7 @@ const LoginPage = ({ setNavigation }) => {
         navigate("/inicio");
       })
       .catch((error) => {
+        console.log(error)
         if (
           error.response &&
           error.response.data.errors.includes("USER_NOT_FOUND")

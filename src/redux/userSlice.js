@@ -20,8 +20,13 @@ export const userSlice = createSlice({
     changeEmail: (state, action) => {
       state.email = action.payload;
     },
+    logoutUser: (state) => {
+      state.name = "";
+      state.email = "";
+      state.token = "";
+    },
   },
 });
 
-export const { addUser, changeEmail } = userSlice.actions;
+export const { addUser, changeEmail,logoutUser  } = userSlice.actions;
 export default userSlice.reducer;

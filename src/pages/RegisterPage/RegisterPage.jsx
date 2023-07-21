@@ -110,7 +110,6 @@ const RegisterPage = ({ setNavigation }) => {
       .then((data) =>
         dispatch(
           addUser({
-            token: data.token,
             fistName: data.user.firstName,
             lastName: data.user.lastName,
             password: data.user.password,
