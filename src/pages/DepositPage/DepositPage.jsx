@@ -187,4 +187,5 @@ const CenteredContainer = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 50vh;
+  padding: 5rem;
 `;

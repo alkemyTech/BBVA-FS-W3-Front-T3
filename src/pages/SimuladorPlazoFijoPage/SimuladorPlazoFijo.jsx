@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-
 const SimuladorPlazoFijo = () => {
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState('');
