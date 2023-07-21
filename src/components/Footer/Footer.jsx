@@ -1,4 +1,3 @@
-import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -17,8 +16,8 @@ export default function Footer() {
         textAlign: "center",
         position: "absolute",
         bottom: 0,
-        left: 0,    
-        width: "100%",   
+        left: 0,
+        width: "100%",
       }}
     >
       <Container maxWidth="lg">

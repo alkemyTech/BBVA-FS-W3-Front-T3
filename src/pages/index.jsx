@@ -6,25 +6,22 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../redux/userSlice.js";
 import { CircularProgress } from "@mui/material";
 
-
 const Page = (props) => {
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     if (user && token) {
-
       dispatch(
         addUser({
           token: token,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-        })
+        }),
       );
     }
     const timer = setTimeout(() => {
@@ -32,9 +29,7 @@ const Page = (props) => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [])
-
-
+  }, []);
 
   return (
     <>
@@ -53,15 +48,12 @@ const Page = (props) => {
         <>
           {user.token && user.token.trim().length > 0 ? <Header /> : <></>}
           <>
-
             <div>{props.children}</div>
-
           </>
 
           {user.token && user.token.trim().length > 0 ? <Footer /> : <></>}
         </>
-      )
-      }
+      )}
     </>
   );
 };
