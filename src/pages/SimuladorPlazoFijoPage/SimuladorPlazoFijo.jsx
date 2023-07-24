@@ -33,24 +33,19 @@ const SimuladorPlazoFijo = () => {
 
   const handleSimulation = (values) => {
     console.log(values);
-  const token = localStorage.getItem("token");
-    console.log(token);
-    api.
-        post("/fixedTerm/simulate", {
-            amount: values.amount,
-            closingDate: values.closingDate,
-    },{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token })
-        .then((response) => response.data)
-        .then((data) => {
-              console.log(data);
-                alert("La simulación fue exitosa");
-        })
-        .catch((error) => {
-            console.log(error);
-            alert("La simulación falló");
-        })
+    FixedTermApi.simulate({
+      amount: values.amount,
+      closingDate: values.closingDate,
+    })
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+        alert("La simulación fue exitosa");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("La simulación falló");
+      });
   };
 
   const inputStyle = {
@@ -89,9 +84,7 @@ const SimuladorPlazoFijo = () => {
                 onBlur={handleBlur}
                 error={!!(touched.amount && errors.amount)}
                 helperText={
-                  touched.amount && errors.amount
-                    ? errors.amount
-                    : ""
+                  touched.amount && errors.amount ? errors.amount : ""
                 }
                 type="text"
                 inputProps={{ inputMode: "numeric" }}
@@ -111,15 +104,9 @@ const SimuladorPlazoFijo = () => {
                 value={values.closingDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={
-                  !!(
-                    touched.closingDate &&
-                    errors.closingDate
-                  )
-                }
+                error={!!(touched.closingDate && errors.closingDate)}
                 helperText={
-                  touched.closingDate &&
-                  errors.closingDate
+                  touched.closingDate && errors.closingDate
                     ? errors.closingDate
                     : ""
                 }
