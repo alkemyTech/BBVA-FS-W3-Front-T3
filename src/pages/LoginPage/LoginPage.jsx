@@ -122,7 +122,7 @@ const LoginPage = () => {
                 <Box p={4}>
                   <img
                     className="imgForm"
-                    src="/src/assets/"
+                    src="/src/assets/login_image.png"
                     width="100%"
                     alt=""
                   />
