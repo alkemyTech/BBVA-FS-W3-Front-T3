@@ -32,8 +32,7 @@ export default function DepositPage() {
     concepto: Yup.string().required("Campo requerido"),
   });
 
-  const onSubmit = (values) => {
-  };
+  const onSubmit = (values) => {};
 
   const formik = useFormik({
     initialValues,

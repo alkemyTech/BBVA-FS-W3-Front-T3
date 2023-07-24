@@ -17,7 +17,7 @@ function App() {
         <Route path="/transacciones" />
         <Route path="/inversiones" element={<InvestmentPage />} />
         <Route path="/inversiones">
-          <Route path="simularplazofijo" element={<SimuladorPlazoFijo />}>
+          <Route path="plazofijo" element={<SimuladorPlazoFijo />}>
             {" "}
           </Route>
         </Route>

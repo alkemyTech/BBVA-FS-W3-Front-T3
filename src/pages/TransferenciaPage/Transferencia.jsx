@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
+import "./TransferenciaPage.css";
 
 const Transferencia = () => {
   const TranferenciaTitle = styled(Typography)(() => ({
@@ -34,8 +35,7 @@ const Transferencia = () => {
     concepto: Yup.string().required("Campo requerido"),
   });
 
-  const onSubmit = (values) => {
-  };
+  const onSubmit = (values) => {};
 
   const formik = useFormik({
     initialValues,
@@ -54,8 +54,8 @@ const Transferencia = () => {
   };
 
   return (
-    <Box className="transactionBox">
-      <Box className="formStyle">
+    <Box className="tansferenciaBox">
+      <Box className="tansferenciaformStyle">
         <TranferenciaTitle>TRANSFERENCIA</TranferenciaTitle>
         <form onSubmit={formik.handleSubmit}>
           <TextField
