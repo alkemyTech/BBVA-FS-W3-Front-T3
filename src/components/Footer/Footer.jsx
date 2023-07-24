@@ -1,4 +1,3 @@
-import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -8,19 +7,20 @@ import { Box } from "@mui/material";
 
 export default function Footer() {
   return (
-    <Box 
+    <Box
       component="footer"
       sx={{
         backgroundColor: "#1693a5",
         color: "white",
-        padding: "20px",
         textAlign: "center",
-        marginTop: "auto",
-        
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        width: "100%",
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5}>
+        <Grid container spacing={5} sx={{ paddingTop: 2 }}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Información
@@ -72,7 +72,7 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Box mt={5}>
+        <Box mt={1}>
           <Typography variant="body" color="text.secondary" align="center">
             {"Copyright © "}
             <Link color="inherit" href="https://BBVA.com/">

@@ -1,0 +1,27 @@
+.tittle{
+    background-color: #45b5c4;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+}
+
+.tittle2{
+    background-color: #45b5c4;
+    border-radius: 6px;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+}
+
+.modal{
+    font-weight: bold;
+}
+
+.name{
+   color:#03b96d;
+   font-size: 2rem;
+}
+

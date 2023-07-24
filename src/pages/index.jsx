@@ -1,6 +1,10 @@
 import { useSelector } from "react-redux";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/userSlice.js";
+import { CircularProgress } from "@mui/material";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import RegisterPage from "./RegisterPage/RegisterPage.jsx";
 import Navigator from "../components/sidebar/Navigator";
@@ -8,6 +12,28 @@ import { useState } from "react";
 
 const Page = (props) => {
   const user = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+    if (user && token) {
+      dispatch(
+        addUser({
+          token: token,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        }),
+      );
+    }
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -16,18 +42,27 @@ const Page = (props) => {
 
   return (
     <>
-      {user.token && user.token.trim().length > 0 ? (
-        <>
-        <Navigator open={isSidebarOpen} />
-           <Header isSidebarOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
-        
-          <div>{props.children}</div>
-          <Footer />
-        </>
-      ) : user.email && user.email.trim().length > 0 ? (
-        <RegisterPage />
+      {isLoading ? ( // Mostrar el cargador mientras se verifica la autenticación
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh", // Establecer el alto del contenedor para ocupar toda la pantalla verticalmente
+          }}
+        >
+          <CircularProgress />
+        </div>
       ) : (
-        <LoginPage />
+        <>
+         {user.token && user.token.trim().length > 0 ? <Navigator open={isSidebarOpen} />: <></>}
+          {user.token && user.token.trim().length > 0 ? <Header isSidebarOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} /> : <></>}
+          <>
+            <div>{props.children}</div>
+          </>
+
+          {user.token && user.token.trim().length > 0 ? <Footer /> : <></>}
+        </>
       )}
     </>
   );
