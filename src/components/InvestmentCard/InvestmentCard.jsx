@@ -13,37 +13,24 @@ export default function InvestmentCard(props) {
   var alt = props.alt;
   var action = props.action;
 
-  const handleClickSimular = () => {
-    console.log(props.simulatePath);
-    navigate(props.simulatePath);
-  };
-
   const handleClickAction = () => {
     console.log(props);
     navigate(props.actionPath);
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 400, backgroundColor: "#1693a5" }}>
       <CardActionArea onClick={handleClickAction}>
         <CardMedia component="img" alt={alt} image={image} />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {description}
+          <Typography
+            gutterBottom
+            sx={{ fontSize: "1.5rem", textAlign: "center", color: "white" }}
+          >
+            {title.toUpperCase()}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" variant="outlined" onClick={handleClickSimular}>
-          Simular
-        </Button>
-        <Button size="small" variant="contained" onClick={handleClickAction}>
-          {action}
-        </Button>
-      </CardActions>
     </Card>
   );
 }

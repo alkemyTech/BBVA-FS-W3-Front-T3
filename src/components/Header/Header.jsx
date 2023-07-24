@@ -124,7 +124,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="absolute" sx={{backgroundColor:"#1693a5"}}>
+    <AppBar position="absolute" sx={{ backgroundColor: "#1693a5" }}>
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>

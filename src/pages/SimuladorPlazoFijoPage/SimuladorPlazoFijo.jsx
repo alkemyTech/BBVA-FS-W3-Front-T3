@@ -142,8 +142,10 @@ const SimuladorPlazoFijo = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                !!(formik.touched.fechaFinalizacion &&
-                    formik.errors.fechaFinalizacion)
+                !!(
+                  formik.touched.fechaFinalizacion &&
+                  formik.errors.fechaFinalizacion
+                )
               }
               helperText={
                 formik.touched.fechaFinalizacion &&
