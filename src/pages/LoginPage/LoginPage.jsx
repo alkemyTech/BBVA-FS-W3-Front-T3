@@ -21,7 +21,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import "./LoginPage.css";
 
-
 const initialValues = {
   email: "",
   password: "vikatcode",
@@ -54,7 +53,6 @@ const LoginTitle = styled(Typography)(() => ({
 }));
 
 const LoginPage = () => {
- 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -76,13 +74,13 @@ const LoginPage = () => {
       .then((data) => {
         dispatch(
           addUser({
-            token: data.token,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
             email: data.user.email,
-          })
+            token: data.token,
+          }),
         );
-      
+
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
       })
@@ -120,66 +118,66 @@ const LoginPage = () => {
 
           <Grid container component={Card} className="card">
             <Grid item sm={6} xs={12} className="cardForm">
-                <Typography>
+              <Typography>
                 <Box p={4}>
-                    <img
-                      className="imgForm"
-                      src="/src/assets/login_image.jpg"
-                      width="100%"
-                      alt=""
-                    />
+                  <img
+                    className="imgForm"
+                    src="/src/assets/login_image.jpg"
+                    width="100%"
+                    alt=""
+                  />
                 </Box>
-                </Typography>
-              </Grid>
+              </Typography>
+            </Grid>
 
-              <Grid item sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <LoginTitle>Sign In</LoginTitle>
               <Card className="card">
                 <Box className="flexBox">
-                    <Formik
-                      initialValues={initialValues}
-                      validationSchema={validationSchema}
-                      onSubmit={handleLogin}
-                    >
-                      {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <TextField
-                            fullWidth
-                            size="small"
-                            type="email"
-                            name="email"
-                            label="Email"
-                            variant="outlined"
-                            onBlur={handleBlur}
-                            value={values.email}
-                            onChange={handleChange}
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleLogin}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                    }) => (
+                      <form onSubmit={handleSubmit}>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          type="email"
+                          name="email"
+                          label="Email"
+                          variant="outlined"
+                          onBlur={handleBlur}
+                          value={values.email}
+                          onChange={handleChange}
                           placeholder="tu@email.com"
                           required={true}
-                            error={Boolean(errors.email && touched.email)}
-                            sx={{ mb: 3, width: "100%" }}
-                          />
+                          error={Boolean(errors.email && touched.email)}
+                          sx={{ mb: 3, width: "100%" }}
+                        />
 
-                          <TextField
-                            fullWidth
-                            size="small"
-                            name="password"
+                        <TextField
+                          fullWidth
+                          size="small"
+                          name="password"
                           type={showPassword ? "text" : "password"}
-                            label="Password"
-                            variant="outlined"
-                            onBlur={handleBlur}
-                            value={values.password}
-                            onChange={handleChange}
-                            helperText={touched.password && errors.password}
-                            error={Boolean(errors.password && touched.password)}
-                            sx={{ mb: 3, width: "100%" }}
-                          />
+                          label="Password"
+                          variant="outlined"
+                          onBlur={handleBlur}
+                          value={values.password}
+                          onChange={handleChange}
+                          helperText={touched.password && errors.password}
+                          error={Boolean(errors.password && touched.password)}
+                          sx={{ mb: 3, width: "100%" }}
+                        />
 
                         <Box justifyContent="space-between">
                           <Box>
@@ -195,44 +193,44 @@ const LoginPage = () => {
                                 <Visibility />
                               )}
                             </IconButton>
-                              <Checkbox
-                                size="small"
-                                name="remember"
-                                onChange={handleChange}
-                                checked={values.remember}
+                            <Checkbox
+                              size="small"
+                              name="remember"
+                              onChange={handleChange}
+                              checked={values.remember}
                               sx={{ padding: 0, marginLeft: "70%" }}
-                              />{" "}
-                              Recordar
+                            />{" "}
+                            Recordar
                           </Box>
                         </Box>
-                          <Button
-                            type="submit"
-                            variant="contained"
+                        <Button
+                          type="submit"
+                          variant="contained"
                           sx={{
                             mx: "40%",
                             my: 2,
                             backgroundColor: "#1693a5",
                             alignSelf: "center",
                           }}
-                          >
-                            Login
-                          </Button>
+                        >
+                          Login
+                        </Button>
 
                         <Box sx={{ mx: "15%" }}>
-                              Si no estás registrado, puedes{" "}
-                              <RegisterLink
+                          Si no estás registrado, puedes{" "}
+                          <RegisterLink
                             onClick={() => handleClickRegister(values.email)}
-                              >
-                                registrarte aquí
-                              </RegisterLink>
+                          >
+                            registrarte aquí
+                          </RegisterLink>
                         </Box>
-                        </form>
-                      )}
-                    </Formik>
+                      </form>
+                    )}
+                  </Formik>
                 </Box>
-                </Card>
-              </Grid>
+              </Card>
             </Grid>
+          </Grid>
         </Box>
       </Box>
     </>

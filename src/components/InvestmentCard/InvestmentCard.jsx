@@ -14,7 +14,7 @@ export default function InvestmentCard(props) {
   var action = props.action;
 
   const handleClickSimular = () => {
-    console.log(props.simulatePath)
+    console.log(props.simulatePath);
     navigate(props.simulatePath);
   };
 

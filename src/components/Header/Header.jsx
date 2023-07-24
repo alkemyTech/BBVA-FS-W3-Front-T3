@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userSlice.js";
 import { toast } from "react-toastify";
 
-import logo from "../../assets/3.png";
+import logo from "../../assets/logo-no-background.svg";
 
 function stringToColor(string) {
   let hash = 0;
@@ -49,7 +49,6 @@ function stringAvatar(name) {
       children: "U", // You can set any default value here, like "U" for "Unknown."
     };
   }
-
   const initials = name
     .split(" ")
     .map((part) => part[0])
@@ -74,6 +73,10 @@ export default function Header() {
     setValue(newValue);
   };
 
+  const handleClickLogo = () => {
+    navigate("/inicio");
+  };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -86,13 +89,12 @@ export default function Header() {
     navigate("/account");
   };
 
-
   const handleClickLogOut = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-  
+
     dispatch(logoutUser());
-  
+
     toast.success("¡Cerraste sesión correctamente!", {
       position: "top-right",
       autoClose: 3000,
@@ -101,7 +103,7 @@ export default function Header() {
       pauseOnHover: true,
       draggable: true,
     });
-  
+
     navigate("/");
   };
 
@@ -122,13 +124,13 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="absolute">
+    <AppBar position="absolute" sx={{backgroundColor:"#1693a5"}}>
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
-          <Grid item xs={1}>
+          <Grid item xs={1} onClick={handleClickLogo}>
             <Box
               component="img"
-              sx={{ height: 30 }}
+              sx={{ height: 40 }}
               alt="Your logo."
               src={logo}
             />
@@ -174,19 +176,13 @@ export default function Header() {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={handleClickAccount}>
-                <Typography textAlign="center">Cuenta</Typography>
+                <Typography textAlign="center">Mi Cuenta</Typography>
               </MenuItem>
               <MenuItem onClick={handleClickLogOut}>
-                <Typography textAlign="center">Log Out</Typography>
+                <Typography textAlign="center">Cerrar sesión</Typography>
               </MenuItem>
             </Menu>
           </Grid>
-          {/* <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/loginIn"> LogIn </Button>                        
-                    </Grid>
-                    <Grid item sx={{marginLeft:'auto'}}>
-                            <Button variant='contained' color='secondary' href="/signUp"> SignUp </Button>                        
-                    </Grid> */}
         </Grid>
       </Toolbar>
     </AppBar>
