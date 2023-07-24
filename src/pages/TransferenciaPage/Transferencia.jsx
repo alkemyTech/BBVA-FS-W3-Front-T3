@@ -21,34 +21,39 @@ const Transferencia = () => {
   const [transferData, setTransferData] = useState({});
 
   const TranferenciaTitle = styled(Typography)(() => ({
-    fontSize: '2.5rem', 
-    fontWeight: 'bold', 
-    color: 'white',
-    textAlign : "center",
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    fontFamily: "Helvetica",
+    color: "#1693a5",
+    textAlign: "center",
   }));
 
   const initialValues = {
-    IddeCuenta: '',
-    monto: '',
-    tipo: '',
-    concepto: '',
+    cbu: "",
+    monto: "",
+    moneda: "",
+    concepto: "",
   };
 
   const validationSchema = Yup.object().shape({
-    IddeCuenta: Yup.number().positive('La cuenta debe ser un número positivo').required('Campo requerido'),
-    monto: Yup.number().positive('El monto debe ser un número positivo').required('Campo requerido'),
-    tipo: Yup.string().required('Campo requerido'),
-    concepto: Yup.string().required('Campo requerido'),
+    cbu: Yup.number()
+      .positive("La cuenta debe ser un número positivo")
+      .required("Campo requerido"),
+    monto: Yup.number()
+      .positive("El monto debe ser un número positivo")
+      .required("Campo requerido"),
+    moneda: Yup.string().required("Campo requerido"),
+    concepto: Yup.string().required("Campo requerido"),
   });
 
   const onSubmit = (values) => {
-    
+
      //harcodeo de datos
     setUserData({
       name: "Carlitos Tevez", // Reemplaza por el nombre y apellido del usuario
       cbu: "0568861256004983210586205", // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
     });
-    
+
     setTransferData({
       monto: values.monto,
       tipo: values.tipo === "ARS" ? "$" : "u$d",
@@ -89,195 +94,164 @@ const Transferencia = () => {
     onSubmit,
   });
 
-  const formStyle = {
-    backgroundColor: "#45b5c4",
-    padding: "20px",
-    borderRadius: "8px",
-    maxWidth: "600px",
-    width: "100%",
-  };
-
-  const messageStyle = {
-    backgroundColor: '#7ececa',
-    color: 'black',
-    padding: '10px',
-    borderRadius: '4px',
-    marginTop: '20px',
-    textAlign: 'center',
-  };
-
-  const buttonStyle = {
-    backgroundColor: '#c7ede8',
-    color: 'black',
-    marginTop: '20px'
-  };
-
   const inputStyle = {
-    backgroundColor: '#c7ede8',
-    color: 'black',
+    backgroundColor: "white",
+    color: "black",
     width: "100%",
   };
 
   const labelStyle = {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   };
 
   return (
-    <>
-      <CenteredContainer>
-        <Box style={formStyle}>
-          <TranferenciaTitle variant="h2" sx={{ fontFamily: "Helvetica" }}>
-            Tranferencia
-          </TranferenciaTitle>
-          <form onSubmit={formik.handleSubmit}>
-            <div style={{ marginBottom: '20px' }}>
-              <TextField
-                label="Id de Cuenta"
-                name="IddeCuenta"
-                variant="filled"
-                value={formik.values.IddeCuenta}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? true : false}
-                helperText={formik.touched.IddeCuenta && formik.errors.IddeCuenta ? formik.errors.IddeCuenta : ''}
-                type="text"
-                inputProps={{ inputMode: 'text' }}
-                fullWidth
-                InputProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
+    <Box className="transactionBox">
+      <Box className="formStyle">
+        <TranferenciaTitle>TRANSFERENCIA</TranferenciaTitle>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            label="CBU"
+            name="cbu"
+            variant="filled"
+            value={formik.values.cbu}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.cbu && formik.errors.cbu)}
+            helperText={
+              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : ""
+            }
+            type="text"
+            inputProps={{ inputMode: "text" }}
+            fullWidth
+            InputProps={{
+              style: inputStyle,
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ marginBottom: "20px" }}
+          />
+          <TextField
+            variant="filled"
+            label="Monto"
+            name="monto"
+            value={formik.values.monto}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.monto && formik.errors.monto)}
+            helperText={
+              formik.touched.monto && formik.errors.monto
+                ? formik.errors.monto
+                : ""
+            }
+            fullWidth
+            InputProps={{
+              style: inputStyle,
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ marginBottom: "20px" }}
+          />
+          <TextField
+            select
+            label="Moneda"
+            name="moneda"
+            variant="filled"
+            value={formik.values.moneda}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.moneda && formik.errors.moneda)}
+            helperText={
+              formik.touched.moneda && formik.errors.moneda
+                ? formik.errors.moneda
+                : ""
+            }
+            fullWidth
+            SelectProps={{
+              style: inputStyle,
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ marginBottom: "20px" }}
+          >
+            <MenuItem value="">
+              <em>Seleccionar</em>
+            </MenuItem>
+            <MenuItem value="ARS">ARS</MenuItem>
+            <MenuItem value="USD">USD</MenuItem>
+          </TextField>
+          <TextField
+            label="Concepto"
+            name="concepto"
+            variant="filled"
+            value={formik.values.concepto}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.concepto && formik.errors.concepto)}
+            helperText={
+              formik.touched.concepto && formik.errors.concepto
+                ? formik.errors.concepto
+                : ""
+            }
+            type="text"
+            inputProps={{ inputMode: "text" }}
+            fullWidth
+            InputProps={{
+              style: inputStyle,
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ marginBottom: "20px" }}
+          />
+          <Button variant="contained" type="submit" fullWidth>
+            Enviar
+          </Button>
+        </form>
+      </Box>
+       {isModalOpen && formik.isValid && (
+             <div className="boxModal"><GenericModal
+                open={isModalOpen}
+                content={
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="h6" className="tittle">Usted realizará una transferencia a:</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <List>
+                        <ListItem>
+                          <ListItemText primary={`Nombre y Apellido del usuario:`} />
+                          <ListItemText primary={`${userData.name || ""}`}  className="name" />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText primary={`CBU de la cuenta asociada: `} />
+                          <ListItemText primary={`${userData.cbu || ""}`} className="name"/>
+                        </ListItem>
+                      </List>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body1" className="tittle2">Monto a transferir:</Typography>
+                      <List className="monto">
+                        <ListItem>
+                          <ListItemText primary={`Tipo: ${transferData.tipo}`} />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText primary={`Monto: ${transferData.monto || ""}`} />
+                        </ListItem>
+                      </List>
+                    </Grid>
+                  </Grid>
+                }
+                onAccept={handleModalAccept}
+                onClose={handleModalCancel}
               />
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <TextField
-                variant="filled"
-                label="Monto"
-                name="monto"
-                value={formik.values.monto}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.monto && formik.errors.monto ? true : false}
-                helperText={formik.touched.monto && formik.errors.monto ? formik.errors.monto : ''}
-                type="text"
-                inputProps={{ inputMode: 'numeric' }}
-                fullWidth
-                InputProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <TextField
-                select
-                label="Tipo"
-                name="tipo"
-                variant="filled"
-                value={formik.values.tipo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.tipo && formik.errors.tipo ? true : false}
-                helperText={formik.touched.tipo && formik.errors.tipo ? formik.errors.tipo : ''}
-                fullWidth
-                SelectProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
-              >
-                <MenuItem value="">
-                  <em>Seleccionar</em>
-                </MenuItem>
-                <MenuItem value="ARS">ARS</MenuItem>
-                <MenuItem value="USD">USD</MenuItem>
-              </TextField>
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <TextField
-                label="Concepto"
-                name="concepto"
-                variant="filled"
-                value={formik.values.concepto}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.concepto && formik.errors.concepto ? true : false}
-                helperText={formik.touched.concepto && formik.errors.concepto ? formik.errors.concepto : ''}
-                type="text"
-                inputProps={{ inputMode: 'text' }}
-                fullWidth
-                InputProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
-              />
-            </div>
-            <Button variant="contained" style={buttonStyle} type="submit" fullWidth>
-              Enviar
-            </Button>
-          </form>
-          {submitted && formik.isValid && (
-            <Typography variant="body1" style={messageStyle}>
-              Transferencia realizada con éxito!
-            </Typography>
-          )}
-        </Box>
-      </CenteredContainer>
-      {isModalOpen && formik.isValid && (
-       <div className="boxModal"><GenericModal 
-          open={isModalOpen}
-          content={
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="h6" className="tittle">Usted realizará una transferencia a:</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <List>
-                  <ListItem>
-                    <ListItemText primary={`Nombre y Apellido del usuario:`} />
-                    <ListItemText primary={`${userData.name || ""}`}  className="name" />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`CBU de la cuenta asociada: `} />
-                    <ListItemText primary={`${userData.cbu || ""}`} className="name"/>
-                  </ListItem>
-                </List>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body1" className="tittle2">Monto a transferir:</Typography>
-                <List className="monto">
-                  <ListItem>
-                    <ListItemText primary={`Tipo: ${transferData.tipo}`} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Monto: ${transferData.monto || ""}`} />
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-          }
-          onAccept={handleModalAccept}
-          onClose={handleModalCancel}
-        />
-        </div> 
-      )}
-    </>
+              </div>
+            )}
+    </Box>
   );
 };
-
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
-  padding: 5rem;
-`;
-
 export default Transferencia;

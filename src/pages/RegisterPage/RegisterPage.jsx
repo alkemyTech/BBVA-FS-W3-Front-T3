@@ -119,7 +119,6 @@ const RegisterPage = () => {
       .then(() => {
         toast("Registro exitoso", { type: "success", autoClose: 2000 });
         navigate("/");
-      
       })
       .catch((error) => {
         if (
