@@ -21,8 +21,6 @@ function App() {
           <Route path="plazofijo" element={<SimuladorPlazoFijo />}>
             {" "}
           </Route>
-        </Route>
-        <Route path="/inversiones">
           <Route path="prestamo" element={<Prestamo />}>
             {" "}
           </Route>
