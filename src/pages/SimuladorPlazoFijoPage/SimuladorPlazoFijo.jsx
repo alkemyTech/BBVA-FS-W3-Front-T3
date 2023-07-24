@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -11,13 +11,18 @@ import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FixedTermApi } from "../../api/fixedTermApi.js";
-import api from "../../api/axios.js";
 
 import "../DepositPage/DepositPage.css";
 
 const SimuladorPlazoFijo = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [simulation, setSimulation] = useState({
+    amount: 0,
+    interest: 0.002,
+    total: 0,
+    closingDate: "",
+  });
 
   const PlazoFijoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
@@ -38,44 +43,81 @@ const SimuladorPlazoFijo = () => {
     closingDate: Yup.date().required("Campo requerido"),
   });
 
-  const handleSimulation = (values) => {
-    console.log(values);
-    FixedTermApi.simulate({
-      amount: values.amount,
-      closingDate: values.closingDate,
-    })
-      .then((response) => response.data)
-      .then((data) => {
-        console.log(data);
-        alert("La simulación fue exitosa");
+  const onSubmit = (values) => {
+    handleSimulation(values)
+      .then((simulationSuccess) => {
+        setIsModalOpen(simulationSuccess);
       })
-      .catch((error) => {
-        console.log(error);
-        alert("La simulación falló");
+      .catch(() => {
+        setIsModalOpen(false);
       });
   };
 
-  const handleModalAccept = () => {
-    console.log("Formulario enviado:", formik.values);
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
 
-    formik.resetForm();
-    setIsModalOpen(false);
-    setSubmitted(true);
-
-    history("/inicio");
-
-    toast.success("Plazo fijo realizado con éxito!", {
-      position: "top-center",
-      autoClose: 3000, // Duración de la notificación (en milisegundos)
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+  const handleSimulation = (values) => {
+    return new Promise((resolve, reject) => {
+      FixedTermApi.simulate({
+        amount: values.amount,
+        closingDate: values.closingDate,
+      })
+        .then((response) => response.data)
+        .then((data) => {
+          setSimulation({
+            amount: data.amount,
+            interest: data.interest,
+            total: data.total,
+            closingDate: data.closingDate,
+          });
+          resolve(true); // Resolve the Promise with a boolean value (true) on success
+        })
+        .catch(() => {
+          toast.error("Hubo un error al simular el plazo fijo", {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: false,
+          });
+          reject(false); // Reject the Promise with a boolean value (false) on error
+        });
     });
   };
+
+  const handleModalAccept = () => {
+    formik.resetForm();
+    setIsModalOpen(false);
+
+    FixedTermApi.create({
+      amount: simulation.amount,
+      closingDate: simulation.closingDate,
+    })
+      .then(() =>
+        toast.success("Plazo fijo realizado con éxito", {
+          position: "top-center",
+          autoClose: 2000, // Duración de la notificación (en milisegundos)
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: false,
+        }),
+      )
+      .catch(() => {
+        toast.error("Hubo un error al realizar el plazo fijo", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: false,
+        });
+      });
+
+    navigate("/inicio");
+  };
   const handleModalCancel = () => {
-    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
   };
 
@@ -92,73 +134,60 @@ const SimuladorPlazoFijo = () => {
     <Box className="transactionBox">
       <Box className="formStyle">
         <PlazoFijoTitle>Plazo Fijo</PlazoFijoTitle>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSimulation}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <TextField
-                variant="filled"
-                label="Monto"
-                name="amount"
-                value={values.amount}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={!!(touched.amount && errors.amount)}
-                helperText={
-                  touched.amount && errors.amount ? errors.amount : ""
-                }
-                type="text"
-                inputProps={{ inputMode: "numeric" }}
-                InputProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
-                fullWidth
-                sx={{ marginBottom: "20px" }}
-              />
-              <TextField
-                variant="filled"
-                label="Fecha de Finalización"
-                name="closingDate"
-                value={values.closingDate}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={!!(touched.closingDate && errors.closingDate)}
-                helperText={
-                  touched.closingDate && errors.closingDate
-                    ? errors.closingDate
-                    : ""
-                }
-                type="date"
-                fullWidth
-                InputProps={{
-                  style: inputStyle,
-                }}
-                InputLabelProps={{
-                  style: labelStyle,
-                }}
-                sx={{ paddingTop: 1.3, marginBottom: "20px" }}
-              />
-              <Button variant="contained" type="submit" fullWidth>
-                Enviar
-              </Button>
-            </form>
-          )}
-        </Formik>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            variant="filled"
+            label="Monto"
+            name="amount"
+            value={formik.values.amount}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.amount && formik.errors.amount)}
+            helperText={
+              formik.touched.amount && formik.errors.amount
+                ? formik.errors.amount
+                : ""
+            }
+            type="text"
+            inputProps={{ inputMode: "numeric" }}
+            InputProps={{
+              style: inputStyle,
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            fullWidth
+            sx={{ marginBottom: "20px" }}
+          />
+          <TextField
+            variant="filled"
+            label="Fecha de Finalización"
+            name="closingDate"
+            value={formik.values.closingDate}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.closingDate && formik.errors.closingDate)}
+            helperText={
+              formik.touched.closingDate && formik.errors.closingDate
+                ? formik.errors.closingDate
+                : ""
+            }
+            type="date"
+            fullWidth
+            InputProps={{
+              style: inputStyle,
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ paddingTop: 1.3, marginBottom: "20px" }}
+          />
+          <Button variant="contained" type="submit" fullWidth>
+            Enviar
+          </Button>
+        </form>
       </Box>
-      {isModalOpen && formik.isValid && (
+      {isModalOpen && (
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
@@ -172,12 +201,25 @@ const SimuladorPlazoFijo = () => {
                 <Grid item xs={12}>
                   <List>
                     <ListItem>
-                      <ListItemText primary={`Monto inicial de:`} />
-                      <ListItemText primary={"$100000"} className="name" />
+                      <ListItemText primary={`Monto inicial:`} />
+                      <ListItemText
+                        primary={simulation.amount}
+                        className="name"
+                      />
                     </ListItem>
                     <ListItem>
                       <ListItemText primary={`Hasta el dia: `} />
-                      <ListItemText primary={"16/09/2023"} className="name" />
+                      <ListItemText
+                        primary={simulation.closingDate}
+                        className="name"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Interes diario: `} />
+                      <ListItemText
+                        primary={simulation.interest}
+                        className="name"
+                      />
                     </ListItem>
                   </List>
                 </Grid>
@@ -187,7 +229,7 @@ const SimuladorPlazoFijo = () => {
                   </Typography>
                   <List className="monto">
                     <ListItem>
-                      <ListItemText primary={`654564164564`} />
+                      <ListItemText primary={simulation.total} />
                     </ListItem>
                   </List>
                 </Grid>
