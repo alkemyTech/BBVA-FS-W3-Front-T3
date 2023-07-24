@@ -16,8 +16,8 @@ import { Grid, Tabs, Tab } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userSlice.js";
 import { toast } from "react-toastify";
-
 import logo from "../../assets/logo-no-background.svg";
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 function stringToColor(string) {
   let hash = 0;
@@ -62,12 +62,17 @@ function stringAvatar(name) {
   };
 }
 
-export default function Header() {
+
+export default function Header({ isSidebarOpen, onToggleSidebar }) {
   const user = useSelector((state) => state.user);
   const [value, setValue] = useState(0);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleToggleSidebar = () => {
+    onToggleSidebar(); // Llamar a la función del componente Page para cambiar la visibilidad de la barra lateral
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -123,9 +128,12 @@ export default function Header() {
     navigate("/inversiones");
   };
 
+
   return (
+    <>
     <AppBar position="absolute" sx={{ backgroundColor: "#1693a5" }}>
       <Toolbar>
+        
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>
             <Box
@@ -135,20 +143,29 @@ export default function Header() {
               src={logo}
             />
           </Grid>
-          <Grid item xs={8}>
-            <Tabs
-              indicatorColor="secondary"
-              textColor="inherit"
-              value={value}
-              onChange={handleChange}
-            >
-              <Tab label="Inicio" onClick={handleClickInicio} />
-              <Tab label="Transferencias" onClick={handleClickTransferencias} />
-              <Tab label="Depositos" onClick={handleClickDepositos} />
-              <Tab label="Inversiones" onClick={handleClickInversiones} />
-            </Tabs>
+          <Grid item xs={1}>
+         <button 
+          onClick={handleToggleSidebar}
+          style={{
+          backgroundColor: "transparent",
+          border: "none",
+          cursor: "pointer",
+          }}>
+          <ArrowBackOutlinedIcon  sx={{ color:"turquoise" }}/>
+         </button>
           </Grid>
-          <Grid item xs={2} />
+         
+        <Grid item xs={8}>
+        {isSidebarOpen ? null : (
+          <Tabs indicatorColor="secondary" textColor="inherit" value={value} onChange={handleChange}>
+            <Tab label="Inicio" onClick={handleClickInicio} />
+            <Tab label="Transferencias" onClick={handleClickTransferencias} />
+            <Tab label="Depositos" onClick={handleClickDepositos} />
+            <Tab label="Inversiones" onClick={handleClickInversiones} />
+          </Tabs>
+          )}
+        </Grid>
+      
           <Grid item sx={{ placeContent: "left" }}>
             {user ? ( // Check if user is not null or undefined
               <Tooltip title="Open settings">
@@ -186,5 +203,7 @@ export default function Header() {
         </Grid>
       </Toolbar>
     </AppBar>
+
+    </>
   );
 }
