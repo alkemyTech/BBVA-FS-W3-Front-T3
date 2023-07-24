@@ -22,6 +22,7 @@ const SimuladorPlazoFijo = () => {
     interest: 0.002,
     total: 0,
     closingDate: "",
+    creationDate: new Date().toLocaleDateString(),
   });
 
   const PlazoFijoTitle = styled(Typography)(() => ({
@@ -72,6 +73,7 @@ const SimuladorPlazoFijo = () => {
             interest: data.interest,
             total: data.total,
             closingDate: data.closingDate,
+            creationDate: data.creationDate,
           });
           resolve(true); // Resolve the Promise with a boolean value (true) on success
         })
@@ -208,10 +210,15 @@ const SimuladorPlazoFijo = () => {
                       />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary={`Hasta el dia: `} />
+                      <ListItemText primary={`Desde: `} />
                       <ListItemText
-                        primary={simulation.closingDate}
+                        primary={simulation.creationDate}
                         className="name"
+                      />
+                      <ListItemText primary={`Hasta: `} />
+                      <ListItemText
+                          primary={simulation.closingDate}
+                          className="name"
                       />
                     </ListItem>
                     <ListItem>
