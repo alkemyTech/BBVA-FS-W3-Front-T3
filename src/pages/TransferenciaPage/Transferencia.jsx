@@ -5,10 +5,22 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 import styled from "styled-components";
 import "./TransferenciaPage.css";
+import GenericModal from "../../components/Modal/GenericModal";
+import {  toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import "../../components/Modal/Modal.css"
 
 const Transferencia = () => {
+  const [submitted, setSubmitted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const history = useNavigate();
+  const [userData, setUserData] = useState({});
+  const [transferData, setTransferData] = useState({});
+
   const TranferenciaTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
@@ -35,7 +47,47 @@ const Transferencia = () => {
     concepto: Yup.string().required("Campo requerido"),
   });
 
-  const onSubmit = (values) => {};
+  const onSubmit = (values) => {
+
+     //harcodeo de datos
+    setUserData({
+      name: "Carlitos Tevez", // Reemplaza por el nombre y apellido del usuario
+      cbu: "0568861256004983210586205", // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
+    });
+
+    setTransferData({
+      monto: values.monto,
+      tipo: values.tipo === "ARS" ? "$" : "u$d",
+    })
+
+    setIsModalOpen(true);
+
+  };
+
+  const handleModalAccept = () => {
+    console.log("Formulario enviado:", formik.values);
+
+    formik.resetForm();
+    setIsModalOpen(false);
+    setSubmitted(true);
+
+    history("/inicio");
+
+    toast.success("Transferencia realizada con éxito!", {
+      position: "top-center",
+      autoClose: 3000, // Duración de la notificación (en milisegundos)
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+  };
+
+  const handleModalCancel = () => {
+    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
+    setIsModalOpen(false);
+  };
 
   const formik = useFormik({
     initialValues,
@@ -162,6 +214,44 @@ const Transferencia = () => {
           </Button>
         </form>
       </Box>
+       {isModalOpen && formik.isValid && (
+             <div className="boxModal"><GenericModal
+                open={isModalOpen}
+                content={
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="h6" className="tittle">Usted realizará una transferencia a:</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <List>
+                        <ListItem>
+                          <ListItemText primary={`Nombre y Apellido del usuario:`} />
+                          <ListItemText primary={`${userData.name || ""}`}  className="name" />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText primary={`CBU de la cuenta asociada: `} />
+                          <ListItemText primary={`${userData.cbu || ""}`} className="name"/>
+                        </ListItem>
+                      </List>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="body1" className="tittle2">Monto a transferir:</Typography>
+                      <List className="monto">
+                        <ListItem>
+                          <ListItemText primary={`Tipo: ${transferData.tipo}`} />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText primary={`Monto: ${transferData.monto || ""}`} />
+                        </ListItem>
+                      </List>
+                    </Grid>
+                  </Grid>
+                }
+                onAccept={handleModalAccept}
+                onClose={handleModalCancel}
+              />
+              </div>
+            )}
     </Box>
   );
 };

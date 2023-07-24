@@ -6,12 +6,19 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import styled from "styled-components";
+import GenericModal from "../../components/Modal/GenericModal";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { FixedTermApi } from "../../api/fixedTermApi.js";
 import api from "../../api/axios.js";
 
 import "../DepositPage/DepositPage.css";
 
 const SimuladorPlazoFijo = () => {
+  const history = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const PlazoFijoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
@@ -46,6 +53,30 @@ const SimuladorPlazoFijo = () => {
         console.log(error);
         alert("La simulación falló");
       });
+  };
+
+  const handleModalAccept = () => {
+    console.log("Formulario enviado:", formik.values);
+
+    formik.resetForm();
+    setIsModalOpen(false);
+    setSubmitted(true);
+
+    history("/inicio");
+
+    toast.success("Plazo fijo realizado con éxito!", {
+      position: "top-center",
+      autoClose: 3000, // Duración de la notificación (en milisegundos)
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const handleModalCancel = () => {
+    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
+    setIsModalOpen(false);
   };
 
   const inputStyle = {
@@ -127,6 +158,46 @@ const SimuladorPlazoFijo = () => {
           )}
         </Formik>
       </Box>
+      {isModalOpen && formik.isValid && (
+        <div className="boxModal">
+          <GenericModal
+            open={isModalOpen}
+            content={
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" className="tittle">
+                    Confirmacion de plazo fijo:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={`Monto inicial de:`} />
+                      <ListItemText primary={"$100000"} className="name" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Hasta el dia: `} />
+                      <ListItemText primary={"16/09/2023"} className="name" />
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" className="tittle2">
+                    Monto a recibir al finalizar:
+                  </Typography>
+                  <List className="monto">
+                    <ListItem>
+                      <ListItemText primary={`654564164564`} />
+                    </ListItem>
+                  </List>
+                </Grid>
+              </Grid>
+            }
+            onAccept={handleModalAccept}
+            onClose={handleModalCancel}
+          />
+        </div>
+      )}
     </Box>
   );
 };
