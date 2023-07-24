@@ -20,7 +20,7 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5} sx={{paddingTop: 2}}>
+        <Grid container spacing={5} sx={{ paddingTop: 2 }}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Información
