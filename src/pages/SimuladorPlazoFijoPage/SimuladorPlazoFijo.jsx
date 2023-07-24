@@ -217,8 +217,8 @@ const SimuladorPlazoFijo = () => {
                       />
                       <ListItemText primary={`Hasta: `} />
                       <ListItemText
-                          primary={simulation.closingDate}
-                          className="name"
+                        primary={simulation.closingDate}
+                        className="name"
                       />
                     </ListItem>
                     <ListItem>
