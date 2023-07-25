@@ -8,7 +8,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FixedTermApi } from "../../api/fixedTermApi.js";
 
@@ -46,8 +45,15 @@ const SimuladorPlazoFijo = () => {
 
   const onSubmit = (values) => {
     handleSimulation(values)
-      .then((simulationSuccess) => {
-        setIsModalOpen(simulationSuccess);
+      .then((data) => {
+        setSimulation({
+          amount: data.amount,
+          interest: data.interest,
+          total: data.total,
+          closingDate: data.closingDate,
+          creationDate: data.creationDate,
+        });
+        setIsModalOpen(true);
       })
       .catch(() => {
         setIsModalOpen(false);
@@ -61,63 +67,24 @@ const SimuladorPlazoFijo = () => {
   });
 
   const handleSimulation = (values) => {
-    return new Promise((resolve, reject) => {
-      FixedTermApi.simulate({
-        amount: values.amount,
-        closingDate: values.closingDate,
-      })
-        .then((response) => response.data)
-        .then((data) => {
-          setSimulation({
-            amount: data.amount,
-            interest: data.interest,
-            total: data.total,
-            closingDate: data.closingDate,
-            creationDate: data.creationDate,
-          });
-          resolve(true); // Resolve the Promise with a boolean value (true) on success
-        })
-        .catch(() => {
-          toast.error("Hubo un error al simular el plazo fijo", {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: false,
-          });
-          reject(false); // Reject the Promise with a boolean value (false) on error
-        });
+    return FixedTermApi.simulate({
+      amount: values.amount,
+      closingDate: values.closingDate,
     });
   };
 
   const handleModalAccept = () => {
-    formik.resetForm();
-    setIsModalOpen(false);
-
     FixedTermApi.create({
       amount: simulation.amount,
       closingDate: simulation.closingDate,
     })
-      .then(() =>
-        toast.success("Plazo fijo realizado con éxito", {
-          position: "top-center",
-          autoClose: 2000, // Duración de la notificación (en milisegundos)
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: false,
-        }),
-      )
+      .then(() => {
+        navigate("/inicio");
+      })
       .catch(() => {
-        toast.error("Hubo un error al realizar el plazo fijo", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: false,
-        });
+        formik.resetForm();
+        setIsModalOpen(false);
       });
-
-    navigate("/inicio");
   };
   const handleModalCancel = () => {
     setIsModalOpen(false);
