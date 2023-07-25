@@ -16,10 +16,6 @@ const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
 const JustifyBox = styled(FlexBox)(() => ({ justifyContent: "center" }));
 
-
-const isNumber = (num) => /[0-9]*/.test(num);
-
-
 const ContentBox = styled(Box)(() => ({
   position: "relative",
 }));
@@ -83,13 +79,10 @@ const RegisterTitle = styled(Typography)(() => ({
   color: "#1693a5", // Color blanco para el título
 }));
 
-
 const ImageContainer = styled(JustifyBox)(() => ({
   minWidth: 350,
   maxWidth: "100%", // Ajusta el tamaño máximo de la imagen
 }));
-
-
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -107,10 +100,8 @@ const RegisterPage = () => {
   };
 
   const onInputChange = (e) => {
-    const { value } = e.target;
     let result = e.target.value.replace(/\D/g, "");
-    setEdad(result)
-   
+    setEdad(result);
   };
 
   const handleRegister = (values) => {
@@ -249,7 +240,7 @@ const RegisterPage = () => {
                           error={Boolean(errors.age && touched.age)}
                           sx={{ mb: 3, width: "100%" }}
                           inputProps={{
-                            type:"numeric",
+                            type: "numeric",
                             pattern: "[0-9]*",
                           }}
                         />
