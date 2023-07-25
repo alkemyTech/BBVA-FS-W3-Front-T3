@@ -16,9 +16,6 @@ import { useState } from "react";
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
-  const [message, setMessage] = useState("");
-
 
   const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
@@ -37,7 +34,7 @@ export default function PrestamoPage() {
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-      fechaFinalizacion: Yup.date().required("Campo requerido"),
+    fechaFinalizacion: Yup.date().required("Campo requerido"),
   });
 
   const onSubmit = (values) => {
@@ -56,21 +53,6 @@ export default function PrestamoPage() {
       (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
       (fechaCierre.getMonth() - fechaActual.getMonth());
 
-    for (let i = 0; i < mesesFaltantes; i++) {
-      montoConInteres *= 1.05; // Calculamos el monto con el interés compuesto para cada mes
-    }
-
-    console.log("Monto con interés:", montoConInteres.toFixed(2));
-    console.log("Meses faltantes para el cierre:", mesesFaltantes);
-
-    // Actualizamos el estado con el mensaje a mostrar
-    setMessage(
-      `Monto con interés: $${montoConInteres.toFixed(
-        2,
-      )}, Meses faltantes para el cierre: ${mesesFaltantes}`,
-    );
-
-    setSubmitted(true);
 
     setIsModalOpen(true);
   };
@@ -95,7 +77,6 @@ export default function PrestamoPage() {
 
     formik.resetForm();
     setIsModalOpen(false);
-    setSubmitted(true);
 
     history("/inicio");
 
@@ -195,7 +176,6 @@ export default function PrestamoPage() {
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
-                     
                     </ListItem>
                   </List>
                 </Grid>
