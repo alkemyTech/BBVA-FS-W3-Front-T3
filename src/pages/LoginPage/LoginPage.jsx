@@ -218,7 +218,7 @@ const LoginPage = () => {
                         >
                           Login
                         </Button>
-
+                           
                         <Box sx={{ mx: "15%" }}>
                           Si no estás registrado, puedes{" "}
                           <RegisterLink
