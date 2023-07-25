@@ -5,10 +5,21 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
+import GenericModal from "../../components/Modal/GenericModal";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { toast } from "react-toastify";
 
 import "./Prestamo.css";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function PrestamoPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const history = useNavigate();
+  const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
+
+
   const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
@@ -60,6 +71,8 @@ export default function PrestamoPage() {
     );
 
     setSubmitted(true);
+
+    setIsModalOpen(true);
   };
 
   const formik = useFormik({
@@ -76,6 +89,30 @@ export default function PrestamoPage() {
 
   const labelStyle = {
     fontWeight: "bold",
+  };
+  const handleModalAccept = () => {
+    console.log("Formulario enviado:", formik.values);
+
+    formik.resetForm();
+    setIsModalOpen(false);
+    setSubmitted(true);
+
+    history("/inicio");
+
+    toast.success("Deposito realizado con éxito!", {
+      position: "top-center",
+      autoClose: 3000, // Duración de la notificación (en milisegundos)
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const handleModalCancel = () => {
+    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
+    setIsModalOpen(false);
   };
 
   return (
@@ -143,6 +180,32 @@ export default function PrestamoPage() {
           </Button>
         </form>
       </Box>
+      {isModalOpen && formik.isValid && (
+        <div className="boxModal">
+          <GenericModal
+            open={isModalOpen}
+            content={
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" className="tittle">
+                    Realizaras un prestamo personal:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={`Monto a acreditar:`} />
+                     
+                    </ListItem>
+                  </List>
+                </Grid>
+              </Grid>
+            }
+            onAccept={handleModalAccept}
+            onClose={handleModalCancel}
+          />
+        </div>
+      )}
     </Box>
   );
 }
