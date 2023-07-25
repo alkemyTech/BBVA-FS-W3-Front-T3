@@ -116,6 +116,7 @@ const LoginPage = () => {
                   ? "/src/assets/gato-password.png"
                   : "/src/assets/logo-no-background.svg"
               }
+              width="60%"
               alt=""
             />
           </Box>
