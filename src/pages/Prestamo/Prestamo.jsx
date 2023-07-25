@@ -1,5 +1,4 @@
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -10,17 +9,18 @@ import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { toast } from "react-toastify";
 
-import "./DepositPage.css";
-import { useState } from "react";
+import "./Prestamo.css";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function DepositPage() {
-  const [submitted, setSubmitted] = useState(false);
+export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
-  const [transferData, setTransferData] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const DepositTitle = styled(Typography)(() => ({
+
+  const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
     fontFamily: "Helvetica",
@@ -30,23 +30,48 @@ export default function DepositPage() {
 
   const initialValues = {
     monto: "",
-    tipo: "",
-    concepto: "",
+    fechaFinalizacion: "",
   };
 
   const validationSchema = Yup.object().shape({
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-    tipo: Yup.string().required("Campo requerido"),
-    concepto: Yup.string().required("Campo requerido"),
+      fechaFinalizacion: Yup.date().required("Campo requerido"),
   });
 
   const onSubmit = (values) => {
-    setTransferData({
-      monto: values.monto,
-      tipo: values.tipo === "ARS" ? "$" : "u$d",
-    });
+    const { monto, fechaFinalizacion } = values;
+    const fechaCierre = new Date(fechaFinalizacion);
+    const fechaActual = new Date();
+
+    if (fechaActual > fechaCierre) {
+      alert("La fecha de finalización debe ser mayor a la fecha actual.");
+      return;
+    }
+
+    let montoConInteres = parseFloat(monto); // Convertimos el monto a número
+
+    const mesesFaltantes =
+      (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
+      (fechaCierre.getMonth() - fechaActual.getMonth());
+
+    for (let i = 0; i < mesesFaltantes; i++) {
+      montoConInteres *= 1.05; // Calculamos el monto con el interés compuesto para cada mes
+    }
+
+    console.log("Monto con interés:", montoConInteres.toFixed(2));
+    console.log("Meses faltantes para el cierre:", mesesFaltantes);
+
+    // Actualizamos el estado con el mensaje a mostrar
+    setMessage(
+      `Monto con interés: $${montoConInteres.toFixed(
+        2,
+      )}, Meses faltantes para el cierre: ${mesesFaltantes}`,
+    );
+
+    setSubmitted(true);
+
     setIsModalOpen(true);
   };
 
@@ -91,9 +116,9 @@ export default function DepositPage() {
   };
 
   return (
-    <Box className="transactionBox">
-      <Box className="formStyle">
-        <DepositTitle>INGRESAR DINERO</DepositTitle>
+    <Box className="prestamoBox">
+      <Box className="prestamoFormStyle">
+        <PrestamoTitle>PIDE TU PRESTAMO</PrestamoTitle>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"
@@ -119,59 +144,37 @@ export default function DepositPage() {
             }}
             sx={{ marginBottom: "20px" }}
           />
-          <TextField
-            select
-            label="Tipo"
-            name="tipo"
-            variant="filled"
-            value={formik.values.tipo}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.tipo && formik.errors.tipo)}
-            helperText={
-              formik.touched.tipo && formik.errors.tipo
-                ? formik.errors.tipo
-                : ""
-            }
-            fullWidth
-            SelectProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          >
-            <MenuItem value="">
-              <em>Seleccionar</em>
-            </MenuItem>
-            <MenuItem value="ARS">ARS</MenuItem>
-            <MenuItem value="USD">USD</MenuItem>
-          </TextField>
-          <TextField
-            label="Concepto"
-            name="concepto"
-            variant="filled"
-            value={formik.values.concepto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.concepto && formik.errors.concepto)}
-            helperText={
-              formik.touched.concepto && formik.errors.concepto
-                ? formik.errors.concepto
-                : ""
-            }
-            type="text"
-            inputProps={{ inputMode: "text" }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
+          <div style={{ marginBottom: "20px" }}>
+            <TextField
+              variant="filled"
+              label="Fecha de Finalización"
+              name="fechaFinalizacion"
+              value={formik.values.fechaFinalizacion}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                !!(
+                  formik.touched.fechaFinalizacion &&
+                  formik.errors.fechaFinalizacion
+                )
+              }
+              helperText={
+                formik.touched.fechaFinalizacion &&
+                formik.errors.fechaFinalizacion
+                  ? formik.errors.fechaFinalizacion
+                  : ""
+              }
+              type="date"
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ paddingTop: 1.3 }}
+            />
+          </div>
           <Button variant="contained" type="submit" fullWidth>
             Enviar
           </Button>
@@ -185,16 +188,14 @@ export default function DepositPage() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h6" className="tittle">
-                    Realizaras un deposito a tu propia cuenta:
+                    Realizaras un prestamo personal:
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
-                      <ListItemText
-                        primary={`Monto: ${transferData.monto || ""}`}
-                      />
+                     
                     </ListItem>
                   </List>
                 </Grid>
