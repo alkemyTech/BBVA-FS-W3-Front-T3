@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import DepositPage from "./pages/DepositPage/DepositPage.jsx";
 import InvestmentPage from "./pages/InvestmentPage/InvestmentPage.jsx";
 import Transferencias from "./pages/TransferenciaPage/Transferencia.jsx";
+import Prestamo from "./pages/Prestamo/Prestamo.jsx";
 import Page from "./pages/index.jsx";
 
 function App() {
@@ -17,7 +18,10 @@ function App() {
         <Route path="/transacciones" />
         <Route path="/inversiones" element={<InvestmentPage />} />
         <Route path="/inversiones">
-          <Route path="simularplazofijo" element={<SimuladorPlazoFijo />}>
+          <Route path="plazofijo" element={<SimuladorPlazoFijo />}>
+            {" "}
+          </Route>
+          <Route path="prestamo" element={<Prestamo />}>
             {" "}
           </Route>
         </Route>
