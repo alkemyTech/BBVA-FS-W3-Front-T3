@@ -15,7 +15,7 @@ import { useState } from "react";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
@@ -78,7 +78,7 @@ export default function PrestamoPage() {
     formik.resetForm();
     setIsModalOpen(false);
 
-    history("/inicio");
+    navigate("/inicio");
 
     toast.success("Deposito realizado con éxito!", {
       position: "top-center",
