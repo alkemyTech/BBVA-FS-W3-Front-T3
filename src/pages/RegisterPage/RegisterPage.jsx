@@ -16,6 +16,10 @@ const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
 const JustifyBox = styled(FlexBox)(() => ({ justifyContent: "center" }));
 
+
+const isNumber = (num) => /[0-9]*/.test(num);
+
+
 const ContentBox = styled(Box)(() => ({
   position: "relative",
 }));
@@ -47,20 +51,20 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("Debes ingresar tu Nombre!"),
-  lastName: Yup.string().required("Debes ingresar tu apellido!"),
+  firstName: Yup.string().required("Debes ingresar tu nombre."),
+  lastName: Yup.string().required("Debes ingresar tu apellido."),
   age: Yup.number()
-    .required("La edad es necesaria!")
-    .min(18, "Debes ser mayor de 18 años!"),
+    .required("La edad es necesaria.")
+    .min(18, "Debes ser mayor de 18 años."),
   email: Yup.string()
-    .email("La dirección de Email no es valida")
-    .required("El Email es necesario!"),
+    .email("La dirección de email no es valida.")
+    .required("El email es necesario."),
   password: Yup.string()
-    .min(3, "La contraseña debe ser mayor a 3 digitos")
-    .required("La contraseña es obligatoria!"),
+    .min(3, "La contraseña debe ser mayor a 3 digitos.")
+    .required("La contraseña es obligatoria."),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
-    .required("Se necesita confirmación!"),
+    .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden.")
+    .required("Se necesita confirmación."),
 });
 
 const LogInLink = styled("a")(() => ({
@@ -68,7 +72,7 @@ const LogInLink = styled("a")(() => ({
   fontWeight: "bold", // Color blanco para el enlace
   textDecoration: "underline", // Subrayar el enlace
   "&:hover": {
-    color: "#e3f2fd", // Cambiar el color al pasar el ratón sobre el enlace
+    color: "#5c5c5c", // Cambiar el color al pasar el ratón sobre el enlace
   },
 }));
 
@@ -79,14 +83,18 @@ const RegisterTitle = styled(Typography)(() => ({
   color: "#1693a5", // Color blanco para el título
 }));
 
+
 const ImageContainer = styled(JustifyBox)(() => ({
   minWidth: 350,
   maxWidth: "100%", // Ajusta el tamaño máximo de la imagen
 }));
 
+
+
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [edad, setEdad] = useState("");
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
 
@@ -96,6 +104,13 @@ const RegisterPage = () => {
 
   const handleCloseTermsModal = () => {
     setOpenTermsModal(false);
+  };
+
+  const onInputChange = (e) => {
+    const { value } = e.target;
+    let result = e.target.value.replace(/\D/g, "");
+    setEdad(result)
+   
   };
 
   const handleRegister = (values) => {
@@ -175,7 +190,7 @@ const RegisterPage = () => {
               </Typography>
             </Grid>
             <Grid item sm={6} xs={12}>
-              <RegisterTitle>Sign Up</RegisterTitle>
+              <RegisterTitle>Registrarse</RegisterTitle>
               <Card className="card">
                 <ContentBox>
                   <Formik
@@ -224,15 +239,19 @@ const RegisterPage = () => {
                           fullWidth
                           size="small"
                           name="age"
-                          type="number"
+                          value={edad}
                           label="Edad"
                           variant="outlined"
                           onBlur={handleBlur}
-                          value={values.age}
-                          onChange={handleChange}
+                          //value={values.age}
+                          onChange={onInputChange}
                           helperText={touched.age && errors.age}
                           error={Boolean(errors.age && touched.age)}
                           sx={{ mb: 3, width: "100%" }}
+                          inputProps={{
+                            type:"numeric",
+                            pattern: "[0-9]*",
+                          }}
                         />
 
                         <TextField
