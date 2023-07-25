@@ -62,14 +62,13 @@ const SimuladorPlazoFijo = () => {
     // Actualizamos el estado con el mensaje a mostrar
     setMessage(
       `Monto con interés: $${montoConInteres.toFixed(
-        2
-      )}, Meses faltantes para el cierre: ${mesesFaltantes}`
+        2,
+      )}, Meses faltantes para el cierre: ${mesesFaltantes}`,
     );
 
     setSubmitted(true);
 
     setIsModalOpen(true);
-
   };
   const handleModalAccept = () => {
     console.log("Formulario enviado:", formik.values);

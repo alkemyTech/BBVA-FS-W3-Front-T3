@@ -5,7 +5,7 @@ import {
   TextField,
   Button,
   IconButton,
-  InputAdornment
+  InputAdornment,
 } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
@@ -111,8 +111,13 @@ const LoginPage = () => {
           <Box className="flexBox justifyBox">
             <img
               className="img_auth_logo"
-              src={showPassword ? "/src/assets/gato-password.png":"/src/assets/logo-no-background.svg"}
+              src={
+                showPassword
+                  ? "/src/assets/gato-password.png"
+                  : "/src/assets/logo-no-background.svg"
+              }
               alt=""
+              width="60%"
             />
           </Box>
 
@@ -163,7 +168,7 @@ const LoginPage = () => {
                           error={Boolean(errors.email && touched.email)}
                           sx={{ mb: 3, width: "100%" }}
                         />
-                        
+
                         <TextField
                           fullWidth
                           size="small"
@@ -179,18 +184,21 @@ const LoginPage = () => {
                           error={Boolean(errors.password && touched.password)}
                           sx={{ mb: 3, width: "100%" }}
                           InputProps={{
-                            startAdornment: <InputAdornment position="end"><IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                          >
-                            {showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                          </InputAdornment>,
+                            startAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
                           }}
                         />
 

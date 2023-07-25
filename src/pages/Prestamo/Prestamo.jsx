@@ -19,7 +19,6 @@ export default function PrestamoPage() {
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
 
-
   const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
@@ -37,7 +36,7 @@ export default function PrestamoPage() {
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-      fechaFinalizacion: Yup.date().required("Campo requerido"),
+    fechaFinalizacion: Yup.date().required("Campo requerido"),
   });
 
   const onSubmit = (values) => {
@@ -195,7 +194,6 @@ export default function PrestamoPage() {
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
-                     
                     </ListItem>
                   </List>
                 </Grid>
