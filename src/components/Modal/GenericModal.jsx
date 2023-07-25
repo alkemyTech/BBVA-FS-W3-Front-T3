@@ -9,8 +9,8 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   borderRadius: "8px",
-  width:"30%",
-  margin:"auto",
+  width: "30%",
+  margin: "auto",
 }));
 
 const ModalContent = styled(Box)(({ theme }) => ({
