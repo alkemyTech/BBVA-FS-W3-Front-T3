@@ -23,7 +23,6 @@ function App() {
             {" "}
           </Route>
           <Route path="prestamo" element={<Prestamo />}>
-          <Route path="plazofijo" element={<SimuladorPlazoFijo />}>
             {" "}
           </Route>
         </Route>
