@@ -90,6 +90,7 @@ const Transferencia = () => {
       amount: values.monto,
       destinationAccountId: cbuInfo.id,
       currency: values.moneda,
+      description: values.concepto,
     });
 
     setIsModalOpen(true);
@@ -98,7 +99,8 @@ const Transferencia = () => {
   const handleModalAccept = () => {
     TransactionsApi.send(transferData).then(() => {
       formik.resetForm();
-      setIsModalOpen(false)
+      setIsModalOpen(false);
+      resetCbuInfo();
     });
   };
 
