@@ -91,7 +91,7 @@ export default function Slider() {
     return [0, 1, 2].map((value) =>
       React.cloneElement(element, {
         key: value,
-      })
+      }),
     );
   }
   return (
@@ -150,7 +150,8 @@ export default function Slider() {
                     : `cbu: ${accountUSD.cbu}`}
                   <br />
                   <IconButton onClick={handleForward}>
-                    <br /><br />
+                    <br />
+                    <br />
                     <ArrowBackIcon /> Moneda <ArrowForward />
                   </IconButton>
                 </Typography>
@@ -235,7 +236,7 @@ export default function Slider() {
                   {generate(
                     <ListItem>
                       <ListItemText primary="Single-line item" />
-                    </ListItem>
+                    </ListItem>,
                   )}
                 </List>
               </CardContent>
