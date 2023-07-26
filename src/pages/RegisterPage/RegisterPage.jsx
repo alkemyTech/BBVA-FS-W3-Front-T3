@@ -4,13 +4,10 @@ import { Box, styled, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addUser } from "../../redux/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
-import api from "../../api/axios.js";
+import AuthApi from "../../api/authApi.js";
 import "../RegisterPage/RegisterPage.css";
-import { toast } from "react-toastify";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -87,7 +84,6 @@ const ImageContainer = styled(JustifyBox)(() => ({
 }));
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
@@ -101,49 +97,14 @@ const RegisterPage = () => {
   };
 
   const handleRegister = (values) => {
-    api
-      .post("/auth/register", {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password,
-      })
-      .then((res) => res.data)
-      .then((data) =>
-        dispatch(
-          addUser({
-            fistName: data.user.firstName,
-            lastName: data.user.lastName,
-            password: data.user.password,
-          }),
-        ),
-      )
+    AuthApi.register(values)
       .then(() => {
-        toast("Registro exitoso", { type: "success", autoClose: 2000 });
         navigate("/");
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data.errors.includes("DUPLICATED_VALUE")
-        ) {
-          toast("Ya existe cuenta con ese email. Logeate", {
-            type: "warning",
-            autoClose: 2000,
-          });
+      .catch((registered) => {
+        if (registered) {
           navigate("/");
-          return;
-        } else if (
-          error.response &&
-          error.response.data.errors.includes("INVALID_VALUE")
-        ) {
-          toast(
-            "Campo " + error.response.data.data + "invalido",
-            error.response.data.err,
-          );
         }
-        console.log(error);
-        toast(" Contraseña invalida", { type: "error", autoClose: 2000 });
       });
   };
 
