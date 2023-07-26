@@ -5,10 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
-import { toast } from "react-toastify";
 
 import "./DepositPage.css";
 import { useState } from "react";
@@ -16,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { DepositApi } from "../../api/depositApi";
 
 export default function DepositPage() {
-  const [submitted, setSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
   const [transferData, setTransferData] = useState({
@@ -24,14 +21,6 @@ export default function DepositPage() {
     currency: "ARS",
     description: "",
   });
-
-  const DepositTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    fontFamily: "Helvetica",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
 
   const initialValues = {
     monto: "",
@@ -83,14 +72,12 @@ export default function DepositPage() {
       .then(() => {
         formik.resetForm();
         setIsModalOpen(false);
-        setSubmitted(true);
         history("/inicio");
       })
 
       .catch(() => {
         formik.resetForm();
         setIsModalOpen(false);
-        setSubmitted(true);
       });
   };
 
@@ -102,7 +89,17 @@ export default function DepositPage() {
   return (
     <Box className="transactionBox">
       <Box className="formStyle">
-        <DepositTitle>INGRESAR DINERO</DepositTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          INGRESAR DINERO
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"
