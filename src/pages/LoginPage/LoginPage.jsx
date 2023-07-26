@@ -11,12 +11,9 @@ import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { addUser } from "../../redux/userSlice.js";
-import api from "../../api/axios.js";
+import AuthApi from "../../api/authApi.js";
 import * as Yup from "yup";
-import "./LoginPage.css";
-
 import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -59,11 +56,11 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (
-        JSON.parse(localStorage.getItem("remember")) &&
-        JSON.parse(localStorage.getItem("remember")).remember
-    ) {
-      initialValues.email = JSON.parse(localStorage.getItem("remember")).email;
+    if (JSON.parse(localStorage.getItem("remember"))) {
+      initialValues.email = JSON.parse(localStorage.getItem("remember"))
+        .remember
+        ? JSON.parse(localStorage.getItem("remember")).email
+        : "";
     }
   }, []);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -74,12 +71,7 @@ const LoginPage = () => {
     navigate("/register");
   };
   const handleLogin = (values) => {
-    api
-      .post("/auth/login", {
-        email: values.email,
-        password: values.password,
-      })
-      .then((res) => res.data)
+    AuthApi.login(values)
       .then((data) => {
         dispatch(
           addUser({
@@ -99,24 +91,13 @@ const LoginPage = () => {
             remember: !!values.remember,
           }),
         );
-      })
-      .then(() => {
-        toast("Logged In", { type: "success", autoClose: 2000 });
+        console.log("remember", !!values.remember);
         navigate("/inicio");
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data.errors.includes("USER_NOT_FOUND")
-        ) {
-          toast("No tienes cuenta. Deberías registrarte primero", {
-            type: "error",
-            autoClose: 2000,
-          });
+      .catch((registered) => {
+        if (!registered) {
           handleClickRegister(values.email);
-          return;
         }
-        toast("Contraseña inválida", { type: "error", autoClose: 2000 });
       });
   };
   return (
