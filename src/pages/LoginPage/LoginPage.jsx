@@ -5,6 +5,7 @@ import {
   TextField,
   Button,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
@@ -23,7 +24,7 @@ import "./LoginPage.css";
 
 const initialValues = {
   email: "",
-  password: "vikatcode",
+  password: "",
   remember: true,
 };
 
@@ -41,7 +42,7 @@ const RegisterLink = styled("a")(() => ({
   fontWeight: "bold", // Color blanco para el enlace
   textDecoration: "underline", // Subrayar el enlace
   "&:hover": {
-    color: "#e3f2fd", // Cambiar el color al pasar el ratón sobre el enlace
+    color: "#5c5c5c", // Cambiar el color al pasar el ratón sobre el enlace
   },
 }));
 
@@ -113,9 +114,13 @@ const LoginPage = () => {
           <Box className="flexBox justifyBox">
             <img
               className="img_auth_logo"
-              src="/src/assets/logo-no-background.svg"
-              width="60%"
+              src={
+                showPassword
+                  ? "/src/assets/gato-password.png"
+                  : "/src/assets/logo-no-background.svg"
+              }
               alt=""
+              width="60%"
             />
           </Box>
 
@@ -125,7 +130,7 @@ const LoginPage = () => {
                 <Box p={4}>
                   <img
                     className="imgForm"
-                    src="/src/assets/login_image.jpg"
+                    src="/src/assets/login_image.png"
                     width="100%"
                     alt=""
                   />
@@ -134,7 +139,7 @@ const LoginPage = () => {
             </Grid>
 
             <Grid item sm={6} xs={12}>
-              <LoginTitle>Sign In</LoginTitle>
+              <LoginTitle>Iniciar Sesión</LoginTitle>
               <Card className="card">
                 <Box className="flexBox">
                   <Formik
@@ -172,30 +177,36 @@ const LoginPage = () => {
                           size="small"
                           name="password"
                           type={showPassword ? "text" : "password"}
-                          label="Password"
+                          label="Contraseña"
                           variant="outlined"
                           onBlur={handleBlur}
                           value={values.password}
+                          placeholder="Gato123"
                           onChange={handleChange}
                           helperText={touched.password && errors.password}
                           error={Boolean(errors.password && touched.password)}
                           sx={{ mb: 3, width: "100%" }}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
                         />
 
                         <Box justifyContent="space-between">
                           <Box>
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
                             <Checkbox
                               size="small"
                               name="remember"

@@ -4,23 +4,26 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-const SimuladorPlazoFijo = () => {
+import "./Prestamo.css";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+export default function PrestamoPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const history = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
-  const history = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const PlazoFijoTitle = styled(Typography)(() => ({
+  const PrestamoTitle = styled(Typography)(() => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
-    color: "white",
+    fontFamily: "Helvetica",
+    color: "#1693a5",
     textAlign: "center",
   }));
 
@@ -70,6 +73,22 @@ const SimuladorPlazoFijo = () => {
 
     setIsModalOpen(true);
   };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
+  const inputStyle = {
+    backgroundColor: "white",
+    color: "black",
+    width: "100%",
+  };
+
+  const labelStyle = {
+    fontWeight: "bold",
+  };
   const handleModalAccept = () => {
     console.log("Formulario enviado:", formik.values);
 
@@ -79,7 +98,7 @@ const SimuladorPlazoFijo = () => {
 
     history("/inicio");
 
-    toast.success("Plazo fijo realizado con éxito!", {
+    toast.success("Deposito realizado con éxito!", {
       position: "top-center",
       autoClose: 3000, // Duración de la notificación (en milisegundos)
       hideProgressBar: false,
@@ -89,81 +108,41 @@ const SimuladorPlazoFijo = () => {
       progress: undefined,
     });
   };
+
   const handleModalCancel = () => {
     // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
   };
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
-  });
-
-  const formStyle = {
-    backgroundColor: "#45b5c4",
-    padding: "20px",
-    borderRadius: "8px",
-    maxWidth: "400px",
-    margin: "0 auto",
-  };
-
-  const messageStyle = {
-    backgroundColor: "#7ececa",
-    color: "black",
-    padding: "10px",
-    borderRadius: "4px",
-    marginTop: "20px",
-    textAlign: "center",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#c7ede8",
-    color: "black",
-    marginTop: "20px",
-  };
-
-  const inputStyle = {
-    backgroundColor: "#c7ede8",
-    color: "black",
-  };
-
-  const labelStyle = {
-    fontWeight: "bold",
-  };
-
   return (
-    <CenteredContainer>
-      <Box style={formStyle}>
-        <PlazoFijoTitle variant="h4" sx={{ fontFamily: "Helvetica" }}>
-          Simulador Plazo Fijo
-        </PlazoFijoTitle>
+    <Box className="prestamoBox">
+      <Box className="prestamoFormStyle">
+        <PrestamoTitle>PIDE TU PRESTAMO</PrestamoTitle>
         <form onSubmit={formik.handleSubmit}>
-          <div style={{ marginBottom: "20px" }}>
-            <TextField
-              variant="filled"
-              label="Monto"
-              name="monto"
-              value={formik.values.monto}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={!!(formik.touched.monto && formik.errors.monto)}
-              helperText={
-                formik.touched.monto && formik.errors.monto
-                  ? formik.errors.monto
-                  : ""
-              }
-              type="text"
-              inputProps={{ inputMode: "numeric" }}
-              InputProps={{
-                style: inputStyle,
-              }}
-              InputLabelProps={{
-                style: labelStyle,
-              }}
-              fullWidth
-            />
-          </div>
+          <TextField
+            variant="filled"
+            label="Monto"
+            name="monto"
+            value={formik.values.monto}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={!!(formik.touched.monto && formik.errors.monto)}
+            helperText={
+              formik.touched.monto && formik.errors.monto
+                ? formik.errors.monto
+                : ""
+            }
+            fullWidth
+            InputProps={{
+              style: inputStyle,
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            InputLabelProps={{
+              style: labelStyle,
+            }}
+            sx={{ marginBottom: "20px" }}
+          />
           <div style={{ marginBottom: "20px" }}>
             <TextField
               variant="filled"
@@ -195,21 +174,10 @@ const SimuladorPlazoFijo = () => {
               sx={{ paddingTop: 1.3 }}
             />
           </div>
-          <Button
-            variant="contained"
-            style={buttonStyle}
-            type="submit"
-            fullWidth
-          >
+          <Button variant="contained" type="submit" fullWidth>
             Enviar
           </Button>
         </form>
-        {submitted &&
-          message && ( // Mostramos el mensaje si hay uno y si el formulario ha sido enviado
-            <Typography variant="body1" style={messageStyle}>
-              {message}
-            </Typography>
-          )}
       </Box>
       {isModalOpen && formik.isValid && (
         <div className="boxModal">
@@ -219,28 +187,13 @@ const SimuladorPlazoFijo = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h6" className="tittle">
-                    Confirmacion de plazo fijo:
+                    Realizaras un prestamo personal:
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <List>
                     <ListItem>
-                      <ListItemText primary={`Monto inicial de:`} />
-                      <ListItemText primary={"$100000"} className="name" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={`Hasta el dia: `} />
-                      <ListItemText primary={"16/09/2023"} className="name" />
-                    </ListItem>
-                  </List>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body1" className="tittle2">
-                    Monto a recibir al finalizar:
-                  </Typography>
-                  <List className="monto">
-                    <ListItem>
-                      <ListItemText primary={`654564164564`} />
+                      <ListItemText primary={`Monto a acreditar:`} />
                     </ListItem>
                   </List>
                 </Grid>
@@ -251,15 +204,6 @@ const SimuladorPlazoFijo = () => {
           />
         </div>
       )}
-    </CenteredContainer>
+    </Box>
   );
-};
-const CenteredContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
-  padding: 5rem;
-`;
-
-export default SimuladorPlazoFijo;
+}

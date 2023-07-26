@@ -1,8 +1,6 @@
 import Slider from "../../components/Home/HomeSlider/Slider.jsx";
 const HomePage = () => {
-    return(
-        <Slider/>
-    )
-}
+  return <Slider />;
+};
 
-export default HomePage
+export default HomePage;
