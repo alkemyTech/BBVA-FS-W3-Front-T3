@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import styled from "styled-components";
 import "./TransferenciaPage.css";
 import GenericModal from "../../components/Modal/GenericModal";
 import { toast } from "react-toastify";
@@ -22,14 +21,6 @@ const Transferencia = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [transferData, setTransferData] = useState({});
-
-  const TranferenciaTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    fontFamily: "Helvetica",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
 
   const initialValues = {
     cbu: "",
@@ -120,7 +111,17 @@ const Transferencia = () => {
   return (
     <Box className="tansferenciaBox">
       <Box className="tansferenciaformStyle">
-        <TranferenciaTitle>TRANSFERENCIA</TranferenciaTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          TRANSFERENCIA
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             label="CBU"
