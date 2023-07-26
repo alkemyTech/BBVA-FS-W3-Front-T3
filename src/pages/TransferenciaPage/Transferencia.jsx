@@ -17,10 +17,10 @@ import AccountsApi from "../../api/accountsApi.js";
 
 const Transferencia = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [destinationInfo, setDestinationInfo] = useState({ firstName: '', lastName: '', email: ''});
-  const navigate = useNavigate();
+  const [cbuInfo, setCbuInfo] = useState({ firstName: '', lastName: '', email: ''});
   const [userData, setUserData] = useState({});
   const [transferData, setTransferData] = useState({});
+  const navigate = useNavigate();
 
   const initialValues = {
     cbu: "",
@@ -42,27 +42,24 @@ const Transferencia = () => {
 
   const validateCbu = (value) => {
     if (value.length === 22){
-      console.log("llamando api", value)
       AccountsApi.getAccountByCbu(value)
           .then((data) => {
-            console.log("data", data)
-            setDestinationInfo(data.user);
+            setCbuInfo(data.user);
           })
-      // loader
+    } else {
+      setCbuInfo({ firstName: '', lastName: '', email: ''})
     }
-    setDestinationInfo({ firstName: '', lastName: '', email: ''})
   }
 
   const onSubmit = (values) => {
-    //harcodeo de datos
     setUserData({
-      name: "Carlitos Tevez", // Reemplaza por el nombre y apellido del usuario
-      cbu: "0568861256004983210586205", // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
+      name: cbuInfo.firstName + " " + cbuInfo.lastName ,
+      cbu: values.cbu, // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
     });
 
     setTransferData({
       monto: values.monto,
-      tipo: values.tipo === "ARS" ? "$" : "u$d",
+      tipo: values.tipo === "ARS" ? "$" : "U$D",
     });
 
     setIsModalOpen(true);
@@ -135,7 +132,7 @@ const Transferencia = () => {
             onBlur={formik.handleBlur}
             error={!!(formik.touched.cbu && formik.errors.cbu)}
             helperText={
-              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : `${destinationInfo.firstName} ${destinationInfo.lastName}`
+              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : `${cbuInfo.firstName} ${cbuInfo.lastName}`
             }
             type="text"
             inputProps={{ inputMode: "text" }}
@@ -267,12 +264,9 @@ const Transferencia = () => {
                   </Typography>
                   <List className="monto">
                     <ListItem>
-                      <ListItemText primary={`Tipo: ${transferData.tipo}`} />
-                    </ListItem>
-                    <ListItem>
                       <ListItemText
-                        primary={`Monto: ${transferData.monto || ""}`}
-                      />
+                          primary={`${transferData.tipo} ${transferData.monto}` }
+                          className="name"/>
                     </ListItem>
                   </List>
                 </Grid>
