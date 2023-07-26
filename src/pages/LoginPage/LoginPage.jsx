@@ -72,14 +72,17 @@ const LoginPage = () => {
       })
       .then((res) => res.data)
       .then((data) => {
+        console.log(data);
         dispatch(
           addUser({
+            id: data.user.id,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
             email: data.user.email,
             token: data.token,
           }),
         );
+
 
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);

@@ -17,6 +17,7 @@ const Page = (props) => {
     if (user && token) {
       dispatch(
         addUser({
+          id: user.id,
           token: token,
           firstName: user.firstName,
           lastName: user.lastName,

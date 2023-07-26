@@ -13,19 +13,19 @@ export const accountArsSlice = createSlice({
     name: "accountARS",
     initialState,
     reducers: {
-        addAccount: (state, action) => {
+        addAccountArs: (state, action) => {
             const { id, balance, cbu, transactionLimit} = action.payload;
             state.id = id;
             state.balance = balance;
             state.cbu = cbu;
             state.transactionLimit = transactionLimit;
         },
-        changeBalance: (state, action) => {
+        changeBalanceArs: (state, action) => {
             state.balance = action.payload;
         }
     },
 });
 
-export const { addAccount, changeBalance } = accountArsSlice.actions;
+export const { addAccountArs, changeBalanceArs } = accountArsSlice.actions;
 
 export default accountArsSlice.reducer;
