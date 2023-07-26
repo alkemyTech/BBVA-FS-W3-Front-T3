@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import DepositPage from "./pages/DepositPage/DepositPage.jsx";
 import InvestmentPage from "./pages/InvestmentPage/InvestmentPage.jsx";
 import Transferencias from "./pages/TransferenciaPage/Transferencia.jsx";
+import PaymentPage from "./pages/PaymentPage/PaymentPage.jsx";
 import Home from "./pages/HomePage/HomePage.jsx";
 import Prestamo from "./pages/Prestamo/Prestamo.jsx";
 import PrivateWrapper from "./pages/PrivateWrappers/PrivateWrapper.jsx";
@@ -34,6 +35,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/depositos" element={<DepositPage />} />
+          <Route path="/pagos" element={<PaymentPage />} />
           <Route path="/transferencias" element={<Transferencias />} />
           <Route path="/account" />
         </Route>
