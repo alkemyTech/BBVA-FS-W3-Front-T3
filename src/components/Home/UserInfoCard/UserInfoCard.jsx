@@ -12,7 +12,7 @@ import {
   Badge,
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
-
+import { useNavigate } from "react-router-dom";
 
 export default function UserInfoCard({
  
@@ -22,6 +22,7 @@ export default function UserInfoCard({
   user,
   handleForward,
 }) {
+    const navigate = useNavigate();
     const StyledBadge = styled(Badge)(({ theme }) => ({
         "& .MuiBadge-badge": {
           backgroundColor: "#44b700",
@@ -101,10 +102,10 @@ export default function UserInfoCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => {}}>
+        <Button size="small" onClick={() => {navigate("/depositos")}}>
           Ingresar Dinero
         </Button>
-        <Button size="small" onClick={() => {}}>
+        <Button size="small" onClick={() => {navigate("/transferencias")}}>
           Transferir Dinero
         </Button>
       </CardActions>
