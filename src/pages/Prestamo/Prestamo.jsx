@@ -53,7 +53,6 @@ export default function PrestamoPage() {
       (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
       (fechaCierre.getMonth() - fechaActual.getMonth());
 
-
     setIsModalOpen(true);
   };
 
