@@ -28,7 +28,7 @@ import {
 } from "../../../redux/accountArsSlice";
 import { addAccountUsd } from "../../../redux/accountUsdSlice";
 import { ArrowForward } from "@mui/icons-material";
-import { Navigate, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 export default function Slider() {
   const [currency, setCurrency] = useState("ARS");
@@ -88,7 +88,7 @@ export default function Slider() {
     },
   }));
   function generate(element) {
-    return [0, 1, 2].map((value) =>
+    return [0, 1, 2, 3, 4, 5, 6].map((value) =>
       React.cloneElement(element, {
         key: value,
       }),
@@ -139,14 +139,14 @@ export default function Slider() {
                 <Typography variant="body2">
                   Dinero disponible en cuenta{" "}
                   <b>{currency === "ARS" ? "PESOS" : "DOLARES"}</b>: <br />
-                  <Typography variant="h3" marginTop={-5}>
+                  <Typography variant="h4" marginTop={-5}>
                     <br />
                     {currency === "ARS"
                       ? `$ ${accountARS.balance}`
                       : `u$s ${accountUSD.balance}`}
                   </Typography>
                   {currency === "ARS"
-                    ? `cbu: ${accountARS.cbu}`
+                    ?  `cbu: ${accountARS.cbu}`
                     : `cbu: ${accountUSD.cbu}`}
                   <br />
                   <IconButton onClick={handleForward}>
@@ -177,9 +177,19 @@ export default function Slider() {
             </Card>
             <Card sx={{ maxWidth: 345, marginTop: "10px" }}>
               <CardContent>
+              <Grid
+                  sx={{
+                    backgroundColor: "#E9FEFA",
+                    margin: -2,
+                    padding: 2,
+                    marginBottom: 1,
+                  }}
+                >
                 <Typography gutterBottom variant="h5" component="div">
                   Actividad
                 </Typography>
+
+                </Grid> 
                 <List
                   sx={{
                     width: "100%",
@@ -228,14 +238,23 @@ export default function Slider() {
               }}
             >
               <CardContent>
-                <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+              <Grid
+                  sx={{
+                    backgroundColor: "#E9FEFA",
+                    margin: -2,
+                    padding: 2,
+                    marginBottom: 1,
+                  }}
+                >
+                <Typography  variant="h5" component="div">
                   Transacciones recientes
                 </Typography>
+                </Grid> 
 
                 <List>
                   {generate(
                     <ListItem>
-                      <ListItemText primary="Single-line item" />
+                      <ListItemText primary="Transaccion " />
                     </ListItem>,
                   )}
                 </List>
