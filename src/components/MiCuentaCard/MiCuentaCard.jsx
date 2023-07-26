@@ -22,11 +22,11 @@ export default function MiCuentaCard(props) {
   };
 
   return (
-    <Card sx={{ maxWidth: 400, backgroundColor: "white" }}>
+    <Card sx={{ maxWidth: 400, backgroundColor: "white", boxShadow:"3px 2px 12px 5px #7ececa"}}>
              <CardHeader
         title={
           <Typography
-            variant="h2"
+            
             sx={{
               fontSize: "1.5rem",
               textAlign: "center",
@@ -44,9 +44,11 @@ export default function MiCuentaCard(props) {
             sx={{
               fontSize: "1.5rem",
               color: "black",
+              fontWeight: "bold",
+              textAlign: "center",
            }}
           >
-          CBU = {cbu}
+          CBU <Typography variant = "h6"> {cbu} </Typography>
           </Typography>
       </CardContent>
       <CardContent>
@@ -54,9 +56,11 @@ export default function MiCuentaCard(props) {
           sx={{
             fontSize: "1.5rem",
             color: "black",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          Limite de Transacción: {transactionLimit}
+         Limite de transaccion <Typography variant = "h6"> {transactionLimit} </Typography>
         </Typography>
       </CardContent>
       <CardContent>
@@ -64,9 +68,11 @@ export default function MiCuentaCard(props) {
           sx={{
             fontSize: "1.5rem",
             color: "black",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          Balance: {balance}
+         Balance <Typography variant = "h6"> {balance} </Typography>
         </Typography>
       </CardContent>
     </Card>

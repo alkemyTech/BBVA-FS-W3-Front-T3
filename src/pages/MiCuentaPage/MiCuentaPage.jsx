@@ -20,14 +20,18 @@ export default function BasicCard() {
 
   return (
     <div className="center-container">
-      <Grid container direction="row" spacing={4} className="grid">
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid container direction="row" spacing={2} className="grid">
+        <Grid item xs={6} sm={6} md={3}>
           <CuentaPesos />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <CuentaDolares />
         </Grid>
-        <Grid item xs={12} className="button-container">
+        
+      </Grid>
+      <Grid container direction="row" spacing={2} className="grid">
+        <Grid item xs={6} sm={6} md={3} sx={{textAlign: "right"}}>
+         
           <Button
             variant="contained"
             onClick={handleDepositosClick}
@@ -35,10 +39,16 @@ export default function BasicCard() {
               fontSize: "1.2rem",
               textAlign: "center",
               color: "white",
+              marginRight: "170px",
+              width: "200px"
             }}
+            
           >
           Depósito  
           </Button>
+        </Grid>
+        <Grid item xs={6} sm={6} md={3} sx = {{paddingTop: "0px"}}>
+          
           <Button
             variant="contained"
             onClick={handleTransferenciasClick}
@@ -46,12 +56,19 @@ export default function BasicCard() {
               fontSize: "1.2rem",
               textAlign: "center",
               color: "white",
+              width: "200px",
+              textAlign: "right",
+              marginLeft: "100px",
+
             }}
           >
             Transferencias
-          </Button>
+          </Button> 
+         
         </Grid>
+        
       </Grid>
+      
     </div>
   );
 }
