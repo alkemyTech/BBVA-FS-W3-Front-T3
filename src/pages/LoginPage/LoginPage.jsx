@@ -17,7 +17,7 @@ import api from "../../api/axios.js";
 import * as Yup from "yup";
 import "./LoginPage.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import "./LoginPage.css";
@@ -25,16 +25,16 @@ import "./LoginPage.css";
 const initialValues = {
   email: "",
   password: "",
-  remember: true,
+  remember: false,
 };
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-  .min(3, "La contraseña debe tener al menos 3 caracteres.")
-  .required("¡Se requiere una contraseña!"),
+    .min(3, "La contraseña debe tener al menos 3 caracteres.")
+    .required("¡Se requiere una contraseña!"),
   email: Yup.string()
-  .email("Dirección de correo electrónico inválida.")
-  .required("¡Se requiere un correo electrónico!")
+    .email("Dirección de correo electrónico inválida.")
+    .required("¡Se requiere un correo electrónico!"),
 });
 
 const RegisterLink = styled("a")(() => ({
@@ -58,6 +58,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if (
+        JSON.parse(localStorage.getItem("remember")) &&
+        JSON.parse(localStorage.getItem("remember")).remember
+    ) {
+      initialValues.email = JSON.parse(localStorage.getItem("remember")).email;
+    }
+  }, []);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -84,6 +92,13 @@ const LoginPage = () => {
 
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
+        localStorage.setItem(
+          "remember",
+          JSON.stringify({
+            email: data.user.email,
+            remember: !!values.remember,
+          }),
+        );
       })
       .then(() => {
         toast("Logged In", { type: "success", autoClose: 2000 });
