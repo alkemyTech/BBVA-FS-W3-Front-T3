@@ -51,7 +51,7 @@ export default function DepositPage() {
     setTransferData({
       amount: values.monto,
       currency: values.tipo,
-      description: values.concepto
+      description: values.concepto,
     });
     setIsModalOpen(true);
   };
@@ -80,27 +80,24 @@ export default function DepositPage() {
       currency: transferData.currency,
       description: transferData.description,
     })
-      .then(() =>
-      {
+      .then(() => {
         formik.resetForm();
         setIsModalOpen(false);
         setSubmitted(true);
         history("/inicio");
-         })
+      })
 
-      .catch(()=> {
-         formik.resetForm();
+      .catch(() => {
+        formik.resetForm();
         setIsModalOpen(false);
         setSubmitted(true);
-      })
-       
+      });
   };
 
   const handleModalCancel = () => {
     // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
   };
-  
 
   return (
     <Box className="transactionBox">

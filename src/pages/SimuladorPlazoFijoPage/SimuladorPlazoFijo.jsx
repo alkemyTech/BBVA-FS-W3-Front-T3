@@ -40,7 +40,12 @@ const SimuladorPlazoFijo = () => {
     amount: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-    closingDate: Yup.date().required("Campo requerido"),
+    closingDate: Yup.date()
+      .min(
+        new Date(),
+        "La fecha de finalización debe ser mayor a la fecha actual.",
+      )
+      .required("Campo requerido"),
   });
 
   const onSubmit = (values) => {

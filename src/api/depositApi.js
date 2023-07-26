@@ -8,7 +8,7 @@ const toastOptions = {
   closeOnClick: true,
   draggable: false,
 };
-const endpoint = "/deposit"
+const endpoint = "/deposit";
 export class DepositApi {
   static async deposit(data) {
     return new Promise((resolve, reject) => {
