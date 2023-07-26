@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import "./TransferenciaPage.css";
 import GenericModal from "../../components/Modal/GenericModal";
@@ -14,10 +14,12 @@ import { useNavigate } from "react-router-dom";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
+import AccountsApi from "../../api/accountsApi.js";
+
 const Transferencia = () => {
-  const [submitted, setSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const history = useNavigate();
+  const [destinationInfo, setDestinationInfo] = useState({ firstName: '', lastName: '', email: ''});
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [transferData, setTransferData] = useState({});
 
@@ -47,6 +49,19 @@ const Transferencia = () => {
     concepto: Yup.string().required("Campo requerido"),
   });
 
+  const validateCbu = (value) => {
+    if (value.length === 22){
+      console.log("llamando api", value)
+      AccountsApi.getAccountByCbu(value)
+          .then((data) => {
+            console.log("data", data)
+            setDestinationInfo(data.user);
+          })
+      // loader
+    }
+    setDestinationInfo({ firstName: '', lastName: '', email: ''})
+  }
+
   const onSubmit = (values) => {
     //harcodeo de datos
     setUserData({
@@ -67,9 +82,8 @@ const Transferencia = () => {
 
     formik.resetForm();
     setIsModalOpen(false);
-    setSubmitted(true);
 
-    history("/inicio");
+    navigate("/inicio");
 
     toast.success("Transferencia realizada con éxito!", {
       position: "top-center",
@@ -113,11 +127,14 @@ const Transferencia = () => {
             name="cbu"
             variant="filled"
             value={formik.values.cbu}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              validateCbu(e.target.value);
+            }}
             onBlur={formik.handleBlur}
             error={!!(formik.touched.cbu && formik.errors.cbu)}
             helperText={
-              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : ""
+              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : `${destinationInfo.firstName} ${destinationInfo.lastName}`
             }
             type="text"
             inputProps={{ inputMode: "text" }}
