@@ -1,8 +1,7 @@
 import Card from "@mui/material/Card";
-import { CardActionArea, CardMedia, CardActions } from "@mui/material";
+import { CardActionArea, CardMedia } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function InvestmentCard(props) {
@@ -14,7 +13,6 @@ export default function InvestmentCard(props) {
   var action = props.action;
 
   const handleClickAction = () => {
-    console.log(props);
     navigate(props.actionPath);
   };
 

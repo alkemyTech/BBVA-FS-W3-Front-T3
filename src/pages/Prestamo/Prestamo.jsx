@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { toast } from "react-toastify";
@@ -15,17 +14,7 @@ import { useState } from "react";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const history = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const PrestamoTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    fontFamily: "Helvetica",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
+  const navigate = useNavigate();
 
   const initialValues = {
     monto: "",
@@ -55,22 +44,6 @@ export default function PrestamoPage() {
       (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
       (fechaCierre.getMonth() - fechaActual.getMonth());
 
-    for (let i = 0; i < mesesFaltantes; i++) {
-      montoConInteres *= 1.05; // Calculamos el monto con el interés compuesto para cada mes
-    }
-
-    console.log("Monto con interés:", montoConInteres.toFixed(2));
-    console.log("Meses faltantes para el cierre:", mesesFaltantes);
-
-    // Actualizamos el estado con el mensaje a mostrar
-    setMessage(
-      `Monto con interés: $${montoConInteres.toFixed(
-        2,
-      )}, Meses faltantes para el cierre: ${mesesFaltantes}`,
-    );
-
-    setSubmitted(true);
-
     setIsModalOpen(true);
   };
 
@@ -94,9 +67,8 @@ export default function PrestamoPage() {
 
     formik.resetForm();
     setIsModalOpen(false);
-    setSubmitted(true);
 
-    history("/inicio");
+    navigate("/inicio");
 
     toast.success("Deposito realizado con éxito!", {
       position: "top-center",
@@ -117,7 +89,17 @@ export default function PrestamoPage() {
   return (
     <Box className="prestamoBox">
       <Box className="prestamoFormStyle">
-        <PrestamoTitle>PIDE TU PRESTAMO</PrestamoTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          PIDE TU PRESTAMO
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"

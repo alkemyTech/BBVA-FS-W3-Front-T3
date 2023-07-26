@@ -102,7 +102,6 @@ const RegisterPage = () => {
   };
 
   const onInputChange = (e) => {
-    const { value } = e.target;
     let result = e.target.value.replace(/\D/g, "");
     setEdad(result);
   };

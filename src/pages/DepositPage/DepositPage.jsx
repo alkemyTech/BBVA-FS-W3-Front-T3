@@ -5,28 +5,22 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
-import { toast } from "react-toastify";
 
 import "./DepositPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DepositApi } from "../../api/depositApi";
 
 export default function DepositPage() {
-  const [submitted, setSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
-  const [transferData, setTransferData] = useState({});
-
-  const DepositTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    fontFamily: "Helvetica",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
+  const [transferData, setTransferData] = useState({
+    amount: 0,
+    currency: "ARS",
+    description: "",
+  });
 
   const initialValues = {
     monto: "",
@@ -44,8 +38,9 @@ export default function DepositPage() {
 
   const onSubmit = (values) => {
     setTransferData({
-      monto: values.monto,
-      tipo: values.tipo === "ARS" ? "$" : "u$d",
+      amount: values.monto,
+      currency: values.tipo,
+      description: values.concepto,
     });
     setIsModalOpen(true);
   };
@@ -66,23 +61,24 @@ export default function DepositPage() {
     fontWeight: "bold",
   };
   const handleModalAccept = () => {
-    console.log("Formulario enviado:", formik.values);
-
     formik.resetForm();
     setIsModalOpen(false);
-    setSubmitted(true);
 
-    history("/inicio");
+    DepositApi.deposit({
+      amount: transferData.amount,
+      currency: transferData.currency,
+      description: transferData.description,
+    })
+      .then(() => {
+        formik.resetForm();
+        setIsModalOpen(false);
+        history("/inicio");
+      })
 
-    toast.success("Deposito realizado con éxito!", {
-      position: "top-center",
-      autoClose: 3000, // Duración de la notificación (en milisegundos)
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+      .catch(() => {
+        formik.resetForm();
+        setIsModalOpen(false);
+      });
   };
 
   const handleModalCancel = () => {
@@ -93,7 +89,17 @@ export default function DepositPage() {
   return (
     <Box className="transactionBox">
       <Box className="formStyle">
-        <DepositTitle>INGRESAR DINERO</DepositTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          INGRESAR DINERO
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"
@@ -193,7 +199,8 @@ export default function DepositPage() {
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
                       <ListItemText
-                        primary={`Monto: ${transferData.monto || ""}`}
+                        primary={` ${transferData.amount}`}
+                        className="name"
                       />
                     </ListItem>
                   </List>

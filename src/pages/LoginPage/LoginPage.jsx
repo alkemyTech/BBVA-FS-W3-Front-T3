@@ -73,7 +73,6 @@ const LoginPage = () => {
       })
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
         dispatch(
           addUser({
             id: data.user.id,
@@ -118,8 +117,8 @@ const LoginPage = () => {
                   ? "/src/assets/gato-password.png"
                   : "/src/assets/logo-no-background.svg"
               }
-              alt=""
               width="60%"
+              alt=""
             />
           </Box>
 
