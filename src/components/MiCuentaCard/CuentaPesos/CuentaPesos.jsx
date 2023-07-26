@@ -5,9 +5,7 @@ export default function CuentaDolaresCard() {
     <MiCuentaCard
       title="CUENTA EN PESOS"
       description="Mira tus pesos"
-      image="src/assets/pesosarg.jpg"
-      alt="Pesos"
-      cvu= "2232432423"
+      cbu= "2232432423"
       transactionLimit= "300.000"
       balance = "3540"
     />

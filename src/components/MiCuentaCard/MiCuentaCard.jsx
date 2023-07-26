@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import {CardHeader} from "@mui/material";
+import Button from "@mui/material/Button";
 
 export default function MiCuentaCard(props) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function MiCuentaCard(props) {
   var image = props.image;
   var alt = props.alt;
   var action = props.action;
-  var cbu = props.cvu;
+  var cbu = props.cbu;
   var transactionLimit = props.transactionLimit;
   var balance = props.balance;
 
@@ -21,15 +22,53 @@ export default function MiCuentaCard(props) {
   };
 
   return (
-    <Card sx={{ maxWidth: 400, backgroundColor: "#1693a5" }}>
-        <CardHeader title ={title}  sx={{ fontSize: "1.5rem", textAlign: "center", color: "white" }}/>
+    <Card sx={{ maxWidth: 400, backgroundColor: "white" }}>
+             <CardHeader
+        title={
+          <Typography
+            variant="h2"
+            sx={{
+              fontSize: "1.5rem",
+              textAlign: "center",
+              color: "#1693a5",
+              fontWeight: "bold", 
+            }}
+          >
+            {title}
+          </Typography>
+        }
+      />
         <CardMedia component="img" alt={alt} image={image} />
-        <CardContent cbu ={cbu} />
-        CBU = {cbu}
-        <CardContent transactionLimit ={transactionLimit} />
-        Limite de Transacción:  {transactionLimit}
-        <CardContent balance ={balance} />
-        Balance: {balance}
+        <CardContent>
+          <Typography
+            sx={{
+              fontSize: "1.5rem",
+              color: "black",
+           }}
+          >
+          CBU = {cbu}
+          </Typography>
+      </CardContent>
+      <CardContent>
+        <Typography
+          sx={{
+            fontSize: "1.5rem",
+            color: "black",
+          }}
+        >
+          Limite de Transacción: {transactionLimit}
+        </Typography>
+      </CardContent>
+      <CardContent>
+        <Typography
+          sx={{
+            fontSize: "1.5rem",
+            color: "black",
+          }}
+        >
+          Balance: {balance}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
