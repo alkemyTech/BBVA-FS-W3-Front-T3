@@ -49,12 +49,11 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("Debes ingresar tu nombre."),
   lastName: Yup.string().required("Debes ingresar tu apellido."),
-  age: Yup
-      .string()
-      .required("Debe ingresar una edad.")
-      .matches(/^[0-9]+$/, "Debe ingresar un número.")
-      .min(2,"Debe ser mayor a 1 digitos")
-      .max(120),
+  age: Yup.string()
+    .required("Debe ingresar una edad.")
+    .matches(/^[0-9]+$/, "Debe ingresar un número.")
+    .min(2, "Debe ser mayor a 1 digitos")
+    .max(120),
   email: Yup.string()
     .email("La dirección de email no es valida.")
     .required("El email es necesario."),
@@ -100,8 +99,6 @@ const RegisterPage = () => {
   const handleCloseTermsModal = () => {
     setOpenTermsModal(false);
   };
-
-
 
   const handleRegister = (values) => {
     api
