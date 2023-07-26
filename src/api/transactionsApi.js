@@ -1,20 +1,30 @@
 import api from "./axios.js";
 import { toast } from "react-toastify";
 
-const constroller = "/accounts";
-const accountByCBU = "/cbu/";
+const constroller = "/transactions";
+const endpoints = {
+  ARS: "/sendArs",
+  USD: "/sendUsd",
+};
 const toastOptions = {
   position: "top-center",
   autoClose: 3000,
   closeOnClick: true,
   draggable: false,
 };
-export default class AccountsApi {
-  static async getAccountByCbu(cbu) {
+export default class TransactionsApi {
+  static async send(data) {
+    let endpoint = endpoints[data.currency];
+    console.log(endpoint);
+    const body = {
+      amount: data.amount,
+      destinationAccountId: data.destinationAccountId,
+    };
     return new Promise((resolve, reject) => {
       api
-        .get(constroller + accountByCBU + cbu)
+        .post(constroller + endpoint, body)
         .then((response) => {
+          toast.success("Transferencia realizada con éxito!", toastOptions);
           resolve(response.data);
         })
         .catch((error) => {

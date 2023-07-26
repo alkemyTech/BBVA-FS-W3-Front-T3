@@ -8,19 +8,29 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import "./TransferenciaPage.css";
 import GenericModal from "../../components/Modal/GenericModal";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
+import TransactionsApi from "../../api/transactionsApi.js";
 
 const Transferencia = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cbuInfo, setCbuInfo] = useState({ firstName: '', lastName: '', email: ''});
+  const [cbuInfo, setCbuInfo] = useState({
+    user: {
+      id: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+    id: 0,
+    cbu: "",
+    balance: 0,
+    currency: "",
+    transactionLimit: 0.0,
+  });
   const [userData, setUserData] = useState({});
   const [transferData, setTransferData] = useState({});
-  const navigate = useNavigate();
 
   const initialValues = {
     cbu: "",
@@ -28,7 +38,21 @@ const Transferencia = () => {
     moneda: "",
     concepto: "",
   };
-
+  const resetCbuInfo = () => {
+    setCbuInfo({
+      user: {
+        id: 0,
+        firstName: "",
+        lastName: "",
+        email: "",
+      },
+      id: cbuInfo.id,
+      cbu: "",
+      balance: 0,
+      currency: "",
+      transactionLimit: 0.0,
+    });
+  };
   const validationSchema = Yup.object().shape({
     cbu: Yup.number()
       .positive("La cuenta debe ser un número positivo")
@@ -36,56 +60,49 @@ const Transferencia = () => {
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-    moneda: Yup.string().required("Campo requerido"),
+    moneda: Yup.string()
+      .oneOf(
+        [cbuInfo.currency],
+        "No coincide con la moneda de la cuenta destino",
+      )
+      .required("Campo requerido")
+      .ensure(),
     concepto: Yup.string().required("Campo requerido"),
   });
 
   const validateCbu = (value) => {
-    if (value.length === 22){
-      AccountsApi.getAccountByCbu(value)
-          .then((data) => {
-            setCbuInfo(data.user);
-          })
+    if (value.length === 22) {
+      AccountsApi.getAccountByCbu(value).then((data) => {
+        setCbuInfo(data);
+      });
     } else {
-      setCbuInfo({ firstName: '', lastName: '', email: ''})
+      resetCbuInfo();
     }
-  }
+  };
 
   const onSubmit = (values) => {
     setUserData({
-      name: cbuInfo.firstName + " " + cbuInfo.lastName ,
+      name: cbuInfo.user.firstName + " " + cbuInfo.user.lastName,
       cbu: values.cbu, // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
     });
 
     setTransferData({
-      monto: values.monto,
-      tipo: values.tipo === "ARS" ? "$" : "U$D",
+      amount: values.monto,
+      destinationAccountId: cbuInfo.id,
+      currency: values.moneda,
     });
 
     setIsModalOpen(true);
   };
 
   const handleModalAccept = () => {
-    console.log("Formulario enviado:", formik.values);
-
-    formik.resetForm();
-    setIsModalOpen(false);
-
-    navigate("/inicio");
-
-    toast.success("Transferencia realizada con éxito!", {
-      position: "top-center",
-      autoClose: 3000, // Duración de la notificación (en milisegundos)
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+    TransactionsApi.send(transferData).then(() => {
+      formik.resetForm();
+      setIsModalOpen(false)
     });
   };
 
   const handleModalCancel = () => {
-    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
   };
 
@@ -132,7 +149,9 @@ const Transferencia = () => {
             onBlur={formik.handleBlur}
             error={!!(formik.touched.cbu && formik.errors.cbu)}
             helperText={
-              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : `${cbuInfo.firstName} ${cbuInfo.lastName}`
+              formik.touched.cbu && formik.errors.cbu
+                ? formik.errors.cbu
+                : `${cbuInfo.user.firstName} ${cbuInfo.user.lastName}  ${cbuInfo.currency}`
             }
             type="text"
             inputProps={{ inputMode: "text" }}
@@ -265,8 +284,9 @@ const Transferencia = () => {
                   <List className="monto">
                     <ListItem>
                       <ListItemText
-                          primary={`${transferData.tipo} ${transferData.monto}` }
-                          className="name"/>
+                        primary={`${transferData.currency} ${transferData.amount}`}
+                        className="name"
+                      />
                     </ListItem>
                   </List>
                 </Grid>
