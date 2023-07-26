@@ -15,10 +15,10 @@ const toastOptions = {
 export default class TransactionsApi {
   static async send(data) {
     let endpoint = endpoints[data.currency];
-    console.log(endpoint);
     const body = {
       amount: data.amount,
       destinationAccountId: data.destinationAccountId,
+      description: data.description,
     };
     return new Promise((resolve, reject) => {
       api
