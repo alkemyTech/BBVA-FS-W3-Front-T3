@@ -9,6 +9,7 @@ import Home from "./pages/HomePage/HomePage.jsx";
 import Prestamo from "./pages/Prestamo/Prestamo.jsx";
 import PrivateWrapper from "./pages/PrivateWrappers/PrivateWrapper.jsx";
 import PrivateWrapperLogin from "./pages/PrivateWrappers/PrivateWrapperLogin.jsx";
+import MiCuenta from "./pages/MiCuentaPage/MiCuentaPage.jsx"
 import Page from "./pages/index.jsx";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route element={<PrivateWrapper />}>
           <Route path="/inicio" element={<Home />} />
           <Route path="/transacciones" />
+          <Route path="/account" element={<MiCuenta />} />
           <Route path="/inversiones" element={<InvestmentPage />} />
           <Route path="/inversiones">
             <Route path="plazofijo" element={<SimuladorPlazoFijo />}>
