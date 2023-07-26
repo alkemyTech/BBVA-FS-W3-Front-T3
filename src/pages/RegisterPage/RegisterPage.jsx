@@ -53,9 +53,12 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("Debes ingresar tu nombre."),
   lastName: Yup.string().required("Debes ingresar tu apellido."),
-  age: Yup.number()
-    .required("La edad es necesaria.")
-    .min(18, "Debes ser mayor de 18 años."),
+  age: Yup
+      .string()
+      .required("Debe ingresar una edad.")
+      .matches(/^[0-9]+$/, "Debe ingresar un número.")
+      .min(2,"Debe ser mayor a 1 digitos")
+      .max(120),
   email: Yup.string()
     .email("La dirección de email no es valida.")
     .required("El email es necesario."),
@@ -94,7 +97,6 @@ const ImageContainer = styled(JustifyBox)(() => ({
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [edad, setEdad] = useState("");
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
 
@@ -106,12 +108,7 @@ const RegisterPage = () => {
     setOpenTermsModal(false);
   };
 
-  const onInputChange = (e) => {
-    const { value } = e.target;
-    let result = e.target.value.replace(/\D/g, "");
-    setEdad(result)
-   
-  };
+
 
   const handleRegister = (values) => {
     api
@@ -239,17 +236,16 @@ const RegisterPage = () => {
                           fullWidth
                           size="small"
                           name="age"
-                          value={edad}
+                          value={values.age}
                           label="Edad"
                           variant="outlined"
                           onBlur={handleBlur}
-                          //value={values.age}
-                          onChange={onInputChange}
+                          onChange={handleChange}
                           helperText={touched.age && errors.age}
                           error={Boolean(errors.age && touched.age)}
                           sx={{ mb: 3, width: "100%" }}
                           inputProps={{
-                            type:"numeric",
+                            type: "numeric",
                             pattern: "[0-9]*",
                           }}
                         />

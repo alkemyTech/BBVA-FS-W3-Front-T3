@@ -30,11 +30,11 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(3, "Password must be 3 character length")
-    .required("Password is required!"),
+  .min(3, "La contraseña debe tener al menos 3 caracteres.")
+  .required("¡Se requiere una contraseña!"),
   email: Yup.string()
-    .email("Invalid Email address")
-    .required("Email is required!"),
+  .email("Dirección de correo electrónico inválida.")
+  .required("¡Se requiere un correo electrónico!")
 });
 
 const RegisterLink = styled("a")(() => ({
@@ -161,6 +161,7 @@ const LoginPage = () => {
                           placeholder="tu@email.com"
                           required={true}
                           error={Boolean(errors.email && touched.email)}
+                          helperText={touched.email && errors.email}
                           sx={{ mb: 3, width: "100%" }}
                         />
                         
@@ -179,7 +180,7 @@ const LoginPage = () => {
                           error={Boolean(errors.password && touched.password)}
                           sx={{ mb: 3, width: "100%" }}
                           InputProps={{
-                            startAdornment: <InputAdornment position="end"><IconButton
+                            endAdornment: <InputAdornment position="end"><IconButton
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
