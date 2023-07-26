@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -23,13 +22,6 @@ const SimuladorPlazoFijo = () => {
     closingDate: "",
     creationDate: new Date().toLocaleDateString(),
   });
-
-  const PlazoFijoTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
 
   const initialValues = {
     amount: "",
@@ -107,7 +99,17 @@ const SimuladorPlazoFijo = () => {
   return (
     <Box className="transactionBox">
       <Box className="formStyle">
-        <PlazoFijoTitle>Plazo Fijo</PlazoFijoTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          PLAZO FIJO
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"
