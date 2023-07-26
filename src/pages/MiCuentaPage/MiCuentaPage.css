@@ -1,0 +1,23 @@
+/* MiCuentaPage.css */
+.grid {
+  padding-top: 15vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 65vh;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: px;
+}
