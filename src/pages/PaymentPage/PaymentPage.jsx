@@ -5,15 +5,18 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { toast } from "react-toastify";
 
-import "./DepositPage.css";
+import "./PaymentPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import   TransactionsApi   from "../../api/transactionsApi";
+import TransactionsApi  from "../../api/transactionsApi";
 
-export default function DepositPage() {
+export default function PaymentPage() {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
   const [transferData, setTransferData] = useState({
@@ -21,6 +24,14 @@ export default function DepositPage() {
     currency: "ARS",
     description: "",
   });
+
+  const PaymentTitle = styled(Typography)(() => ({
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    fontFamily: "Helvetica",
+    color: "#1693a5",
+    textAlign: "center",
+  }));
 
   const initialValues = {
     monto: "",
@@ -61,10 +72,8 @@ export default function DepositPage() {
     fontWeight: "bold",
   };
   const handleModalAccept = () => {
-    formik.resetForm();
-    setIsModalOpen(false);
 
-    TransactionsApi.deposit({
+    TransactionsApi.pay({
       amount: transferData.amount,
       currency: transferData.currency,
       description: transferData.description,
@@ -89,17 +98,7 @@ export default function DepositPage() {
   return (
     <Box className="transactionBox">
       <Box className="formStyle">
-        <Typography
-          sx={{
-            fontSize: "2.5rem",
-            fontWeight: "bold",
-            fontFamily: "Helvetica",
-            color: "#1693a5",
-            textAlign: "center",
-          }}
-        >
-          INGRESAR DINERO
-        </Typography>
+        <PaymentTitle>INGRESAR PAGO</PaymentTitle>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             variant="filled"
@@ -191,7 +190,7 @@ export default function DepositPage() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="h6" className="tittle">
-                    Realizaras un deposito a tu propia cuenta:
+                    Realizaras un pago a tu propia cuenta:
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>

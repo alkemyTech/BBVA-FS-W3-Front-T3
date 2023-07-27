@@ -75,6 +75,7 @@ const LoginPage = () => {
       .then((data) => {
         dispatch(
           addUser({
+            id: data.user.id,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
             email: data.user.email,
