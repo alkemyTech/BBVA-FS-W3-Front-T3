@@ -1,18 +1,19 @@
 .tansferenciaBox {
   display: flex;
   justify-content: center;
-  padding-top: 10rem;
-  padding-bottom: 10rem;
+  height: 89vh;
+  position: relative;
+  align-items: center;
 }
 
 .tansferenciaformStyle {
   padding: 20px;
   border-radius: 8px;
   max-width: 600px;
-  width: 100%;
   box-shadow: 2px 2px 10px gray;
   background-color: white;
   align-items: center;
   display: flex;
   flex-direction: column;
+  max-height: 50%;
 }

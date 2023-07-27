@@ -1,61 +1,30 @@
-import { useEffect, useState } from "react";
 import {
-  Card,
-  CardContent,
   Grid,
   List,
-  ListItem,
-  ListItemText,
-  Typography,
 } from "@mui/material";
-import TransactionsApi from "../../../api/transactionsApi";
-import { useSelector } from "react-redux";
+import TransactionCard from "../TransactionList/TransactionCard.jsx";
 
 export default function TransactionList() {
-  const [transactions, setTransactions] = useState([]);
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    TransactionsApi.getTransactionsByUserId(user.id)
-      .then((lista) => {
-        console.log(lista);
-        setTransactions(lista);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [user]);
-
   return (
-    <Card
+    <Grid
+      container
       sx={{
-        maxWidth: 500,
-        maxHeight: 600,
-        marginTop: "70px",
+        marginTop: "3vh",
         marginLeft: "50px",
+        padding: 2,
       }}
     >
-      <CardContent>
-        <Grid
-          sx={{
-            backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
-          }}
-        >
-          <Typography variant="h5" component="div">
-            Transacciones recientes
-          </Typography>
-        </Grid>
+      <Grid item xs={12}>
         <List>
-          {transactions.map((transaction) => (
-            <ListItem key={transaction.id}>
-              <ListItemText primary={`Transacción ID: ${transaction.id}`} />
-            </ListItem>
-          ))}
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
         </List>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Grid>
   );
 }
