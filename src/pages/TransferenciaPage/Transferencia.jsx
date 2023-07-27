@@ -6,13 +6,13 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import "./TransferenciaPage.css";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
 import TransactionsApi from "../../api/transactionsApi.js";
+import "../TransaccionesPage.css";
 
 const Transferencia = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -125,8 +125,8 @@ const Transferencia = () => {
   };
 
   return (
-    <Box className="tansferenciaBox">
-      <Box className="tansferenciaformStyle">
+    <Box className="transactionBox">
+      <Box className="formStyle">
         <Typography
           sx={{
             fontSize: "2.5rem",

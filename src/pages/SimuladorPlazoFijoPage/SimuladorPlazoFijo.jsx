@@ -10,7 +10,7 @@ import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FixedTermApi } from "../../api/fixedTermApi.js";
 
-import "../DepositPage/DepositPage.css";
+import "../TransaccionesPage.css";
 
 const SimuladorPlazoFijo = () => {
   const navigate = useNavigate();
