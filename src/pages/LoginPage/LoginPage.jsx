@@ -11,13 +11,10 @@ import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { addUser } from "../../redux/userSlice.js";
-import api from "../../api/axios.js";
+import AuthApi from "../../api/authApi.js";
 import * as Yup from "yup";
-import "./LoginPage.css";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import "./LoginPage.css";
@@ -25,16 +22,16 @@ import "./LoginPage.css";
 const initialValues = {
   email: "",
   password: "",
-  remember: true,
+  remember: false,
 };
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(3, "Password must be 3 character length")
-    .required("Password is required!"),
+    .min(3, "La contraseña debe tener al menos 3 caracteres.")
+    .required("¡Se requiere una contraseña!"),
   email: Yup.string()
-    .email("Invalid Email address")
-    .required("Email is required!"),
+    .email("Dirección de correo electrónico inválida.")
+    .required("¡Se requiere un correo electrónico!"),
 });
 
 const RegisterLink = styled("a")(() => ({
@@ -58,6 +55,14 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("remember"))) {
+      initialValues.email = JSON.parse(localStorage.getItem("remember"))
+        .remember
+        ? JSON.parse(localStorage.getItem("remember")).email
+        : "";
+    }
+  }, []);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -66,15 +71,11 @@ const LoginPage = () => {
     navigate("/register");
   };
   const handleLogin = (values) => {
-    api
-      .post("/auth/login", {
-        email: values.email,
-        password: values.password,
-      })
-      .then((res) => res.data)
+    AuthApi.login(values)
       .then((data) => {
         dispatch(
           addUser({
+            id: data.user.id,
             firstName: data.user.firstName,
             lastName: data.user.lastName,
             email: data.user.email,
@@ -84,24 +85,20 @@ const LoginPage = () => {
 
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
-      })
-      .then(() => {
-        toast("Logged In", { type: "success", autoClose: 2000 });
+        localStorage.setItem(
+          "remember",
+          JSON.stringify({
+            email: data.user.email,
+            remember: !!values.remember,
+          }),
+        );
+        console.log("remember", !!values.remember);
         navigate("/inicio");
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data.errors.includes("USER_NOT_FOUND")
-        ) {
-          toast("No tienes cuenta. Deberías registrarte primero", {
-            type: "error",
-            autoClose: 2000,
-          });
+      .catch((registered) => {
+        if (!registered) {
           handleClickRegister(values.email);
-          return;
         }
-        toast("Contraseña inválida", { type: "error", autoClose: 2000 });
       });
   };
   return (
@@ -166,6 +163,7 @@ const LoginPage = () => {
                           placeholder="tu@email.com"
                           required={true}
                           error={Boolean(errors.email && touched.email)}
+                          helperText={touched.email && errors.email}
                           sx={{ mb: 3, width: "100%" }}
                         />
 
@@ -184,7 +182,7 @@ const LoginPage = () => {
                           error={Boolean(errors.password && touched.password)}
                           sx={{ mb: 3, width: "100%" }}
                           InputProps={{
-                            startAdornment: (
+                            endAdornment: (
                               <InputAdornment position="end">
                                 <IconButton
                                   aria-label="toggle password visibility"
