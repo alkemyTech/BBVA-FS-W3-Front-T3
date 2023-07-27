@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import CuentaDolares from "../../components/MiCuentaCard/CuentaDolares/CuentaDolares";
 import CuentaPesos from "../../components/MiCuentaCard/CuentaPesos/CuentaPesos";
@@ -27,11 +26,9 @@ export default function BasicCard() {
         <Grid item xs={6} sm={6} md={3}>
           <CuentaDolares />
         </Grid>
-        
       </Grid>
       <Grid container direction="row" spacing={2} className="grid">
-        <Grid item xs={6} sm={6} md={3} sx={{textAlign: "right"}}>
-         
+        <Grid item xs={6} sm={6} md={3} sx={{ textAlign: "right" }}>
           <Button
             variant="contained"
             onClick={handleDepositosClick}
@@ -40,15 +37,13 @@ export default function BasicCard() {
               textAlign: "center",
               color: "white",
               marginRight: "170px",
-              width: "200px"
+              width: "200px",
             }}
-            
           >
-          Depósito  
+            Depósito
           </Button>
         </Grid>
-        <Grid item xs={6} sm={6} md={3} sx = {{paddingTop: "0px"}}>
-          
+        <Grid item xs={6} sm={6} md={3} sx={{ paddingTop: "0px" }}>
           <Button
             variant="contained"
             onClick={handleTransferenciasClick}
@@ -59,16 +54,12 @@ export default function BasicCard() {
               width: "200px",
               textAlign: "right",
               marginLeft: "100px",
-
             }}
           >
             Transferencias
-          </Button> 
-         
+          </Button>
         </Grid>
-        
       </Grid>
-      
     </div>
   );
 }

@@ -119,9 +119,15 @@ export default function Header() {
     navigate("/depositos");
   };
 
+  const handleClickPagos = () => {
+    navigate("/pagos");
+  };
+
   const handleClickInversiones = () => {
     navigate("/inversiones");
   };
+
+ 
 
   return (
     <AppBar position="absolute" sx={{ backgroundColor: "#1693a5" }}>
@@ -145,6 +151,7 @@ export default function Header() {
               <Tab label="Inicio" onClick={handleClickInicio} />
               <Tab label="Transferencias" onClick={handleClickTransferencias} />
               <Tab label="Depositos" onClick={handleClickDepositos} />
+              <Tab label="Pagos" onClick={handleClickPagos} />
               <Tab label="Inversiones" onClick={handleClickInversiones} />
             </Tabs>
           </Grid>

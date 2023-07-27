@@ -4,13 +4,10 @@ import { Box, styled, Typography, Button } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addUser } from "../../redux/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
-import api from "../../api/axios.js";
+import AuthApi from "../../api/authApi.js";
 import "../RegisterPage/RegisterPage.css";
-import { toast } from "react-toastify";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -49,9 +46,11 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("Debes ingresar tu nombre."),
   lastName: Yup.string().required("Debes ingresar tu apellido."),
-  age: Yup.number()
-    .required("La edad es necesaria.")
-    .min(18, "Debes ser mayor de 18 años."),
+  age: Yup.string()
+    .required("Debe ingresar una edad.")
+    .matches(/^[0-9]+$/, "Debe ingresar un número.")
+    .min(2, "Debe ser mayor a 1 digitos")
+    .max(120),
   email: Yup.string()
     .email("La dirección de email no es valida.")
     .required("El email es necesario."),
@@ -85,9 +84,7 @@ const ImageContainer = styled(JustifyBox)(() => ({
 }));
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [edad, setEdad] = useState("");
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
 
@@ -99,55 +96,15 @@ const RegisterPage = () => {
     setOpenTermsModal(false);
   };
 
-  const onInputChange = (e) => {
-    let result = e.target.value.replace(/\D/g, "");
-    setEdad(result);
-  };
-
   const handleRegister = (values) => {
-    api
-      .post("/auth/register", {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password,
-      })
-      .then((res) => res.data)
-      .then((data) =>
-        dispatch(
-          addUser({
-            fistName: data.user.firstName,
-            lastName: data.user.lastName,
-            password: data.user.password,
-          }),
-        ),
-      )
+    AuthApi.register(values)
       .then(() => {
-        toast("Registro exitoso", { type: "success", autoClose: 2000 });
         navigate("/");
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data.errors.includes("DUPLICATED_VALUE")
-        ) {
-          toast("Ya existe cuenta con ese email. Logeate", {
-            type: "warning",
-            autoClose: 2000,
-          });
+      .catch((registered) => {
+        if (registered) {
           navigate("/");
-          return;
-        } else if (
-          error.response &&
-          error.response.data.errors.includes("INVALID_VALUE")
-        ) {
-          toast(
-            "Campo " + error.response.data.data + "invalido",
-            error.response.data.err,
-          );
         }
-        console.log(error);
-        toast(" Contraseña invalida", { type: "error", autoClose: 2000 });
       });
   };
 
@@ -230,12 +187,11 @@ const RegisterPage = () => {
                           fullWidth
                           size="small"
                           name="age"
-                          value={edad}
+                          value={values.age}
                           label="Edad"
                           variant="outlined"
                           onBlur={handleBlur}
-                          //value={values.age}
-                          onChange={onInputChange}
+                          onChange={handleChange}
                           helperText={touched.age && errors.age}
                           error={Boolean(errors.age && touched.age)}
                           sx={{ mb: 3, width: "100%" }}

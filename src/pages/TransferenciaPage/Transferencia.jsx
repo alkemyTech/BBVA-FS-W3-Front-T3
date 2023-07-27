@@ -5,29 +5,32 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import "./TransferenciaPage.css";
 import GenericModal from "../../components/Modal/GenericModal";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
+import AccountsApi from "../../api/accountsApi.js";
+import TransactionsApi from "../../api/transactionsApi.js";
+
 const Transferencia = () => {
-  const [submitted, setSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const history = useNavigate();
+  const [cbuInfo, setCbuInfo] = useState({
+    user: {
+      id: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+    id: 0,
+    cbu: "",
+    balance: 0,
+    currency: "",
+    transactionLimit: 0.0,
+  });
   const [userData, setUserData] = useState({});
   const [transferData, setTransferData] = useState({});
-
-  const TranferenciaTitle = styled(Typography)(() => ({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    fontFamily: "Helvetica",
-    color: "#1693a5",
-    textAlign: "center",
-  }));
 
   const initialValues = {
     cbu: "",
@@ -35,7 +38,21 @@ const Transferencia = () => {
     moneda: "",
     concepto: "",
   };
-
+  const resetCbuInfo = () => {
+    setCbuInfo({
+      user: {
+        id: 0,
+        firstName: "",
+        lastName: "",
+        email: "",
+      },
+      id: cbuInfo.id,
+      cbu: "",
+      balance: 0,
+      currency: "",
+      transactionLimit: 0.0,
+    });
+  };
   const validationSchema = Yup.object().shape({
     cbu: Yup.number()
       .positive("La cuenta debe ser un número positivo")
@@ -43,47 +60,51 @@ const Transferencia = () => {
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-    moneda: Yup.string().required("Campo requerido"),
+    moneda: Yup.string()
+      .oneOf(
+        [cbuInfo.currency],
+        "No coincide con la moneda de la cuenta destino",
+      )
+      .required("Campo requerido")
+      .ensure(),
     concepto: Yup.string().required("Campo requerido"),
   });
 
+  const validateCbu = (value) => {
+    if (value.length === 22) {
+      AccountsApi.getAccountByCbu(value).then((data) => {
+        setCbuInfo(data);
+      });
+    } else {
+      resetCbuInfo();
+    }
+  };
+
   const onSubmit = (values) => {
-    //harcodeo de datos
     setUserData({
-      name: "Carlitos Tevez", // Reemplaza por el nombre y apellido del usuario
-      cbu: "0568861256004983210586205", // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
+      name: cbuInfo.user.firstName + " " + cbuInfo.user.lastName,
+      cbu: values.cbu, // Reemplaza por el CBU obtenido de la cuenta asociada al usuario
     });
 
     setTransferData({
-      monto: values.monto,
-      tipo: values.tipo === "ARS" ? "$" : "u$d",
+      amount: values.monto,
+      destinationAccountId: cbuInfo.id,
+      currency: values.moneda,
+      description: values.concepto,
     });
 
     setIsModalOpen(true);
   };
 
   const handleModalAccept = () => {
-    console.log("Formulario enviado:", formik.values);
-
-    formik.resetForm();
-    setIsModalOpen(false);
-    setSubmitted(true);
-
-    history("/inicio");
-
-    toast.success("Transferencia realizada con éxito!", {
-      position: "top-center",
-      autoClose: 3000, // Duración de la notificación (en milisegundos)
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+    TransactionsApi.send(transferData).then(() => {
+      formik.resetForm();
+      setIsModalOpen(false);
+      resetCbuInfo();
     });
   };
 
   const handleModalCancel = () => {
-    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
   };
 
@@ -106,18 +127,33 @@ const Transferencia = () => {
   return (
     <Box className="tansferenciaBox">
       <Box className="tansferenciaformStyle">
-        <TranferenciaTitle>TRANSFERENCIA</TranferenciaTitle>
+        <Typography
+          sx={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "Helvetica",
+            color: "#1693a5",
+            textAlign: "center",
+          }}
+        >
+          TRANSFERENCIA
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             label="CBU"
             name="cbu"
             variant="filled"
             value={formik.values.cbu}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              validateCbu(e.target.value);
+            }}
             onBlur={formik.handleBlur}
             error={!!(formik.touched.cbu && formik.errors.cbu)}
             helperText={
-              formik.touched.cbu && formik.errors.cbu ? formik.errors.cbu : ""
+              formik.touched.cbu && formik.errors.cbu
+                ? formik.errors.cbu
+                : `${cbuInfo.user.firstName} ${cbuInfo.user.lastName}  ${cbuInfo.currency}`
             }
             type="text"
             inputProps={{ inputMode: "text" }}
@@ -249,11 +285,9 @@ const Transferencia = () => {
                   </Typography>
                   <List className="monto">
                     <ListItem>
-                      <ListItemText primary={`Tipo: ${transferData.tipo}`} />
-                    </ListItem>
-                    <ListItem>
                       <ListItemText
-                        primary={`Monto: ${transferData.monto || ""}`}
+                        primary={`${transferData.currency} ${transferData.amount}`}
+                        className="name"
                       />
                     </ListItem>
                   </List>
