@@ -1,4 +1,4 @@
-import { Grid, List } from "@mui/material";
+import {Divider, Grid, List, Typography} from "@mui/material";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
 
 export default function TransactionList() {
@@ -6,13 +6,21 @@ export default function TransactionList() {
     <Grid
       container
       sx={{
-        marginTop: "3vh",
-        marginLeft: "50px",
-        padding: 2,
       }}
     >
-      <Grid item xs={12}>
+      <Grid item xs={10}>
+        <Typography variant="h5" sx={{
+          textAlign:"center",
+          backgroundColor:"#E9FEFA",
+        }}>
+          Transacciones recientess
+        </Typography>
+      </Grid>
+      <Grid item xs={10}>
         <List>
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
           <TransactionCard />
           <TransactionCard />
           <TransactionCard />

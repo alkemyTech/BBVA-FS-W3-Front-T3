@@ -52,7 +52,7 @@ export default function UserInfoCard({
   }));
 
   return (
-    <Card sx={{ minWidth: 275, marginTop: "50px" }}>
+    <Card sx={{ minWidth: 275}}>
       <CardContent>
         <Grid
           sx={{

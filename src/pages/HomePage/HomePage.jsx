@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {Grid,Box} from "@mui/material";
+import {Grid, Box, Typography, Divider} from "@mui/material";
 import { useEffect,useState } from "react";
 import { addAccountArs} from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
@@ -40,11 +40,11 @@ export default function HomePage() {
     <>
       <Grid
         container
-        spacing={2}
+        spacing={5}
         sx={{
-          minHeight: "89vh",
-          alignItems: "center",
-          placeItems: "center",
+          marginTop:"60px",
+          marginBottom:"60px",
+          placeItems: "top",
         }}
       >
         <Grid item xs={1} />
@@ -60,7 +60,9 @@ export default function HomePage() {
           />
           <ActivitiesCard />
         </Grid>
-        <Grid item xs={7}>
+
+        <Grid item xs={7} s={{
+        }} >
           <TransactionList />
         </Grid>
       </Grid>
