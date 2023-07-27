@@ -1,16 +1,25 @@
 import Card from "@mui/material/Card";
-import { CardMedia } from "@mui/material";
+import { CardActionArea, CardMedia } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 import { CardHeader } from "@mui/material";
+import Button from "@mui/material/Button";
 
 export default function MiCuentaCard(props) {
+  const navigate = useNavigate();
   var title = props.title;
+  var description = props.description;
   var image = props.image;
   var alt = props.alt;
+  var action = props.action;
   var cbu = props.cbu;
   var transactionLimit = props.transactionLimit;
   var balance = props.balance;
+
+  const handleClickAction = () => {
+    navigate(props.actionPath);
+  };
 
   return (
     <Card

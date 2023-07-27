@@ -19,7 +19,7 @@ export default function BasicCard() {
 
   return (
     <div className="center-container">
-      <Grid container direction="row" spacing={2} className="gridMiCuenta">
+      <Grid container direction="row" spacing={2} className="grid">
         <Grid item xs={6} sm={6} md={3}>
           <CuentaPesos />
         </Grid>
@@ -27,7 +27,7 @@ export default function BasicCard() {
           <CuentaDolares />
         </Grid>
       </Grid>
-      <Grid container direction="row" spacing={2} className="gridMiCuenta">
+      <Grid container direction="row" spacing={2} className="grid">
         <Grid item xs={6} sm={6} md={3} sx={{ textAlign: "right" }}>
           <Button
             variant="contained"
@@ -49,6 +49,7 @@ export default function BasicCard() {
             onClick={handleTransferenciasClick}
             sx={{
               fontSize: "1.2rem",
+              textAlign: "center",
               color: "white",
               width: "200px",
               textAlign: "right",
