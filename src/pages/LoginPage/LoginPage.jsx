@@ -82,8 +82,6 @@ const LoginPage = () => {
           }),
         );
 
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
         localStorage.setItem(
           "remember",
           JSON.stringify({
@@ -91,7 +89,6 @@ const LoginPage = () => {
             remember: !!values.remember,
           }),
         );
-        console.log("remember", !!values.remember);
         navigate("/inicio");
       })
       .catch((registered) => {
