@@ -12,7 +12,7 @@ const endpoints = {
   ARS: "/sendArs",
   USD: "/sendUsd",
   DEPOSIT: "/deposit",
-  PAY: "/payment"
+  PAY: "/payment",
 };
 export default class TransactionsApi {
   static async deposit(data) {
@@ -38,7 +38,6 @@ export default class TransactionsApi {
     });
   }
 
-
   static async pay(data) {
     return new Promise((resolve, reject) => {
       api
@@ -57,6 +56,27 @@ export default class TransactionsApi {
           } else {
             toast.error(error.response.data.message, toastOptions);
           }
+          reject(error);
+        });
+    });
+  }
+
+  static async send(data) {
+    let endpoint = endpoints[data.currency];
+    const body = {
+      amount: data.amount,
+      destinationAccountId: data.destinationAccountId,
+      description: data.description,
+    };
+    return new Promise((resolve, reject) => {
+      api
+        .post(constroller + endpoint, body)
+        .then((response) => {
+          toast.success("Transferencia realizada con éxito!", toastOptions);
+          resolve(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message, toastOptions);
           reject(error);
         });
     });

@@ -11,8 +11,6 @@ import {
   List,
 } from "@mui/material";
 
-
-
 export default function ActivitiesCard() {
   return (
     <Card sx={{ maxWidth: 345, marginTop: "10px" }}>
@@ -30,43 +28,41 @@ export default function ActivitiesCard() {
           </Typography>
         </Grid>
         <List
-                  sx={{
-                    width: "100%",
-                    maxWidth: 360,
-                    bgcolor: "background.paper",
-                  }}
-                >
-                  <CardActionArea>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Transacciones en Pesos"
-                        secondary="actividad en $ realizada"
-                      />
-                    </ListItem>
-                  </CardActionArea>
-                  <CardActionArea>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary="Transacciones en Dolares" />
-                    </ListItem>
-                  </CardActionArea>
-                  <CardActionArea>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary="Depositos realizados" />
-                    </ListItem>
-                  </CardActionArea>
-                </List>
+          sx={{
+            width: "100%",
+            maxWidth: 360,
+            bgcolor: "background.paper",
+          }}
+        >
+          <CardActionArea>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Transacciones en Pesos"
+                secondary="actividad en $ realizada"
+              />
+            </ListItem>
+          </CardActionArea>
+          <CardActionArea>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Transacciones en Dolares" />
+            </ListItem>
+          </CardActionArea>
+          <CardActionArea>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Depositos realizados" />
+            </ListItem>
+          </CardActionArea>
+        </List>
       </CardContent>
-
-      
     </Card>
   );
 }

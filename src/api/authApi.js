@@ -18,6 +18,9 @@ export default class AuthApi {
         })
         .then((res) => {
           toast.success("Logged In", toastOptions);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
           resolve(res.data);
         })
         .catch((error) => {

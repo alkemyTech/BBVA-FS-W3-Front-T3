@@ -127,8 +127,6 @@ export default function Header() {
     navigate("/inversiones");
   };
 
- 
-
   return (
     <AppBar position="absolute" sx={{ backgroundColor: "#1693a5" }}>
       <Toolbar>
