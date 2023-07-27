@@ -22,29 +22,23 @@ export default function Footer() {
       <Container maxWidth="lg">
         <Grid container spacing={5} sx={{ paddingTop: 2 }}>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
+            <Typography  color="#c7ede8" gutterBottom>
               Información
             </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
+            <Typography  sx={{ color: "#a0ded6" , fontSize: "0.8rem"}}>
               Somos ViKatCode y empezamos con este proyecto en julio de 2023
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
-              Contactos
+            <Typography  color="#c7ede8" gutterBottom>
+              Contacto
             </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Torre BBVA Buenos Aires Argentina
-            </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Email: ViKatCode@bbva.com
-            </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Tel: 45 7656 2131
+            <Typography  sx={{ color: "#a0ded6" , fontSize: "0.8rem"}}>
+             vikatcode@bbva.com.ar
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
+          <Grid item xs={12} sm={4} >
+            <Typography color="#c7ede8" gutterBottom sx = {{fontSize: "1.1rem"}}>
               Redes Sociales
             </Typography>
             <Link
@@ -56,7 +50,7 @@ export default function Footer() {
             <Link
               href="https://www.instagram.com/bbva_argentina/?hl=es-la"
               color="inherit"
-              sx={{ pl: 1, pr: 1 }}
+              sx={{pl: 1, pr: 1}}
             >
               <Instagram />
             </Link>
@@ -72,16 +66,7 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Box mt={1}>
-          <Typography variant="body" color="text.secondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="https://BBVA.com/">
-              BBVA
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-          </Typography>
-        </Box>
+        
       </Container>
     </Box>
   );
