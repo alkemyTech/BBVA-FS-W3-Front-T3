@@ -11,6 +11,8 @@ import Prestamo from "./pages/Prestamo/Prestamo.jsx";
 import PrivateWrapper from "./pages/PrivateWrappers/PrivateWrapper.jsx";
 import PrivateWrapperLogin from "./pages/PrivateWrappers/PrivateWrapperLogin.jsx";
 import MiCuenta from "./pages/MiCuentaPage/MiCuentaPage.jsx";
+import Exchange from "./pages/Exchange/Exchange.jsx"
+
 import Page from "./pages/index.jsx";
 
 function App() {
@@ -31,6 +33,9 @@ function App() {
               {" "}
             </Route>
             <Route path="prestamo" element={<Prestamo />}>
+              {" "}
+            </Route>
+            <Route path="exchange" element={<Exchange />}>
               {" "}
             </Route>
           </Route>
