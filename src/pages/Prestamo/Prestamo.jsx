@@ -5,32 +5,40 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Grid, List, ListItem, ListItemText, formGroupClasses } from "@mui/material";
 import { toast } from "react-toastify";
 
 import "./Prestamo.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Loan } from "../../api/loanApi";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [simulation, setSimulation] = useState({
+    amount: 0,
+    interest: 0.002,
+    total: 0,
+    closingDate: "",
+    creationDate: new Date().toLocaleDateString(),
+  })
   const navigate = useNavigate();
 
   const initialValues = {
-    monto: "",
-    fechaFinalizacion: "",
+    amount: "",
+    closingDate: "",
   };
 
   const validationSchema = Yup.object().shape({
-    monto: Yup.number()
+    amount: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
-    fechaFinalizacion: Yup.date().required("Campo requerido"),
+    closingDate: Yup.date().required("Campo requerido"),
   });
 
   const onSubmit = (values) => {
-    const { monto, fechaFinalizacion } = values;
-    const fechaCierre = new Date(fechaFinalizacion);
+    const { amount, closingDate } = values;
+    const fechaCierre = new Date(closingDate);
     const fechaActual = new Date();
 
     if (fechaActual > fechaCierre) {
@@ -38,13 +46,26 @@ export default function PrestamoPage() {
       return;
     }
 
-    let montoConInteres = parseFloat(monto); // Convertimos el monto a número
+    let montoConInteres = parseFloat(amount); // Convertimos el monto a número
 
     const mesesFaltantes =
       (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
       (fechaCierre.getMonth() - fechaActual.getMonth());
 
-    setIsModalOpen(true);
+    handleSimulation({amount:values.amount, term:mesesFaltantes})
+      .then((data) => {
+        setSimulation({
+          amount: data.amount,
+          interest: data.interest,
+          total: data.total,
+          closingDate: data.closingDate,
+          creationDate: data.creationDate,
+        });
+        setIsModalOpen(true);
+      })
+      .catch(() => {
+        setIsModalOpen(false);
+      });
   };
 
   const formik = useFormik({
@@ -52,6 +73,30 @@ export default function PrestamoPage() {
     validationSchema,
     onSubmit,
   });
+
+
+  const handleSimulation = (values) => {
+    return Loan.simulate({
+      amount: values.amount,
+      closingDate: values.closingDate,
+    });
+  };
+
+  const handleModalAccept = () => {
+
+    formik.resetForm();
+    setIsModalOpen(false);
+
+    navigate("/inicio");
+
+    ;
+  };
+
+  
+  const handleModalCancel = () => {
+    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
+    setIsModalOpen(false);
+  };
 
   const inputStyle = {
     backgroundColor: "white",
@@ -61,29 +106,6 @@ export default function PrestamoPage() {
 
   const labelStyle = {
     fontWeight: "bold",
-  };
-  const handleModalAccept = () => {
-    console.log("Formulario enviado:", formik.values);
-
-    formik.resetForm();
-    setIsModalOpen(false);
-
-    navigate("/inicio");
-
-    toast.success("Deposito realizado con éxito!", {
-      position: "top-center",
-      autoClose: 3000, // Duración de la notificación (en milisegundos)
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
-  const handleModalCancel = () => {
-    // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
-    setIsModalOpen(false);
   };
 
   return (
@@ -104,14 +126,14 @@ export default function PrestamoPage() {
           <TextField
             variant="filled"
             label="Monto"
-            name="monto"
-            value={formik.values.monto}
+            name="amount"
+            value={formik.values.amount}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={!!(formik.touched.monto && formik.errors.monto)}
+            error={!!(formik.touched.amount && formik.errors.amount)}
             helperText={
-              formik.touched.monto && formik.errors.monto
-                ? formik.errors.monto
+              formik.touched.amount && formik.errors.amount
+                ? formik.errors.amount
                 : ""
             }
             fullWidth
@@ -129,20 +151,20 @@ export default function PrestamoPage() {
             <TextField
               variant="filled"
               label="Fecha de Finalización"
-              name="fechaFinalizacion"
-              value={formik.values.fechaFinalizacion}
+              name="closingDate"
+              value={formik.values.closingDate}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
                 !!(
-                  formik.touched.fechaFinalizacion &&
-                  formik.errors.fechaFinalizacion
+                  formik.touched.closingDate &&
+                  formik.errors.closingDate
                 )
               }
               helperText={
-                formik.touched.fechaFinalizacion &&
-                formik.errors.fechaFinalizacion
-                  ? formik.errors.fechaFinalizacion
+                formik.touched.closingDate &&
+                formik.errors.closingDate
+                  ? formik.errors.closingDate
                   : ""
               }
               type="date"
@@ -176,6 +198,10 @@ export default function PrestamoPage() {
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
+                      <ListItemText
+                        primary={` ${simulation.amount}`}
+                        className="name"
+                      />
                     </ListItem>
                   </List>
                 </Grid>
