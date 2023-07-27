@@ -12,39 +12,46 @@ export default function Footer() {
       sx={{
         backgroundColor: "#1693a5",
         color: "white",
-        textAlign: "center",
-        position: "absolute",
+        position: "fixed",
         bottom: 0,
         left: 0,
+        textAlign: "center",
         width: "100%",
+        height: "auto",
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5} sx={{ paddingTop: 2 }}>
+        <Grid container spacing={5}>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
               Información
             </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
+            <Typography sx={{ color: "#a0ded6", fontSize: "0.9rem" }}>
               Somos ViKatCode y empezamos con este proyecto en julio de 2023
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
-              Contactos
+          <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
+              Contacto
             </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Torre BBVA Buenos Aires Argentina
-            </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Email: ViKatCode@bbva.com
-            </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              Tel: 45 7656 2131
+            <Typography sx={{ color: "#a0ded6", fontSize: "0.9rem" }}>
+              vikatcode@bbva.com.ar
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
+          <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
               Redes Sociales
             </Typography>
             <Link
@@ -72,16 +79,6 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Box mt={1}>
-          <Typography variant="body" color="text.secondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="https://BBVA.com/">
-              BBVA
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-          </Typography>
-        </Box>
       </Container>
     </Box>
   );

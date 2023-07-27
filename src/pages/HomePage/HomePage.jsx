@@ -38,24 +38,32 @@ export default function HomePage() {
 
   return (
     <>
-      <Box sx={{ flexGrow: 2, paddingLeft: "%" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={1} />
-          <Grid item xs={1} />
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          minHeight: "89vh",
+          alignItems: "center",
+          placeItems: "center",
+        }}
+      >
+        <Grid item xs={1} />
+        <Grid item xs={1} />
 
-          <Grid item xs={2}>
-            <UserInfoCard
-              currency={currency}
-              accountARS={accountARS}
-              accountUSD={accountUSD}
-              user={user}
-              handleForward={handleForward}
-            />
-            <ActivitiesCard />
-          </Grid>
+        <Grid item xs={2}>
+          <UserInfoCard
+            currency={currency}
+            accountARS={accountARS}
+            accountUSD={accountUSD}
+            user={user}
+            handleForward={handleForward}
+          />
+          <ActivitiesCard />
+        </Grid>
+        <Grid item xs={7}>
           <TransactionList />
         </Grid>
-      </Box>
+      </Grid>
     </>
   );
 }
