@@ -24,7 +24,6 @@ export default class AccountsApi {
     });
   }
 
-
   static async accountInfo(id) {
     return api.get(constroller + `/${id}`).catch((error) => {
       console.log(error);

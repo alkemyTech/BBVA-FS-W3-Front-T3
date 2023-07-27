@@ -62,26 +62,26 @@ export default class TransactionsApi {
     });
   }
 
-   static async send(data) {
-      let endpoint = endpoints[data.currency];
-      const body = {
-        amount: data.amount,
-        destinationAccountId: data.destinationAccountId,
-        description: data.description,
-      };
-      return new Promise((resolve, reject) => {
-        api
-          .post(constroller + endpoint, body)
-          .then((response) => {
-            toast.success("Transferencia realizada con éxito!", toastOptions);
-            resolve(response.data);
-          })
-          .catch((error) => {
-            toast.error(error.response.data.message, toastOptions);
-            reject(error);
-          });
-      });
-    }
+  static async send(data) {
+    let endpoint = endpoints[data.currency];
+    const body = {
+      amount: data.amount,
+      destinationAccountId: data.destinationAccountId,
+      description: data.description,
+    };
+    return new Promise((resolve, reject) => {
+      api
+        .post(constroller + endpoint, body)
+        .then((response) => {
+          toast.success("Transferencia realizada con éxito!", toastOptions);
+          resolve(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message, toastOptions);
+          reject(error);
+        });
+    });
+  }
 
   static async getTransactionsByUserId(id) {
     return new Promise((resolve, reject) => {
