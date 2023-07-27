@@ -88,8 +88,8 @@ export default function UserInfoCard({
           <Typography variant="h4" marginTop={-5}>
             <br />
             {currency === "ARS"
-              ? `$ ${accountARS.balance}`
-              : `u$s ${accountUSD.balance}`}
+              ? `$ ${accountARS.balance.toFixed(2)}`
+              : `u$s ${accountUSD.balance.toFixed(2)}`}
           </Typography>
           {currency === "ARS"
             ? `cbu: ${accountARS.cbu}`

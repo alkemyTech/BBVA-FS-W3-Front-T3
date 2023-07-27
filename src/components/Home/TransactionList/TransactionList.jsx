@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,17 +8,23 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import TransactionsApi from "../../../api/transactionsApi";
+import { useSelector } from "react-redux";
 
 export default function TransactionList() {
-  //lógica para las transaccionesApi daltante
+  const [transactions, setTransactions] = useState([]);
+  const user = useSelector((state) => state.user);
 
-  function generate(element) {
-    return [0, 1, 2, 3, 4, 5, 6].map((value) =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-  }
+  useEffect(() => {
+    TransactionsApi.getTransactionsByUserId(user.id)
+      .then((lista) => {
+        console.log(lista);
+        setTransactions(lista);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
 
   return (
     <Card
@@ -43,11 +49,11 @@ export default function TransactionList() {
           </Typography>
         </Grid>
         <List>
-          {generate(
-            <ListItem>
-              <ListItemText primary="Transaccion " />
-            </ListItem>,
-          )}
+          {transactions.map((transaction) => (
+            <ListItem key={transaction.id}>
+              <ListItemText primary={`Transacción ID: ${transaction.id}`} />
+            </ListItem>
+          ))}
         </List>
       </CardContent>
     </Card>

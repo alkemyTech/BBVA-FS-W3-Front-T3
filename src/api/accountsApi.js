@@ -2,7 +2,6 @@ import api from "./axios.js";
 import { toast } from "react-toastify";
 
 const constroller = "/accounts";
-const balanceEndpoint = "/balance";
 const accountByCBU = "/cbu/";
 const toastOptions = {
   position: "top-center",
@@ -25,11 +24,6 @@ export default class AccountsApi {
     });
   }
 
-  static async balance() {
-    return api.get(constroller + balanceEndpoint).then((response) => {
-      console.log(response);
-    });
-  }
 
   static async accountInfo(id) {
     return api.get(constroller + `/${id}`).catch((error) => {

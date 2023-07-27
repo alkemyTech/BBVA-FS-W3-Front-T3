@@ -13,6 +13,7 @@ const endpoints = {
   USD: "/sendUsd",
   DEPOSIT: "/deposit",
   PAY: "/payment",
+  USERID: "/userId/",
 };
 export default class TransactionsApi {
   static async deposit(data) {
@@ -61,22 +62,45 @@ export default class TransactionsApi {
     });
   }
 
-  static async send(data) {
-    let endpoint = endpoints[data.currency];
-    const body = {
-      amount: data.amount,
-      destinationAccountId: data.destinationAccountId,
-      description: data.description,
-    };
+   static async send(data) {
+      let endpoint = endpoints[data.currency];
+      const body = {
+        amount: data.amount,
+        destinationAccountId: data.destinationAccountId,
+        description: data.description,
+      };
+      return new Promise((resolve, reject) => {
+        api
+          .post(constroller + endpoint, body)
+          .then((response) => {
+            toast.success("Transferencia realizada con éxito!", toastOptions);
+            resolve(response.data);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message, toastOptions);
+            reject(error);
+          });
+      });
+    }
+
+  static async getTransactionsByUserId(id) {
     return new Promise((resolve, reject) => {
       api
-        .post(constroller + endpoint, body)
+        .get(constroller + endpoints.USERID + id)
         .then((response) => {
-          toast.success("Transferencia realizada con éxito!", toastOptions);
-          resolve(response.data);
+          resolve(response.data._embedded.transactionList);
         })
         .catch((error) => {
-          toast.error(error.response.data.message, toastOptions);
+          console.log(error);
+          if (!error.response.data.message && error.response.status === 403) {
+            //refrescar token
+            toast.error(
+              "Su sesión ha expirado, por favor vuelva a iniciar sesión",
+              toastOptions,
+            );
+          } else {
+            toast.error(error.response.data.message, toastOptions);
+          }
           reject(error);
         });
     });
