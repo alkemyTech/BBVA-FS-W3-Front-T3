@@ -1,7 +1,4 @@
-import {
-  Grid,
-  List,
-} from "@mui/material";
+import { Grid, List } from "@mui/material";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
 
 export default function TransactionList() {
