@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, CardContent, Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 export default function TransactionList() {
   //lógica para las transaccionesApi daltante
@@ -38,7 +46,7 @@ export default function TransactionList() {
           {generate(
             <ListItem>
               <ListItemText primary="Transaccion " />
-            </ListItem>
+            </ListItem>,
           )}
         </List>
       </CardContent>

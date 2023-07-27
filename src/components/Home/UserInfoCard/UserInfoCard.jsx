@@ -15,42 +15,41 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 export default function UserInfoCard({
- 
   currency,
   accountARS,
   accountUSD,
   user,
   handleForward,
 }) {
-    const navigate = useNavigate();
-    const StyledBadge = styled(Badge)(({ theme }) => ({
-        "& .MuiBadge-badge": {
-          backgroundColor: "#44b700",
-          color: "#44b700",
-          boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-          "&::after": {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            animation: "ripple 1.2s infinite ease-in-out",
-            border: "1px solid currentColor",
-            content: '""',
-          },
-        },
-        "@keyframes ripple": {
-          "0%": {
-            transform: "scale(.8)",
-            opacity: 1,
-          },
-          "100%": {
-            transform: "scale(2.4)",
-            opacity: 0,
-          },
-        },
-      }));
+  const navigate = useNavigate();
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      "&::after": {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",
+        animation: "ripple 1.2s infinite ease-in-out",
+        border: "1px solid currentColor",
+        content: '""',
+      },
+    },
+    "@keyframes ripple": {
+      "0%": {
+        transform: "scale(.8)",
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(2.4)",
+        opacity: 0,
+      },
+    },
+  }));
 
   return (
     <Card sx={{ minWidth: 275, marginTop: "50px" }}>
@@ -92,7 +91,9 @@ export default function UserInfoCard({
               ? `$ ${accountARS.balance}`
               : `u$s ${accountUSD.balance}`}
           </Typography>
-          {currency === "ARS" ? `cbu: ${accountARS.cbu}` : `cbu: ${accountUSD.cbu}`}
+          {currency === "ARS"
+            ? `cbu: ${accountARS.cbu}`
+            : `cbu: ${accountUSD.cbu}`}
           <br />
           <IconButton onClick={handleForward}>
             <br />
@@ -102,10 +103,20 @@ export default function UserInfoCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => {navigate("/depositos")}}>
+        <Button
+          size="small"
+          onClick={() => {
+            navigate("/depositos");
+          }}
+        >
           Ingresar Dinero
         </Button>
-        <Button size="small" onClick={() => {navigate("/transferencias")}}>
+        <Button
+          size="small"
+          onClick={() => {
+            navigate("/transferencias");
+          }}
+        >
           Transferir Dinero
         </Button>
       </CardActions>

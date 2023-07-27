@@ -11,7 +11,7 @@ import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "./DepositPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import   TransactionsApi   from "../../api/transactionsApi";
+import TransactionsApi from "../../api/transactionsApi";
 
 export default function DepositPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

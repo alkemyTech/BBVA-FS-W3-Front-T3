@@ -13,10 +13,9 @@ import { toast } from "react-toastify";
 import "./PaymentPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TransactionsApi  from "../../api/transactionsApi";
+import TransactionsApi from "../../api/transactionsApi";
 
 export default function PaymentPage() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const history = useNavigate();
   const [transferData, setTransferData] = useState({
@@ -72,7 +71,6 @@ export default function PaymentPage() {
     fontWeight: "bold",
   };
   const handleModalAccept = () => {
-
     TransactionsApi.pay({
       amount: transferData.amount,
       currency: transferData.currency,

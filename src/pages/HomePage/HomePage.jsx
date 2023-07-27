@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import {Grid,Box} from "@mui/material";
-import { useEffect,useState } from "react";
+import { Grid, Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import { addAccountArs, changeBalanceArs } from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
 import UserInfoCard from "../../components/Home/UserInfoCard/UserInfoCard";
 import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
 import TransactionList from "../../components/Home/TransactionList/TransactionList";
 import AccountsApi from "../../api/accountsApi";
-
-
 
 export default function HomePage() {
   const [currency, setCurrency] = useState("ARS");
