@@ -99,13 +99,13 @@ const ExchangeCard = () => {
             />
           </Grid>
         </Grid>
-        <Button variant="contained" color="primary" onClick={confirmarCambio}>
+        <Button variant="contained" color="primary" onClick={confirmarCambio} style={{ marginTop: '25px'}}>
           Confirmar Cambio
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleConfirmChange}>
+        <Button variant="contained" color="secondary" onClick={handleConfirmChange} style={{ marginTop: '25px' }}>
           {toUSD ? 'Cambiar a ARS' : 'Cambiar a USD'}
         </Button>
-        <Grid container spacing={2} style={{ marginTop: '150px' }}>
+        <Grid container spacing={2} style={{ marginTop: '100px'}}>
           <Grid item xs={6}>
             <Typography variant="h6" component="h3" gutterBottom>
               Valor del Dólar Compra
