@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import {Grid,Box} from "@mui/material";
 import { useEffect,useState } from "react";
-import { AccountApi } from "../../api/accountApi";
 import { addAccountArs, changeBalanceArs } from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
 import UserInfoCard from "../../components/Home/UserInfoCard/UserInfoCard";
 import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
 import TransactionList from "../../components/Home/TransactionList/TransactionList";
+import AccountsApi from "../../api/accountsApi";
 
 
 
@@ -18,7 +18,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    AccountApi.accountInfo(user.id).then((response) => {
+    AccountsApi.accountInfo(user.id).then((response) => {
       console.log(response.data);
       response.data.map((account) => {
         if (account.currency === "ARS") {
@@ -28,7 +28,7 @@ export default function HomePage() {
         }
       });
     });
-    AccountApi.balance().then((response) => {
+    AccountsApi.balance().then((response) => {
       dispatch(changeBalanceArs(response.data));
     });
   }, [dispatch, user]);
