@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import MiCuentaCard from "../../components/MiCuentaCard/MiCuentaCard";
 
 import "./MiCuentaPage.css";
