@@ -33,7 +33,7 @@ const Page = (props) => {
           }),
         );
       }
-    }, 200);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [dispatch, location]);
