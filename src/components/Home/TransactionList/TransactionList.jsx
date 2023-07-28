@@ -9,42 +9,48 @@ import Stack from '@mui/material/Stack';
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0); // Estado para la página actual
-  const [pageSize, setPageSize] = useState(10); // Estado para el tamaño de página
-  const [totalPages, setTotalPages] = useState(0); // Estado para el número total de páginas
+  const [initialLoading, setInitialLoading] = useState(true); // Estado para la carga inicial
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   const user = useSelector((state) => state.user);
 
-  // Función para actualizar la lista de transacciones cuando cambia la página
   const handlePageChange = (event, newPage) => {
-    setPage(newPage - 1); // Restamos 1 porque el componente Pagination cuenta las páginas desde 1, pero necesitamos contar desde 0 para la API.
+    setPage(newPage - 1);
   };
 
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
-    TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
-      .then((data) => {
-        console.log(data);
-        setTransactions(data?._embedded?.transactionList || []);
-        setTotalPages(data?.page?.totalPages || 0);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-    }, 300);
+      TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
+        .then((data) => {
+          console.log(data);
+          setTransactions(data?._embedded?.transactionList || []);
+          setTotalPages(data?.page?.totalPages || 0);
+          setLoading(false);
+          if (initialLoading) {
+            setInitialLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+          if (initialLoading) {
+            setInitialLoading(false);
+          }
+        });
+    }, 500);
     return () => clearTimeout(timer);
-  }, [user, page, pageSize]);
+  }, [user, page, pageSize, initialLoading]);
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <Box sx={{ width: 500 }}>
-       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+          <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
@@ -52,15 +58,16 @@ export default function TransactionList() {
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
       </Box>
     );
-    }
+  }
+
   return (
     <Grid container sx={{}}>
       <Grid item xs={10}>
-      <Stack spacing={2}>
+        <Stack spacing={2}>
           <Pagination
-            count={totalPages} // Total de páginas
-            page={page + 1} // Página actual
-            onChange={handlePageChange} // Función para manejar cambio de página
+            count={totalPages}
+            page={page + 1}
+            onChange={handlePageChange}
           />
         </Stack>
       </Grid>
@@ -70,7 +77,6 @@ export default function TransactionList() {
             <TransactionCard key={transaction.id} transaction={transaction} />
           ))}
         </List>
-        
       </Grid>
     </Grid>
   );

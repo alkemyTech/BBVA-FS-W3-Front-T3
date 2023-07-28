@@ -12,7 +12,7 @@ const Loader = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.4)",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
         zIndex: 9999,
       }}
     >
