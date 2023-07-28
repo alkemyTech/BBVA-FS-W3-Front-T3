@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "@mui/material";
-import { useEffect, useState } from "react";
-import { addAccountArs } from "../../redux/accountArsSlice";
+import {Grid} from "@mui/material";
+import { useEffect,useState } from "react";
+import { addAccountArs} from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
 import UserInfoCard from "../../components/Home/UserInfoCard/UserInfoCard";
 import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
@@ -41,6 +41,8 @@ export default function HomePage() {
           marginBottom: "60px",
           placeItems: "top",
           backgroundColor: "#EAEAEA",
+          minHeight: "87vh",
+          minWidth: "101.5vw",
         }}
       >
         <Grid item xs={1} />
