@@ -1,58 +1,42 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-import {
-  AppBar,
-  Toolbar,
-  Tooltip,
-  Box,
-  IconButton,
-  Avatar,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { AppBar, Toolbar, Tooltip, Box, IconButton, Avatar } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
 import { Grid, Tabs, Tab } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userSlice.js";
 import { toast } from "react-toastify";
-
 import logo from "../../assets/logo-no-background.svg";
 
 function stringToColor(string) {
   let hash = 0;
-  let i;
 
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
+  for (let i = 0; i < string.length; i += 1) {
     hash = string.charCodeAt(i) + ((hash << 5) - hash);
   }
 
   let color = "#";
 
-  for (i = 0; i < 3; i += 1) {
+  for (let i = 0; i < 3; i += 1) {
     const value = (hash >> (i * 8)) & 0xff;
     color += `00${value.toString(16)}`.slice(-2);
   }
-  /* eslint-enable no-bitwise */
 
   return color;
 }
 
 function stringAvatar(name) {
   if (!name || typeof name !== "string") {
-    // If the name is empty, null, undefined, or not a string, return a default avatar.
     return {
       sx: {
-        bgcolor: "gray", // Set the default background color for the avatar
+        bgcolor: "gray",
       },
-      children: "U", // You can set any default value here, like "U" for "Unknown."
+      children: "U",
     };
   }
-  const initials = name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
+
+  const initials = name.split(" ").map((part) => part[0]).join("");
 
   return {
     sx: {
@@ -67,10 +51,30 @@ export default function Header() {
   const [value, setValue] = useState(0);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
+
+  const routes = [
+    { label: "Inicio", path: "/inicio" },
+    { label: "Transferencias", path: "/transferencias" },
+    { label: "Depositos", path: "/depositos" },
+    { label: "Pagos", path: "/pagos" },
+    { label: "Inversiones", path: "/inversiones" },
+  ];
+
+  useEffect(() => {
+    const path = location.pathname;
+    const activeTab = routes.findIndex((route) => route.path === path);
+    setValue(activeTab !== -1 ? activeTab : 0);
+  }, [location]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleTabClick = (index) => {
+    const route = routes[index];
+    navigate(route.path);
   };
 
   const handleClickLogo = () => {
@@ -107,37 +111,12 @@ export default function Header() {
     navigate("/");
   };
 
-  const handleClickInicio = () => {
-    navigate("/inicio");
-  };
-
-  const handleClickTransferencias = () => {
-    navigate("/transferencias");
-  };
-
-  const handleClickDepositos = () => {
-    navigate("/depositos");
-  };
-
-  const handleClickPagos = () => {
-    navigate("/pagos");
-  };
-
-  const handleClickInversiones = () => {
-    navigate("/inversiones");
-  };
-
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "#1693a5" }}>
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>
-            <Box
-              component="img"
-              sx={{ height: 40 }}
-              alt="Your logo."
-              src={logo}
-            />
+            <Box component="img" sx={{ height: 40 }} alt="Your logo." src={logo} />
           </Grid>
           <Grid item xs={8}>
             <Tabs
@@ -146,23 +125,25 @@ export default function Header() {
               value={value}
               onChange={handleChange}
             >
-              <Tab label="Inicio" onClick={handleClickInicio} />
-              <Tab label="Transferencias" onClick={handleClickTransferencias} />
-              <Tab label="Depositos" onClick={handleClickDepositos} />
-              <Tab label="Pagos" onClick={handleClickPagos} />
-              <Tab label="Inversiones" onClick={handleClickInversiones} />
+              {routes.map((route, index) => (
+                <Tab
+                  key={index}
+                  label={route.label}
+                  onClick={() => handleTabClick(index)}
+                />
+              ))}
             </Tabs>
           </Grid>
           <Grid item xs={2} />
           <Grid item sx={{ placeContent: "left" }}>
-            {user ? ( // Check if user is not null or undefined
+            {user ? (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu}>
                   <Avatar {...stringAvatar(user.name)}></Avatar>
                 </IconButton>
               </Tooltip>
             ) : (
-              <Avatar /> // Replace with your custom fallback avatar component
+              <Avatar />
             )}
             <Menu
               sx={{ mt: "45px" }}
