@@ -46,7 +46,7 @@ export default function TransactionList() {
   if (initialLoading) {
     return (
       <Box sx={{ width: 500 }}>
-          <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
         <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
