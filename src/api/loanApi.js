@@ -10,16 +10,16 @@ const toastOptions = {
 };
 
 export class Loan {
-static async simulate(data) {
+  static async simulate(data) {
     return new Promise((resolve, reject) => {
+      console.log(data);
       api
         .post(constroller + "/simulate", data)
         .then((response) => {
-          
           resolve(response.data);
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           if (!error.response.data.message && error.response.status === 403) {
             //refrescar token
             toast.error(

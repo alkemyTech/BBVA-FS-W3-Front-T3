@@ -12,15 +12,14 @@ import "./Prestamo.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loan } from "../../api/loanApi";
+import { blue } from "@mui/material/colors";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [simulation, setSimulation] = useState({
-    amount: 0,
-    interest: 0.002,
-    total: 0,
-    closingDate: "",
-    creationDate: new Date().toLocaleDateString(),
+      monthlyPayment: 0,
+      totalPayment: 0,
+      interestRate: 0
   })
   const navigate = useNavigate();
 
@@ -37,29 +36,14 @@ export default function PrestamoPage() {
   });
 
   const onSubmit = (values) => {
-    const { amount, closingDate } = values;
-    const fechaCierre = new Date(closingDate);
-    const fechaActual = new Date();
-
-    if (fechaActual > fechaCierre) {
-      alert("La fecha de finalización debe ser mayor a la fecha actual.");
-      return;
-    }
-
-    let montoConInteres = parseFloat(amount); // Convertimos el monto a número
-
-    const mesesFaltantes =
-      (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
-      (fechaCierre.getMonth() - fechaActual.getMonth());
-
-    handleSimulation({amount:values.amount, term:mesesFaltantes})
+    
+    handleSimulation(values)
+      
       .then((data) => {
         setSimulation({
-          amount: data.amount,
-          interest: data.interest,
-          total: data.total,
-          closingDate: data.closingDate,
-          creationDate: data.creationDate,
+          monthlyPayment: data.monthlyPayment,
+          totalPayment: data.totalPayment,
+          interestRate: data.interestRate
         });
         setIsModalOpen(true);
       })
@@ -76,9 +60,24 @@ export default function PrestamoPage() {
 
 
   const handleSimulation = (values) => {
+    const { amount, closingDate } = values;
+    const fechaCierre = new Date(closingDate);
+    const fechaActual = new Date();
+
+    if (fechaActual > fechaCierre) {
+      alert("La fecha de finalización debe ser mayor a la fecha actual.");
+      return;
+    }
+
+    let montoConInteres = parseFloat(amount); // Convertimos el monto a número
+
+    const mesesFaltantes =
+      (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
+      (fechaCierre.getMonth() - fechaActual.getMonth());
+
     return Loan.simulate({
       amount: values.amount,
-      closingDate: values.closingDate,
+      term: mesesFaltantes
     });
   };
 
@@ -189,23 +188,57 @@ export default function PrestamoPage() {
             open={isModalOpen}
             content={
               <Grid container spacing={2}>
+                
                 <Grid item xs={12}>
                   <Typography variant="h6" className="tittle">
                     Realizaras un prestamo personal:
                   </Typography>
                 </Grid>
-                <Grid item xs={12}>
-                  <List>
-                    <ListItem>
-                      <ListItemText primary={`Monto a acreditar:`} />
-                      <ListItemText
-                        primary={` ${simulation.amount}`}
-                        className="name"
-                      />
-                    </ListItem>
-                  </List>
+
+                <Grid item xs={12} container>
+
+                  <Grid item xs={6}>
+                  <Typography >
+                  Pago mensual:
+                  </Typography>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                  <Typography >
+                  {simulation.monthlyPayment}
+                  </Typography>
+                  </Grid>
+
+                
+                  <Grid item xs={6}>
+                  <Typography>
+                  Pago total:
+                  </Typography>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                  <Typography>
+                   {simulation.totalPayment}
+                  </Typography>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                  <Typography>
+                  Interes:
+                  </Typography>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                  <Typography>
+                  {simulation.interestRate}
+                  </Typography>
+                  </Grid>
+
+                  
                 </Grid>
+
               </Grid>
+              
             }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
@@ -215,3 +248,4 @@ export default function PrestamoPage() {
     </Box>
   );
 }
+
