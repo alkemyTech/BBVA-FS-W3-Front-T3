@@ -13,7 +13,7 @@ import {
 
 export default function ActivitiesCard() {
   return (
-    <Card sx={{ maxWidth: 345, marginTop: "10px" }}>
+    <Card sx={{ width: "107%", marginTop: "10px" }}>
       <CardContent>
         <Grid
           sx={{

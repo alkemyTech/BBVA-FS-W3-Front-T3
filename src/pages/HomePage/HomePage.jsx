@@ -54,7 +54,7 @@ export default function HomePage() {
             user={user}
             handleForward={handleForward}
           />
-          <ActivitiesCard />
+          <ActivitiesCard/>
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={5} s={{}}>
