@@ -1,4 +1,4 @@
-import { Grid, List, Typography } from "@mui/material";
+import { Box, Grid, List, Skeleton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0); // Estado para la página actual
   const [pageSize, setPageSize] = useState(10); // Estado para el tamaño de página
   const [totalPages, setTotalPages] = useState(0); // Estado para el número total de páginas
@@ -19,17 +20,39 @@ export default function TransactionList() {
   };
 
   useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
     TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
       .then((data) => {
         console.log(data);
         setTransactions(data?._embedded?.transactionList || []);
         setTotalPages(data?.page?.totalPages || 0);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
+    }, 300);
+    return () => clearTimeout(timer);
   }, [user, page, pageSize]);
 
+  if (loading) {
+    return (
+      <Box sx={{ width: 500 }}>
+       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+       <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+      </Box>
+    );
+    }
   return (
     <Grid container sx={{}}>
       <Grid item xs={10}>
