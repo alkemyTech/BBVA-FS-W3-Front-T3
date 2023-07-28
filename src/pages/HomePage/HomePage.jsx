@@ -8,15 +8,12 @@ import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
 import TransactionList from "../../components/Home/TransactionList/TransactionList";
 import AccountsApi from "../../api/accountsApi";
 
-
-
 export default function HomePage() {
   const [currency, setCurrency] = useState("ARS");
   const accountARS = useSelector((state) => state.accountArs);
   const accountUSD = useSelector((state) => state.accountUsd);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     AccountsApi.accountInfo(user.id).then((response) => {
@@ -28,8 +25,6 @@ export default function HomePage() {
         }
       });
     });
-      
-
   }, [dispatch, user]);
 
   const handleForward = () => {
@@ -40,11 +35,12 @@ export default function HomePage() {
     <>
       <Grid
         container
-        spacing={2}
+        spacing={5}
         sx={{
-          minHeight: "89vh",
-          alignItems: "center",
-          placeItems: "center",
+          marginTop: "60px",
+          marginBottom: "60px",
+          placeItems: "top",
+          backgroundColor: "#EAEAEA",
         }}
       >
         <Grid item xs={1} />
@@ -60,7 +56,8 @@ export default function HomePage() {
           />
           <ActivitiesCard />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={1} />
+        <Grid item xs={5} s={{}}>
           <TransactionList />
         </Grid>
       </Grid>

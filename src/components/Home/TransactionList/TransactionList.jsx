@@ -1,15 +1,8 @@
+import { Grid, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import TransactionsApi from "../../../api/transactionsApi";
 import { useSelector } from "react-redux";
+import TransactionCard from "../TransactionList/TransactionCard.jsx";
+import TransactionsApi from "../../../api/transactionsApi.js";
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]);
@@ -25,37 +18,26 @@ export default function TransactionList() {
         console.log(error);
       });
   }, [user]);
-
   return (
-    <Card
-      sx={{
-        maxWidth: 500,
-        maxHeight: 600,
-        marginTop: "70px",
-        marginLeft: "50px",
-      }}
-    >
-      <CardContent>
-        <Grid
+    <Grid container sx={{}}>
+      <Grid item xs={10}>
+        <Typography
+          variant="h5"
           sx={{
+            textAlign: "center",
             backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
           }}
         >
-          <Typography variant="h5" component="div">
-            Transacciones recientes
-          </Typography>
-        </Grid>
+          Transacciones recientess
+        </Typography>
+      </Grid>
+      <Grid item xs={10}>
         <List>
           {transactions.map((transaction) => (
-            <ListItem key={transaction.id}>
-              <ListItemText primary={`Transacción ID: ${transaction.id}`} />
-            </ListItem>
+            <TransactionCard key={transaction.id} transaction={transaction} />
           ))}
         </List>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Grid>
   );
 }
