@@ -204,7 +204,7 @@ const LoginPage = () => {
                               name="remember"
                               onChange={handleChange}
                               checked={values.remember}
-                              sx={{ padding: 0}}
+                              sx={{ padding: 0 }}
                             />{" "}
                             Recordar
                           </Box>
@@ -216,8 +216,7 @@ const LoginPage = () => {
                             my: 2,
                             backgroundColor: "#1693a5",
                             alignSelf: "center",
-                            marginLeft: "35%" 
-                            
+                            marginLeft: "35%",
                           }}
                         >
                           Iniciar Sesión

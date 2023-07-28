@@ -30,15 +30,22 @@ export default function Footer() {
             >
               Creador
             </Typography>
-            <Typography sx={{fontSize: "0.9rem" }}>
-            <Typography variant="body2" align="center" sx={{color: "white"}}>
-            {"Copyright © "}
-            <Link href="http://localhost:5173/inicio" sx={{color: "white"}}>
-              ViKatCode
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-          </Typography>
+            <Typography sx={{ fontSize: "0.9rem" }}>
+              <Typography
+                variant="body2"
+                align="center"
+                sx={{ color: "white" }}
+              >
+                {"Copyright © "}
+                <Link
+                  href="http://localhost:5173/inicio"
+                  sx={{ color: "white" }}
+                >
+                  ViKatCode
+                </Link>{" "}
+                {new Date().getFullYear()}
+                {"."}
+              </Typography>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
