@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 
-import "./DepositPage.css";
+import "../TransaccionesPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TransactionsApi from "../../api/transactionsApi";

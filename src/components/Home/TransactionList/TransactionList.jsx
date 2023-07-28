@@ -1,55 +1,43 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Grid, List, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import TransactionCard from "../TransactionList/TransactionCard.jsx";
+import TransactionsApi from "../../../api/transactionsApi.js";
 
 export default function TransactionList() {
-  //lógica para las transaccionesApi daltante
+  const [transactions, setTransactions] = useState([]);
+  const user = useSelector((state) => state.user);
 
-  function generate(element) {
-    return [0, 1, 2, 3, 4, 5, 6].map((value) =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-  }
-
+  useEffect(() => {
+    TransactionsApi.getTransactionsByUserId(user.id)
+      .then((lista) => {
+        console.log(lista);
+        setTransactions(lista);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
   return (
-    <Card
-      sx={{
-        maxWidth: 500,
-        maxHeight: 600,
-        marginTop: "70px",
-        marginLeft: "50px",
-      }}
-    >
-      <CardContent>
-        <Grid
+    <Grid container sx={{}}>
+      <Grid item xs={10}>
+        <Typography
+          variant="h5"
           sx={{
+            textAlign: "center",
             backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
           }}
         >
-          <Typography variant="h5" component="div">
-            Transacciones recientes
-          </Typography>
-        </Grid>
+          Transacciones recientess
+        </Typography>
+      </Grid>
+      <Grid item xs={10}>
         <List>
-          {generate(
-            <ListItem>
-              <ListItemText primary="Transaccion " />
-            </ListItem>,
-          )}
+          {transactions.map((transaction) => (
+            <TransactionCard key={transaction.id} transaction={transaction} />
+          ))}
         </List>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Grid>
   );
 }

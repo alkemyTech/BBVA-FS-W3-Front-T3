@@ -7,12 +7,12 @@ import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText, formGroupClasses } from "@mui/material";
 import { toast } from "react-toastify";
-
-import "./Prestamo.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loan } from "../../api/loanApi";
 import { blue } from "@mui/material/colors";
+
+import "../TransaccionesPage.css";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,8 +108,8 @@ export default function PrestamoPage() {
   };
 
   return (
-    <Box className="prestamoBox">
-      <Box className="prestamoFormStyle">
+    <Box className="transactionBox">
+      <Box className="formStyle">
         <Typography
           sx={{
             fontSize: "2.5rem",

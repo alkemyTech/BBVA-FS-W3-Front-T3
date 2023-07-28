@@ -8,12 +8,11 @@ import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import GenericModal from "../../components/Modal/GenericModal";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
-import { toast } from "react-toastify";
-
-import "./PaymentPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TransactionsApi from "../../api/transactionsApi";
+
+import "../TransaccionesPage.css";
 
 export default function PaymentPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

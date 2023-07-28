@@ -1,8 +1,9 @@
 .transactionBox {
   display: flex;
   justify-content: center;
-  padding-top: 10rem;
-  padding-bottom: 10rem;
+  height: 89vh;
+  position: relative;
+  align-items: center;
 }
 
 .formStyle {
@@ -14,4 +15,5 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  max-height: 50%;
 }
