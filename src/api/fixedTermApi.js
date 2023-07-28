@@ -45,4 +45,22 @@ export class FixedTermApi {
         });
     });
   }
+
+  static async cancelFixedTermDeposit(id) {
+    return new Promise((resolve, reject) => {
+      api
+        .delete(constroller + `/${id}`)
+        .then((response) => {
+          toast.success(
+            "Plazo fijo cancelado con éxito. El dinero fue acreditado en su cuenta",
+            toastOptions,
+          );
+          resolve(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message, toastOptions);
+          reject(error);
+        });
+    });
+  }
 }
