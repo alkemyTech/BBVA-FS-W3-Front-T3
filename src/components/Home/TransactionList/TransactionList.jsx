@@ -1,55 +1,30 @@
-import React from "react";
 import {
-  Card,
-  CardContent,
   Grid,
   List,
-  ListItem,
-  ListItemText,
-  Typography,
 } from "@mui/material";
+import TransactionCard from "../TransactionList/TransactionCard.jsx";
 
 export default function TransactionList() {
-  //lógica para las transaccionesApi daltante
-
-  function generate(element) {
-    return [0, 1, 2, 3, 4, 5, 6].map((value) =>
-      React.cloneElement(element, {
-        key: value,
-      }),
-    );
-  }
-
   return (
-    <Card
+    <Grid
+      container
       sx={{
-        maxWidth: 500,
-        maxHeight: 600,
-        marginTop: "70px",
+        marginTop: "3vh",
         marginLeft: "50px",
+        padding: 2,
       }}
     >
-      <CardContent>
-        <Grid
-          sx={{
-            backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
-          }}
-        >
-          <Typography variant="h5" component="div">
-            Transacciones recientes
-          </Typography>
-        </Grid>
+      <Grid item xs={12}>
         <List>
-          {generate(
-            <ListItem>
-              <ListItemText primary="Transaccion " />
-            </ListItem>,
-          )}
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
+          <TransactionCard />
         </List>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Grid>
   );
 }

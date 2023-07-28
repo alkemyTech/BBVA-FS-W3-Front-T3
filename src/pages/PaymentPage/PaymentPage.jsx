@@ -94,8 +94,8 @@ export default function PaymentPage() {
   };
 
   return (
-    <Box className="transactionBox">
-      <Box className="formStyle">
+    <Box className="paymentBox">
+      <Box className="paymentFormStyle">
         <PaymentTitle>INGRESAR PAGO</PaymentTitle>
         <form onSubmit={formik.handleSubmit}>
           <TextField

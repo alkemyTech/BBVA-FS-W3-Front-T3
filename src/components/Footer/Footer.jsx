@@ -12,33 +12,46 @@ export default function Footer() {
       sx={{
         backgroundColor: "#1693a5",
         color: "white",
-        textAlign: "center",
-        position: "absolute",
+        position: "fixed",
         bottom: 0,
         left: 0,
+        textAlign: "center",
         width: "100%",
+        height: "auto",
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5} sx={{ paddingTop: 2 }}>
+        <Grid container spacing={5}>
           <Grid item xs={12} sm={4}>
-            <Typography  color="#c7ede8" gutterBottom>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
               Información
             </Typography>
-            <Typography  sx={{ color: "#a0ded6" , fontSize: "0.8rem"}}>
+            <Typography sx={{ color: "#a0ded6", fontSize: "0.9rem" }}>
               Somos ViKatCode y empezamos con este proyecto en julio de 2023
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography  color="#c7ede8" gutterBottom>
+          <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
               Contacto
             </Typography>
-            <Typography  sx={{ color: "#a0ded6" , fontSize: "0.8rem"}}>
-             vikatcode@bbva.com.ar
+            <Typography sx={{ color: "#a0ded6", fontSize: "0.9rem" }}>
+              vikatcode@bbva.com.ar
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4} >
-            <Typography color="#c7ede8" gutterBottom sx = {{fontSize: "1.1rem"}}>
+          <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
+            <Typography
+              color="#c7ede8"
+              gutterBottom
+              sx={{ fontSize: "1.1rem" }}
+            >
               Redes Sociales
             </Typography>
             <Link
@@ -50,7 +63,7 @@ export default function Footer() {
             <Link
               href="https://www.instagram.com/bbva_argentina/?hl=es-la"
               color="inherit"
-              sx={{pl: 1, pr: 1}}
+              sx={{ pl: 1, pr: 1 }}
             >
               <Instagram />
             </Link>
@@ -66,7 +79,6 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        
       </Container>
     </Box>
   );

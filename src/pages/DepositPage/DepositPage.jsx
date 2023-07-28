@@ -87,8 +87,8 @@ export default function DepositPage() {
   };
 
   return (
-    <Box className="transactionBox">
-      <Box className="formStyle">
+    <Box className="depositBox">
+      <Box className="depositFormStyle">
         <Typography
           sx={{
             fontSize: "2.5rem",
