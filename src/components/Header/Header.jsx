@@ -130,6 +130,7 @@ export default function Header() {
                   key={index}
                   label={route.label}
                   onClick={() => handleTabClick(index)}
+                  sx= {{color: "white"}}
                 />
               ))}
             </Tabs>
