@@ -28,10 +28,17 @@ export default function Footer() {
               gutterBottom
               sx={{ fontSize: "1.1rem" }}
             >
-              Información
+              Creador
             </Typography>
-            <Typography sx={{ color: "#a0ded6", fontSize: "0.9rem" }}>
-              Somos ViKatCode y empezamos con este proyecto en julio de 2023
+            <Typography sx={{fontSize: "0.9rem" }}>
+            <Typography variant="body2" align="center" sx={{color: "white"}}>
+            {"Copyright © "}
+            <Link href="http://localhost:5173/inicio" sx={{color: "white"}}>
+              ViKatCode
+            </Link>{" "}
+            {new Date().getFullYear()}
+            {"."}
+          </Typography>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4} sx={{ padding: 2 }}>
