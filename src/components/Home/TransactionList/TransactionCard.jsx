@@ -38,10 +38,15 @@ const icons = {
   ),
 };
 
+const formatDate = (dateString) => {
+  const [year, month, day] = dateString.split("-");
+  return `${day}-${month}-${year}`;
+};
+
 export default function TranscationCard({ transaction }) {
   const { type, amount, transactionDate } = transaction;
   const currency = transaction.account.currency;
-  const date = transactionDate.split("T")[0];
+  const date = formatDate(transactionDate.split("T")[0]);
   return (
     <Card
       sx={{
