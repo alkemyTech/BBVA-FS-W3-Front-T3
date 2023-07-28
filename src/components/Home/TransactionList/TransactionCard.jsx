@@ -69,7 +69,9 @@ export default function TranscationCard({ transaction }) {
             }}
           >
             {icons[type]}
-            <Typography>{type}</Typography>
+            <Typography 
+             paddingLeft={"10px"}
+             >{type}</Typography>
           </Grid>
           <Grid
             item

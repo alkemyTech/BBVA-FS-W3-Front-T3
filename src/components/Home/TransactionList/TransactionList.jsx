@@ -67,6 +67,7 @@ export default function TransactionList() {
           <Pagination
             count={totalPages}
             page={page + 1}
+            color="primary" 
             onChange={handlePageChange}
           />
         </Stack>
