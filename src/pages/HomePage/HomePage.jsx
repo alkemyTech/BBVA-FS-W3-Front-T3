@@ -41,6 +41,8 @@ export default function HomePage() {
           marginBottom: "60px",
           placeItems: "top",
           backgroundColor: "#EAEAEA",
+          minHeight: "87vh",
+          minWidth: "101.5vw",
         }}
       >
         <Grid item xs={1} />
