@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {Grid,Box} from "@mui/material";
+import {Grid} from "@mui/material";
 import { useEffect,useState } from "react";
 import { addAccountArs} from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
