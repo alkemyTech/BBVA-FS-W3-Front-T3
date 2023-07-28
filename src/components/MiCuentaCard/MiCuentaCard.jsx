@@ -17,11 +17,13 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../redux/userSlice';
 import { toast } from 'react-toastify';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function UserInfoCard() {
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
@@ -47,6 +49,7 @@ export default function UserInfoCard() {
         content: '""',
       },
     },
+
     "@keyframes ripple": {
       "0%": {
         transform: "scale(.8)",
@@ -96,10 +99,10 @@ export default function UserInfoCard() {
   };
 
   return (
-    <Card sx={{ minWidth: 275, marginTop: "50px" }}>
-      <CardHeader
+    <Card sx={{ minWidth: 275, marginTop: "50px", }}>
+      <CardHeader 
         title="Datos Usuario"
-        titleTypographyProps={{ variant: "h5" }}
+        titleTypographyProps={{ variant: "h4" }}
         avatar={
           <StyledBadge
             overlap="circular"
@@ -115,7 +118,7 @@ export default function UserInfoCard() {
         }
       />
       <CardContent>
-        <Grid
+        <Grid container
           sx={{
             backgroundColor: "#E9FEFA",
             margin: -2,
@@ -123,27 +126,48 @@ export default function UserInfoCard() {
             marginBottom: 1,
           }}
         >
+          <Grid item xs= {6}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {/* Contenido de la tarjeta... */}
           </Typography>
           <Typography variant="h5" component="div">
-            Nombre y Apellido
+            Nombre 
+          </Typography>
+         
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            Diego 
+          </Typography>
+          </Grid>
+          <Grid item xs= {6}>
+          <IconButton aria-label="delete" color="primary" onClick={handleOpenNameModal}>
+          <EditIcon/>
+        </IconButton >
+        </Grid>
+       
+        <Grid item xs= {6}>
+          <Typography variant="h5" component="div">
+            Apellido
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Diego Aprosoff
+            Aprosoff
           </Typography>
+          </Grid>
+          <Grid item xs= {6}>
+          <IconButton aria-label="delete" color="primary" onClick={handleOpenNameModal}>
+          <EditIcon/>
+        </IconButton >
+        </Grid>
+          <Grid item xs= {6}>
           <Typography variant="h5" component="div">
             Email
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             user@mail.com
           </Typography>
+          </Grid>
         </Grid>
       </CardContent>
       <CardActions>
-        <Button variant="text" onClick={handleOpenNameModal}>
-          Cambiar Nombre y/o Apellido
-        </Button>
         <Button variant="text" onClick={handleOpenPasswordModal}>
           Cambiar Contraseña
         </Button>
@@ -234,7 +258,23 @@ export default function UserInfoCard() {
               <DialogContent>
                 <Field
                   as={TextField}
-                  label="Ingrese Nueva Contraseña"
+                  label="Ingrese su contraseña anterior"
+                  variant="filled"
+                  fullWidth
+                  name="newPassword"
+                  type="password"
+                />
+                <Field
+                  as={TextField}
+                  label="Ingrese su nueva contraseña"
+                  variant="filled"
+                  fullWidth
+                  name="newPassword"
+                  type="password"
+                />
+                <Field
+                  as={TextField}
+                  label="Repita su nueva contraseña"
                   variant="filled"
                   fullWidth
                   name="newPassword"
