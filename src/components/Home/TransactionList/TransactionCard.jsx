@@ -1,14 +1,47 @@
-import {
-  Avatar,
-  Card,
-  CardActionArea,
-  CardHeader,
-  IconButton,
-  Typography,
-} from "@mui/material";
+/* eslint-disable react/prop-types */
+import { Grid, Card, CardActionArea, Typography } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
-export default function TranscationCard() {
+const colors = {
+  INCOME: "#1ea49d",
+  PAYMENT: "#ff2c69",
+  DEPOSIT: "#cbe65b",
+};
+
+const icons = {
+  INCOME: (
+    <AddCircleIcon
+      fontSize="large"
+      sx={{
+        color: colors.INCOME,
+      }}
+    />
+  ),
+  PAYMENT: (
+    <RemoveCircleIcon
+      fontSize="large"
+      sx={{
+        color: colors.PAYMENT,
+      }}
+    />
+  ),
+  DEPOSIT: (
+    <DownloadForOfflineIcon
+      fontSize="large"
+      sx={{
+        color: colors.DEPOSIT,
+      }}
+    />
+  ),
+};
+
+export default function TranscationCard({ transaction }) {
+  const { type, amount, transactionDate } = transaction;
+  const currency = transaction.account.currency;
+  const date = transactionDate.split("T")[0];
   return (
     <Card
       sx={{
@@ -17,17 +50,70 @@ export default function TranscationCard() {
       }}
     >
       <CardActionArea>
-        <CardContent>
-          <Typography
-            gutterBottom
-            align="center"
-            color="green"
-            variant="h6"
-            sx={{ letterSpacing: "0.4rem" }}
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            placeItems: "center",
+            pl: 1,
+            pr: 1,
+          }}
+        >
+          <Grid
+            item
+            xs={3}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            $1.200
-          </Typography>
-        </CardContent>
+            {icons[type]}
+            <Typography>{type}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>{`${currency}`}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <CardContent>
+              <Typography
+                align="center"
+                color={
+                  type === "PAYMENT" ? colors["PAYMENT"] : colors["INCOME"]
+                }
+                sx={{ letterSpacing: "0.2rem" }}
+              >
+                {`$${amount}`}
+              </Typography>
+            </CardContent>
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              display: "flex",
+              justifyContent: "right",
+              alignContent: "center",
+            }}
+          >
+            <Typography align="center">{date}</Typography>
+          </Grid>
+        </Grid>
       </CardActionArea>
     </Card>
   );
