@@ -88,7 +88,7 @@ export default class TransactionsApi {
         page: page,
         size: pageSize,
       };
-  
+
       api
         .get(constroller + endpoints.USERID + id, { params: params })
         .then((response) => {
@@ -100,7 +100,7 @@ export default class TransactionsApi {
             // Refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);

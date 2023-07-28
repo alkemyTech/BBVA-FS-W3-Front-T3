@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
 import TransactionsApi from "../../../api/transactionsApi.js";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]);
@@ -46,16 +46,46 @@ export default function TransactionList() {
   if (initialLoading) {
     return (
       <Box sx={{ width: 500 }}>
-          <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
-        <Skeleton animation="wave" sx={{margin:"1px", padding:"35px", width:"530px"}} />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
+        <Skeleton
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+        />
       </Box>
     );
   }
@@ -67,7 +97,7 @@ export default function TransactionList() {
           <Pagination
             count={totalPages}
             page={page + 1}
-            color="primary" 
+            color="primary"
             onChange={handlePageChange}
           />
         </Stack>

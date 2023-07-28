@@ -187,13 +187,9 @@ export default function DepositPage() {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title={"Realizaras un deposito a tu propia cuenta:"}
             content={
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Realizaras un deposito a tu propia cuenta:
-                  </Typography>
-                </Grid>
                 <Grid item xs={12}>
                   <List>
                     <ListItem>

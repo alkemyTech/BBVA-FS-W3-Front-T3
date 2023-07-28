@@ -1,8 +1,9 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { Card, CardHeader } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
 
 const StyledModal = styled(Modal)(({ theme }) => ({
   display: "flex",
@@ -13,10 +14,9 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   margin: "auto",
 }));
 
-const ModalContent = styled(Box)(({ theme }) => ({
+const ModalContent = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[5],
-  padding: theme.spacing(2, 4, 3),
   borderRadius: "8px",
   fontWeight: "bold",
 }));
@@ -30,17 +30,21 @@ const GenericModal = ({ open, title, content, onClose, onAccept }) => {
       aria-describedby="modal-description"
     >
       <ModalContent>
-        <Typography variant="h6" id="modal-title">
-          {title}
-        </Typography>
-        <Typography variant="body1" id="modal-description">
-          {content}
-        </Typography>
-        <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button onClick={onClose} variant="outlined">
+        <CardHeader
+          title={title}
+          titleTypographyProps={{
+            variant: "h5",
+            align: "center",
+            color: "white",
+          }}
+          sx={{ backgroundColor: "#45B5C4" }}
+        />
+        <CardContent id="modal-description">{content}</CardContent>
+        <Box display="flex" justifyContent="space-between" m={2}>
+          <Button onClick={onClose} variant="outlined" color="error">
             Cancelar
           </Button>
-          <Button onClick={onAccept} variant="contained" color="primary">
+          <Button onClick={onAccept} variant="contained" color="secondary">
             Aceptar
           </Button>
         </Box>
