@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 const CustomButton = styled(Button)(({ theme }) => ({
   padding: "8px 16px",
@@ -110,10 +111,13 @@ export default function UserInfoCard({
           </Typography>
           <br />
           <br />
-          <CustomButton onClick={handleForward}>
-            <ArrowBack /> {currency === "ARS" ? "PESOS" : "DOLARES"}
-            <ArrowForward />
-          </CustomButton>
+          
+          <CurrencyExchangeIcon fontSize="large" color="primary" onClick={handleForward} sx={{position:"fixed", top:"390px"}}/>
+            <Typography  variant="h6" fontSize={"16px" } sx={{paddingTop:"5px"}}>
+            {currency === "ARS" ? "PESOS" : "DOLARES"}
+            </Typography>
+
+            
         </Typography>
       </CardContent>
       <CardActions>
