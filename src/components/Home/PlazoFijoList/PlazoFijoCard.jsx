@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Button,
   Card,
@@ -10,11 +11,18 @@ import {
 import CardContent from "@mui/material/CardContent";
 import GenericModal from "../../Modal/GenericModal.jsx";
 import { useState } from "react";
+import { FixedTermApi } from "../../../api/fixedTermApi.js";
+import { useNavigate } from "react-router-dom";
 
 export default function PlazoFijoCard({ fixedTerm }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   const handleModalAccept = () => {
-    setIsModalOpen(false);
+    FixedTermApi.cancelFixedTermDeposit(fixedTerm.id).then(() => {
+      setIsModalOpen(false);
+      navigate("/inicio");
+    });
   };
 
   const handleModalCancel = () => {
@@ -93,11 +101,8 @@ export default function PlazoFijoCard({ fixedTerm }) {
             content={
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography gutterBottom variant="h6">
-                    Se cancelará el plazo fijo de:
-                  </Typography>
-                  <Typography gutterBottom variant="body1" align="center">
-                    {fixedTerm.account.currency} ${fixedTerm.amount}
+                  <Typography gutterBottom variant="h5" align="center">
+                    ¿Esta seguro de cancelar el plazo fijo?
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
