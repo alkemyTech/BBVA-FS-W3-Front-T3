@@ -383,6 +383,12 @@ export default function UserInfoCard() {
         onClose={handleCloseDeletePasswordModal}
       >
         <DialogTitle>¿Está seguro que quiere eliminar su cuenta?</DialogTitle>
+
+        <Card>
+          <CardContent sx={{textAlign:"center"}}>
+            <img width={"250px"} src="/src/assets/sadCat.png" alt="" />
+            </CardContent>
+        </Card>
         <DialogActions
           sx={{
             display: "flex",

@@ -37,6 +37,10 @@ export default function HomePage() {
     setCurrency(currency === "ARS" ? "USD" : "ARS");
   };
 
+  const handleCurrencyChange = (currency) => {
+    setCurrency(currency);
+  };
+
   return (
     <>
       <Grid
@@ -62,11 +66,11 @@ export default function HomePage() {
             user={user}
             handleForward={handleForward}
           />
-          <ActivitiesCard handleClickPlazoFijo={handleClickPlazoFijo} />
+          <ActivitiesCard handleClickPlazoFijo={handleClickPlazoFijo}  onChangeCurrency={handleCurrencyChange}  />
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={5} s={{}}>
-          {clickedPF ? <PlazoFIjoCardList /> : <TransactionList />}
+          {clickedPF ? <PlazoFIjoCardList /> : <TransactionList currency={currency} />}
         </Grid>
       </Grid>
     </>

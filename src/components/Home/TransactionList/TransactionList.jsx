@@ -6,7 +6,7 @@ import TransactionsApi from "../../../api/transactionsApi.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-export default function TransactionList() {
+export default function TransactionList({currency}) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true); // Estado para la carga inicial
@@ -25,7 +25,11 @@ export default function TransactionList() {
       TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
         .then((data) => {
           console.log(data);
-          setTransactions(data?._embedded?.transactionList || []);
+          // Filtrar las transacciones según la moneda seleccionada
+          const filteredTransactions = data?._embedded?.transactionList?.filter((transaction) => {
+            return transaction.account.currency === currency;
+          }) || [];
+          setTransactions(filteredTransactions);
           setTotalPages(data?.page?.totalPages || 0);
           setLoading(false);
           if (initialLoading) {
@@ -41,7 +45,7 @@ export default function TransactionList() {
         });
     }, 500);
     return () => clearTimeout(timer);
-  }, [user, page, pageSize, initialLoading]);
+  }, [user, page, pageSize, currency, initialLoading]);
 
   if (initialLoading) {
     return (
