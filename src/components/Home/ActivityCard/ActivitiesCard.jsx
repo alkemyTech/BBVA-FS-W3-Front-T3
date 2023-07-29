@@ -10,8 +10,15 @@ import {
   ListItemText,
   List,
 } from "@mui/material";
+import { useState } from "react";
 
-export default function ActivitiesCard({ handleClickPlazoFijo }) {
+export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency  }) {
+  const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para la moneda seleccionada
+
+  const handleCurrencyChange = (currency) => {
+    setSelectedCurrency(currency);
+    onChangeCurrency(currency); // Comunicar el cambio de moneda al componente padre (HomePage)
+  };
   return (
     <Card sx={{ width: "107%", marginTop: "10px" }}>
       <CardContent>
@@ -34,7 +41,7 @@ export default function ActivitiesCard({ handleClickPlazoFijo }) {
             bgcolor: "background.paper",
           }}
         >
-          <CardActionArea>
+          <CardActionArea onClick={() => handleCurrencyChange("ARS")}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
@@ -45,7 +52,7 @@ export default function ActivitiesCard({ handleClickPlazoFijo }) {
               />
             </ListItem>
           </CardActionArea>
-          <CardActionArea>
+          <CardActionArea onClick={() => handleCurrencyChange("USD")}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
