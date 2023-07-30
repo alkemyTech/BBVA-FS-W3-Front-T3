@@ -11,14 +11,19 @@ import {
   List,
 } from "@mui/material";
 import { useState } from "react";
+import PetsIcon from '@mui/icons-material/Pets';
 
-export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency  }) {
+export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency,onShowAllTransactions }) {
   const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para la moneda seleccionada
 
-  const handleCurrencyChange = (currency) => {
-    setSelectedCurrency(currency);
-    onChangeCurrency(currency); // Comunicar el cambio de moneda al componente padre (HomePage)
+
+
+  const handleShowAllTransactions = () => {
+    setSelectedCurrency(""); // Reiniciar el filtro de moneda seleccionado
+    onShowAllTransactions(); // Comunicar al componente padre (HomePage) que se deben mostrar todas las transacciones
   };
+ 
+
   return (
     <Card sx={{ width: "107%", marginTop: "10px" }}>
       <CardContent>
@@ -41,29 +46,29 @@ export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency 
             bgcolor: "background.paper",
           }}
         >
-          <CardActionArea onClick={() => handleCurrencyChange("ARS")}>
+          <CardActionArea onClick={handleShowAllTransactions}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+              <PetsIcon/> 
               </ListItemAvatar>
               <ListItemText
-                primary="Transacciones en Pesos"
-                secondary="actividad en $ realizada"
+                primary="Todos mis movimientos"
+            
               />
             </ListItem>
           </CardActionArea>
-          <CardActionArea onClick={() => handleCurrencyChange("USD")}>
+          <CardActionArea>
             <ListItem>
               <ListItemAvatar>
-                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+                 <PetsIcon/> 
               </ListItemAvatar>
-              <ListItemText primary="Transacciones en Dolares" />
+              <ListItemText primary="Inversiones" />
             </ListItem>
           </CardActionArea>
           <CardActionArea onClick={handleClickPlazoFijo}>
             <ListItem>
               <ListItemAvatar>
-                <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
+              <PetsIcon/> 
               </ListItemAvatar>
               <ListItemText primary="Plazos Fijos" />
             </ListItem>
