@@ -20,6 +20,7 @@ const ContentBox = styled(Box)(() => ({
 const JWTRoot = styled(Box)(() => ({
   background: "#45b5c4",
   borderRadius: 12,
+  height: "98vh",
   display: "flex",
   justifyContent: "center", // Centrar contenido horizontalmente
   alignItems: "center", // Centrar contenido verticalmente
