@@ -82,21 +82,25 @@ export default class TransactionsApi {
         });
     });
   }
-
-  static async getTransactionsByUserId(id) {
+  static async getTransactionsByUserId(id, page = 0, pageSize = 10) {
     return new Promise((resolve, reject) => {
+      const params = {
+        page: page,
+        size: pageSize,
+      };
+  
       api
-        .get(constroller + endpoints.USERID + id)
+        .get(constroller + endpoints.USERID + id, { params: params })
         .then((response) => {
-          resolve(response.data._embedded.transactionList);
+          resolve(response.data);
         })
         .catch((error) => {
           console.log(error);
           if (!error.response.data.message && error.response.status === 403) {
-            //refrescar token
+            // Refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions,
+              toastOptions
             );
           } else {
             toast.error(error.response.data.message, toastOptions);
