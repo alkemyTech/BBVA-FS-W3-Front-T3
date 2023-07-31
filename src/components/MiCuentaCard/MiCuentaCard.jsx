@@ -385,9 +385,9 @@ export default function UserInfoCard() {
         <DialogTitle>¿Está seguro que quiere eliminar su cuenta?</DialogTitle>
 
         <Card>
-          <CardContent sx={{textAlign:"center"}}>
+          <CardContent sx={{ textAlign: "center" }}>
             <img width={"250px"} src="/src/assets/sadCat.png" alt="" />
-            </CardContent>
+          </CardContent>
         </Card>
         <DialogActions
           sx={{

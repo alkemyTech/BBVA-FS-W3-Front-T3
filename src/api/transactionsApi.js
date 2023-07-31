@@ -29,7 +29,7 @@ export default class TransactionsApi {
             //refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);
@@ -52,7 +52,7 @@ export default class TransactionsApi {
             //refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);
@@ -101,7 +101,7 @@ export default class TransactionsApi {
             // Refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);
@@ -130,7 +130,7 @@ export default class TransactionsApi {
             // Refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);

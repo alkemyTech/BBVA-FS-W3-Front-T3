@@ -23,9 +23,16 @@ export const accountUsdSlice = createSlice({
     changeBalanceUsd: (state, action) => {
       state.balance = action.payload;
     },
+    logoutAccountUsd: (state) => {
+      state.id = 0;
+      state.balance = 0;
+      state.cbu = "";
+      state.transactionLimit = 0;
+    },
   },
 });
 
-export const { addAccountUsd, changeBalanceUsd } = accountUsdSlice.actions;
+export const { addAccountUsd, changeBalanceUsd, logoutAccountUsd } =
+  accountUsdSlice.actions;
 
 export default accountUsdSlice.reducer;

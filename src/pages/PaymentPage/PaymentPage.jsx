@@ -186,7 +186,6 @@ export default function PaymentPage() {
             title="Confirmación de pago"
             content={
               <Grid container spacing={2}>
-            
                 <Grid item xs={12}>
                   <List>
                     <ListItem>

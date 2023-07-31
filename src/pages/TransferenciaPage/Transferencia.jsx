@@ -7,7 +7,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import GenericModal from "../../components/Modal/GenericModal";
-import {CircularProgress, Grid, List, ListItem, ListItemText } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
@@ -15,7 +21,6 @@ import TransactionsApi from "../../api/transactionsApi.js";
 import "../TransaccionesPage.css";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-
 
 const Transferencia = () => {
   const navigate = useNavigate();
@@ -102,8 +107,6 @@ const Transferencia = () => {
     });
 
     setIsModalOpen(true);
-
-    
   };
 
   const handleModalAccept = () => {
@@ -112,7 +115,6 @@ const Transferencia = () => {
       setIsModalOpen(false);
       navigate("/inicio");
       resetCbuInfo();
-      
     });
   };
 
@@ -139,8 +141,6 @@ const Transferencia = () => {
   const StyledDiv = styled("div")({
     display: "inline-block",
     marginRight: "15px", // Ajusta el valor para más o menos espacio horizontal
-    
-    
   });
 
   return (
@@ -176,10 +176,13 @@ const Transferencia = () => {
                 <>
                   {isLoading ? (
                     <CircularProgress />
-                  ) : cbuInfo.user.firstName && cbuInfo.user.lastName && cbuInfo.currency ? (
+                  ) : cbuInfo.user.firstName &&
+                    cbuInfo.user.lastName &&
+                    cbuInfo.currency ? (
                     <>
                       <StyledDiv>
-                        <b>Destinatario:</b> {cbuInfo.user.firstName} {cbuInfo.user.lastName}
+                        <b>Destinatario:</b> {cbuInfo.user.firstName}{" "}
+                        {cbuInfo.user.lastName}
                       </StyledDiv>
                       <StyledDiv>
                         <b>Cuenta:</b> {cbuInfo.currency}
@@ -288,94 +291,93 @@ const Transferencia = () => {
             open={isModalOpen}
             title={"Confirmación de tranferencia:"}
             content={
-              <Grid container spacing={2} sx={{ width:"500px"}} >
-              {/* First column */}
-              <Grid item xs={5}>
-                <List>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={5}>
-                        <ListItemText primary={`Destinatario:`} />
+              <Grid container spacing={2} sx={{ width: "500px" }}>
+                {/* First column */}
+                <Grid item xs={5}>
+                  <List>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={5}>
+                          <ListItemText primary={`Destinatario:`} />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={5}>
-                        <ListItemText primary={`CBU:`} />
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={5}>
+                          <ListItemText primary={`CBU:`} />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={5} >
-                        <ListItemText primary={`Monto:`} />
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={5}>
+                          <ListItemText primary={`Monto:`} />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={5}>
-                        <ListItemText primary={`Motivo:`} />
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={5}>
+                          <ListItemText primary={`Motivo:`} />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                </List>
+                    </ListItem>
+                  </List>
+                </Grid>
+
+                {/* Second column */}
+                <Grid item xs={7}>
+                  <List>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={7}>
+                          <ListItemText
+                            primary={` ${userData.name}`}
+                            className="name"
+                          />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={7}>
+                          <ListItemText
+                            primary={` ${userData.cbu}`}
+                            className="name"
+                          />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={7}>
+                          <ListItemText
+                            primary={` ${transferData.amount} ${transferData.currency}`}
+                            className="name"
+                          />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                    <ListItem>
+                      <Grid container>
+                        <Grid item xs={7}>
+                          <ListItemText
+                            primary={` ${transferData.description}`}
+                            className="name"
+                          />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  </List>
+                </Grid>
               </Grid>
-            
-              {/* Second column */}
-              <Grid item xs={7}>
-                <List>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={7}>
-                        <ListItemText
-                          primary={` ${userData.name}`}
-                          className="name"
-                        />
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={7}>
-                        <ListItemText
-                          primary={` ${userData.cbu}`}
-                          className="name"
-                        />
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={7}>
-                        <ListItemText
-                          primary={` ${transferData.amount} ${transferData.currency}`}
-                          className="name"
-                        />
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem>
-                    <Grid container>
-                      <Grid item xs={7}>
-                        <ListItemText
-                          primary={` ${transferData.description}`}
-                          className="name"
-                        />
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
             }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
           />
         </div>
       )}
-      
     </Box>
   );
 };

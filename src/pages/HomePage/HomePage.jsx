@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { addAccountArs } from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
@@ -17,6 +17,7 @@ export default function HomePage() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [showAllTransactions, setShowAllTransactions] = useState(false); // Nuevo estado para mostrar todas las transacciones
+  const [isloading, setIsLoading] = useState(true);
 
   const handleClickPlazoFijo = () => {
     setClickedPF(true);
@@ -31,6 +32,7 @@ export default function HomePage() {
           dispatch(addAccountUsd(account));
         }
       });
+      setIsLoading(false);
     });
   }, [dispatch, user]);
 
@@ -68,21 +70,34 @@ export default function HomePage() {
         <Grid item xs={1} />
 
         <Grid item xs={2}>
-          <UserInfoCard
-            currency={currency}
-            accountARS={accountARS}
-            accountUSD={accountUSD}
-            user={user}
-            handleForward={handleForward}
-            onChangeCurrency={handleCurrencyChange} 
+          {isloading ? (
+            <Skeleton variant="rectangular" width={300} height={300} />
+          ) : (
+            <UserInfoCard
+              currency={currency}
+              accountARS={accountARS}
+              accountUSD={accountUSD}
+              user={user}
+              handleForward={handleForward}
+              onChangeCurrency={handleCurrencyChange}
+            />
+          )}
+          <ActivitiesCard
+            handleClickPlazoFijo={handleClickPlazoFijo}
+            onChangeCurrency={handleCurrencyChange}
+            onShowAllTransactions={handleShowAllTransactions}
           />
-          <ActivitiesCard handleClickPlazoFijo={handleClickPlazoFijo}
-                          onChangeCurrency={handleCurrencyChange} 
-                          onShowAllTransactions={handleShowAllTransactions}  /> 
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={5} s={{}}>
-          {clickedPF ? <PlazoFIjoCardList /> : <TransactionList currency={currency} showAllTransactions={showAllTransactions} />}
+          {clickedPF ? (
+            <PlazoFIjoCardList />
+          ) : (
+            <TransactionList
+              currency={currency}
+              showAllTransactions={showAllTransactions}
+            />
+          )}
         </Grid>
       </Grid>
     </>

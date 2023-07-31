@@ -108,7 +108,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
           animation="wave"
           sx={{ margin: "1px", padding: "35px", maxWidth: "530px" }}
         />
-      )
+      ),
     );
 
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
@@ -125,7 +125,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
     console.log("editedDescription:", editedDescription);
     TransactionsApi.patchTransactionDescription(
       selectedTransaction.id,
-      editedDescription
+      editedDescription,
     )
       .then((response) => {
         console.log("response:", response);

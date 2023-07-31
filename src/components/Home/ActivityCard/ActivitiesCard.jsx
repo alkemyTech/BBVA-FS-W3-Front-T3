@@ -27,7 +27,13 @@ export default function ActivitiesCard({
   };
 
   return (
-    <Card sx={{ width: "105%", marginTop: "10px",  boxShadow:"5px 5px 15px #CFCFCF" }}>
+    <Card
+      sx={{
+        width: "105%",
+        marginTop: "10px",
+        boxShadow: "5px 5px 15px #CFCFCF",
+      }}
+    >
       <CardContent>
         <Grid
           sx={{
@@ -51,7 +57,7 @@ export default function ActivitiesCard({
           <CardActionArea onClick={handleShowAllTransactions}>
             <ListItem>
               <ListItemAvatar>
-                <PetsIcon sx={{color:"#1693a5"}} />
+                <PetsIcon sx={{ color: "#1693a5" }} />
               </ListItemAvatar>
               <ListItemText primary="Todos mis movimientos" />
             </ListItem>
@@ -59,7 +65,7 @@ export default function ActivitiesCard({
           <CardActionArea>
             <ListItem>
               <ListItemAvatar>
-                <PetsIcon sx={{color:"#1693a5"}}/>
+                <PetsIcon sx={{ color: "#1693a5" }} />
               </ListItemAvatar>
               <ListItemText primary="Inversiones" />
             </ListItem>
@@ -67,7 +73,7 @@ export default function ActivitiesCard({
           <CardActionArea onClick={handleClickPlazoFijo}>
             <ListItem>
               <ListItemAvatar>
-                <PetsIcon sx={{color:"#1693a5"}}/>
+                <PetsIcon sx={{ color: "#1693a5" }} />
               </ListItemAvatar>
               <ListItemText primary="Plazos Fijos" />
             </ListItem>

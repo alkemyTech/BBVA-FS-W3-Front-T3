@@ -46,7 +46,12 @@ const EditModal = ({ isOpen, onClose, onSave, currentDescription }) => {
           variant="outlined"
         />
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={handleSave} variant="contained" color="secondary" sx={{marginRight:"10px"}}>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            color="secondary"
+            sx={{ marginRight: "10px" }}
+          >
             Save
           </Button>
           <Button onClick={onClose} variant="outlined" color="error">
