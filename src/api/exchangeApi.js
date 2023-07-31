@@ -33,7 +33,13 @@ export default class TradeApi {
     return new Promise((resolve, reject) => {
       api
         .post(`${controller}/dollarPurchase`, body)
-        .then((response) => resolve(response.data))
+        .then((response) => {
+          toast.success(
+            "Compra realizada con éxito! Se acreditaron los dolares en su cuenta",
+            toastOptions,
+          );
+          resolve(response.data);
+        })
         .catch((error) => {
           toast.error(error.response.data.message, toastOptions);
           reject(error);
