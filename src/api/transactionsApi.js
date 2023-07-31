@@ -82,13 +82,14 @@ export default class TransactionsApi {
         });
     });
   }
+
   static async getTransactionsByUserId(id, page = 0, pageSize = 10) {
     return new Promise((resolve, reject) => {
       const params = {
         page: page,
         size: pageSize,
       };
-  
+
       api
         .get(constroller + endpoints.USERID + id, { params: params })
         .then((response) => {
@@ -100,7 +101,7 @@ export default class TransactionsApi {
             // Refrescar token
             toast.error(
               "Su sesión ha expirado, por favor vuelva a iniciar sesión",
-              toastOptions
+              toastOptions,
             );
           } else {
             toast.error(error.response.data.message, toastOptions);

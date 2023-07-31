@@ -204,7 +204,7 @@ const LoginPage = () => {
                               name="remember"
                               onChange={handleChange}
                               checked={values.remember}
-                              sx={{ padding: 0, marginLeft: "70%" }}
+                              sx={{ padding: 0 }}
                             />{" "}
                             Recordar
                           </Box>
@@ -213,13 +213,13 @@ const LoginPage = () => {
                           type="submit"
                           variant="contained"
                           sx={{
-                            mx: "40%",
                             my: 2,
                             backgroundColor: "#1693a5",
                             alignSelf: "center",
+                            marginLeft: "35%",
                           }}
                         >
-                          Login
+                          Iniciar Sesión
                         </Button>
 
                         <Box sx={{ mx: "15%" }}>

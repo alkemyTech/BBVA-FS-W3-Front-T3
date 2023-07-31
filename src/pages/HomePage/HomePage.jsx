@@ -1,19 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
-import {Grid} from "@mui/material";
-import { useEffect,useState } from "react";
-import { addAccountArs} from "../../redux/accountArsSlice";
+import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { addAccountArs } from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
 import UserInfoCard from "../../components/Home/UserInfoCard/UserInfoCard";
 import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
 import TransactionList from "../../components/Home/TransactionList/TransactionList";
 import AccountsApi from "../../api/accountsApi";
+import PlazoFIjoCardList from "../../components/Home/PlazoFijoList/PlazoFIjoCardList";
 
 export default function HomePage() {
   const [currency, setCurrency] = useState("ARS");
+  const [clickedPF, setClickedPF] = useState(false);
   const accountARS = useSelector((state) => state.accountArs);
   const accountUSD = useSelector((state) => state.accountUsd);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const handleClickPlazoFijo = () => {
+    setClickedPF(true);
+  };
 
   useEffect(() => {
     AccountsApi.accountInfo(user.id).then((response) => {
@@ -56,11 +62,11 @@ export default function HomePage() {
             user={user}
             handleForward={handleForward}
           />
-          <ActivitiesCard />
+          <ActivitiesCard handleClickPlazoFijo={handleClickPlazoFijo} />
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={5} s={{}}>
-          <TransactionList />
+          {clickedPF ? <PlazoFIjoCardList /> : <TransactionList />}
         </Grid>
       </Grid>
     </>

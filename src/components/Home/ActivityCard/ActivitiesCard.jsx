@@ -11,9 +11,9 @@ import {
   List,
 } from "@mui/material";
 
-export default function ActivitiesCard() {
+export default function ActivitiesCard({ handleClickPlazoFijo }) {
   return (
-    <Card sx={{ maxWidth: 345, marginTop: "10px" }}>
+    <Card sx={{ width: "107%", marginTop: "10px" }}>
       <CardContent>
         <Grid
           sx={{
@@ -53,12 +53,12 @@ export default function ActivitiesCard() {
               <ListItemText primary="Transacciones en Dolares" />
             </ListItem>
           </CardActionArea>
-          <CardActionArea>
+          <CardActionArea onClick={handleClickPlazoFijo}>
             <ListItem>
               <ListItemAvatar>
                 <Avatar src="/src/assets/huellaCat.jpg"></Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Depositos realizados" />
+              <ListItemText primary="Plazos Fijos" />
             </ListItem>
           </CardActionArea>
         </List>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from "react";
+import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Card,
   CardContent,
@@ -17,16 +17,19 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  IconButton,
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../redux/userSlice';
-import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/userSlice";
+import { toast } from "react-toastify";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function UserInfoCard() {
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -47,6 +50,7 @@ export default function UserInfoCard() {
         content: '""',
       },
     },
+
     "@keyframes ripple": {
       "0%": {
         transform: "scale(.8)",
@@ -65,7 +69,7 @@ export default function UserInfoCard() {
 
   const handleCloseNameModal = () => {
     setIsNameModalOpen(false);
-    };
+  };
 
   const handleOpenPasswordModal = () => {
     setIsPasswordModalOpen(true);
@@ -99,7 +103,7 @@ export default function UserInfoCard() {
     <Card sx={{ minWidth: 275, marginTop: "50px" }}>
       <CardHeader
         title="Datos Usuario"
-        titleTypographyProps={{ variant: "h5" }}
+        titleTypographyProps={{ variant: "h4" }}
         avatar={
           <StyledBadge
             overlap="circular"
@@ -116,6 +120,7 @@ export default function UserInfoCard() {
       />
       <CardContent>
         <Grid
+          container
           sx={{
             backgroundColor: "#E9FEFA",
             margin: -2,
@@ -123,31 +128,68 @@ export default function UserInfoCard() {
             marginBottom: 1,
           }}
         >
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {/* Contenido de la tarjeta... */}
-          </Typography>
-          <Typography variant="h5" component="div">
-            Nombre y Apellido
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Diego Aprosoff
-          </Typography>
-          <Typography variant="h5" component="div">
-            Email
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            user@mail.com
-          </Typography>
+          <Grid item xs={6}>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              {/* Contenido de la tarjeta... */}
+            </Typography>
+            <Typography variant="h5" component="div">
+              Nombre
+            </Typography>
+
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              Diego
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              onClick={handleOpenNameModal}
+            >
+              <EditIcon />
+            </IconButton>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Typography variant="h5" component="div">
+              Apellido
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              Aprosoff
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              onClick={handleOpenNameModal}
+            >
+              <EditIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h5" component="div">
+              Email
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              user@mail.com
+            </Typography>
+          </Grid>
         </Grid>
       </CardContent>
       <CardActions>
-        <Button variant="text" onClick={handleOpenNameModal}>
-          Cambiar Nombre y/o Apellido
-        </Button>
         <Button variant="text" onClick={handleOpenPasswordModal}>
           Cambiar Contraseña
         </Button>
-        <Button variant="text" sx={{ color: "red" }} onClick={handleOpenDeleteModal}>
+        <Button
+          variant="text"
+          sx={{ color: "red" }}
+          onClick={handleOpenDeleteModal}
+        >
           Eliminar Cuenta
         </Button>
       </CardActions>
@@ -155,12 +197,12 @@ export default function UserInfoCard() {
       {/* Modal Cambiar Nombre y/o Apellido */}
       <Formik
         initialValues={{
-          newName: '',
-          newLastName: '',
+          newName: "",
+          newLastName: "",
         }}
         validationSchema={Yup.object().shape({
-          newName: Yup.string().required('Ingrese un nombre válido'),
-          newLastName: Yup.string().required('Ingrese un apellido válido'),
+          newName: Yup.string().required("Ingrese un nombre válido"),
+          newLastName: Yup.string().required("Ingrese un apellido válido"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           console.log(values.newName, values.newLastName);
@@ -212,10 +254,10 @@ export default function UserInfoCard() {
       {/* Modal Cambiar Contraseña */}
       <Formik
         initialValues={{
-          newPassword: '',
+          newPassword: "",
         }}
         validationSchema={Yup.object().shape({
-          newPassword: Yup.string().required('Ingrese una contraseña válida'),
+          newPassword: Yup.string().required("Ingrese una contraseña válida"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           console.log(values.newPassword);
@@ -234,7 +276,23 @@ export default function UserInfoCard() {
               <DialogContent>
                 <Field
                   as={TextField}
-                  label="Ingrese Nueva Contraseña"
+                  label="Ingrese su contraseña anterior"
+                  variant="filled"
+                  fullWidth
+                  name="newPassword"
+                  type="password"
+                />
+                <Field
+                  as={TextField}
+                  label="Ingrese su nueva contraseña"
+                  variant="filled"
+                  fullWidth
+                  name="newPassword"
+                  type="password"
+                />
+                <Field
+                  as={TextField}
+                  label="Repita su nueva contraseña"
                   variant="filled"
                   fullWidth
                   name="newPassword"
@@ -256,7 +314,10 @@ export default function UserInfoCard() {
       </Formik>
 
       {/* Modal Eliminar Cuenta */}
-      <Dialog open={isDeleteAccountModalOpen} onClose={handleCloseDeletePasswordModal}>
+      <Dialog
+        open={isDeleteAccountModalOpen}
+        onClose={handleCloseDeletePasswordModal}
+      >
         <DialogTitle>¿Está seguro que quiere eliminar su cuenta?</DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseDeletePasswordModal} color="primary">
@@ -267,7 +328,6 @@ export default function UserInfoCard() {
           </Button>
         </DialogActions>
       </Dialog>
-
     </Card>
   );
 }

@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../redux/userSlice.js";
 import Loader from "../components/Loader/LoaderWrapper";
-import {useLocation } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 
 const Page = (props) => {
   const user = useSelector((state) => state.user);

@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Grid,
-  IconButton,
   Typography,
   CardActions,
   Button,
@@ -13,6 +12,18 @@ import {
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  padding: "8px 16px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "none",
+  border: "1px solid",
+  borderColor: theme.palette.primary.main,
+  borderRadius: 0,
+  marginLeft: "60px",
+}));
 
 export default function UserInfoCard({
   currency,
@@ -52,7 +63,7 @@ export default function UserInfoCard({
   }));
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 300 }}>
       <CardContent>
         <Grid
           sx={{
@@ -82,24 +93,26 @@ export default function UserInfoCard({
             {user.email}
           </Typography>
         </Grid>
-        <Typography variant="body2">
-          Dinero disponible en cuenta{" "}
-          <b>{currency === "ARS" ? "PESOS" : "DOLARES"}</b>: <br />
+        <Typography variant="body1">
+          Dinero disponible en cuenta <b></b>: <br />
           <Typography variant="h4" marginTop={-5}>
             <br />
             {currency === "ARS"
               ? `$ ${accountARS.balance.toFixed(2)}`
               : `u$s ${accountUSD.balance.toFixed(2)}`}
           </Typography>
-          {currency === "ARS"
-            ? `cbu: ${accountARS.cbu}`
-            : `cbu: ${accountUSD.cbu}`}
           <br />
-          <IconButton onClick={handleForward}>
-            <br />
-            <br />
-            <ArrowBack /> Moneda <ArrowForward />
-          </IconButton>
+          <Typography variant="body1">
+            {currency === "ARS"
+              ? `CBU: ${accountARS.cbu}`
+              : `CBU: ${accountUSD.cbu}`}
+          </Typography>
+          <br />
+          <br />
+          <CustomButton onClick={handleForward}>
+            <ArrowBack /> {currency === "ARS" ? "PESOS" : "DOLARES"}
+            <ArrowForward />
+          </CustomButton>
         </Typography>
       </CardContent>
       <CardActions>
