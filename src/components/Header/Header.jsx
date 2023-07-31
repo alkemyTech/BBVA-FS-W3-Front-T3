@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -50,7 +50,6 @@ function stringAvatar(name) {
     .split(" ")
     .map((part) => part[0])
     .join("");
-
 
   return {
     sx: {
@@ -132,7 +131,14 @@ export default function Header() {
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>
-            <Box component="img" sx={{ height: 40 }} alt="Your logo." src={logo} />
+            <IconButton style={{ backgroundColor: "transparent" }}>
+              <Box
+                component="img"
+                sx={{ height: 40 }}
+                alt="Your logo."
+                src={logo}
+              />
+            </IconButton>
           </Grid>
           <Grid item xs={8}>
             <Tabs
@@ -147,7 +153,6 @@ export default function Header() {
                   label={route.label}
                   onClick={() => handleTabClick(index)}
                   sx={{ color: "white" }}
-
                 />
               ))}
             </Tabs>
