@@ -159,40 +159,23 @@ export default function UserInfoCard() {
       <CardContent>
         <Grid
           container
+          justifyContent="space-between"
           sx={{
-            display: "flex",
             padding: 2,
-            justifyContent: "space-between",
           }}
         >
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3}>
             <Typography variant="h6" color="text.secondary">
               Nombre:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={8}>
             <Typography variant="h6">{user.name.split(" ")[0]}</Typography>
           </Grid>
           <Grid
             item
-            xs={4}
+            xs={1}
             sx={{
-              display: "flex",
-              placeItems: "center",
               justifyContent: "flex-end", // Align the icon to the right
             }}
           >
@@ -205,37 +188,15 @@ export default function UserInfoCard() {
             </IconButton>
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3}>
             <Typography variant="h6" color="text.secondary">
               Apellido:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={8}>
             <Typography variant="h6">{user.name.split(" ")[1]}</Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
+          <Grid item xs={1}>
             <IconButton
               aria-label="delete"
               color="primary"
@@ -245,27 +206,22 @@ export default function UserInfoCard() {
             </IconButton>
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3} sx={{height:"40px"}}>
             <Typography variant="h6" color="text.secondary">
               Email:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={8}
-            sx={{
-              display: "flex",
-              placeItems: "left",
-            }}
-          >
+          <Grid item xs={9} sx={{height:"40px"}} >
             <Typography variant="h6">{user.email}</Typography>
+          </Grid>
+
+          <Grid item xs={3} sx={{height:"40px"}}>
+            <Typography variant="h6" color="text.secondary">
+              Contraseña:{" "}
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sx={{height:"40px"}}>
+            <Typography variant="h6">*****</Typography>
           </Grid>
         </Grid>
       </CardContent>
