@@ -9,6 +9,7 @@ import {
   IconButton,
   Avatar,
 } from "@mui/material";
+
 import { Typography } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
 import { Grid, Tabs, Tab } from "@mui/material";
@@ -47,6 +48,7 @@ function stringAvatar(name) {
     .split(" ")
     .map((part) => part[0])
     .join("");
+
 
   return {
     sx: {
@@ -126,12 +128,7 @@ export default function Header() {
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>
-            <Box
-              component="img"
-              sx={{ height: 40 }}
-              alt="Your logo."
-              src={logo}
-            />
+            <Box component="img" sx={{ height: 40 }} alt="Your logo." src={logo} />
           </Grid>
           <Grid item xs={8}>
             <Tabs
@@ -146,6 +143,7 @@ export default function Header() {
                   label={route.label}
                   onClick={() => handleTabClick(index)}
                   sx={{ color: "white" }}
+
                 />
               ))}
             </Tabs>
