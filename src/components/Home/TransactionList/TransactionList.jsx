@@ -1,11 +1,26 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Grid, List, Skeleton, Typography } from "@mui/material";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  List,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
 import TransactionsApi from "../../../api/transactionsApi.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { red } from "@mui/material/colors";
+import EditIcon from "@mui/icons-material/Edit";
+import EditModal from "../../Modal/EditModal.jsx";
 
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
@@ -16,6 +31,8 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [totalPages, setTotalPages] = useState(0);
   const [selectedTransaction, setSelectedTransaction] = useState(null); // Estado para la transacción seleccionada
   const user = useSelector((state) => state.user);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editedDescription, setEditedDescription] = useState("");
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
@@ -50,9 +67,10 @@ export default function TransactionList({ currency, showAllTransactions }) {
         // Filtrar las transacciones según la moneda seleccionada
         TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
           .then((data) => {
-            const filteredTransactions = data?._embedded?.transactionList?.filter((transaction) => {
-              return transaction.account.currency === currency;
-            }) || [];
+            const filteredTransactions =
+              data?._embedded?.transactionList?.filter((transaction) => {
+                return transaction.account.currency === currency;
+              }) || [];
             setTransactions(filteredTransactions);
             setTotalPages(data?.page?.totalPages || 0);
             setLoading(false);
@@ -70,92 +88,127 @@ export default function TransactionList({ currency, showAllTransactions }) {
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [user, page, pageSize, currency, initialLoading, showAllTransactions]);
+  }, [
+    user,
+    page,
+    pageSize,
+    currency,
+    initialLoading,
+    showAllTransactions,
+    selectedTransaction,
+  ]);
 
   if (initialLoading) {
-    return (
-      <Box sx={{ width: 500 }}>
+    const numberOfSkeletons = 10;
+    const skeletonElements = Array.from(
+      { length: numberOfSkeletons },
+      (_, index) => (
         <Skeleton
+          key={index}
           animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+          sx={{ margin: "1px", padding: "35px", maxWidth: "530px" }}
         />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-      </Box>
+      )
     );
-  }
 
- 
+    return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
+  }
+  const handleEditClick = (description) => {
+    setEditedDescription(description);
+    setIsEditModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleSaveDescription = (editedDescription) => {
+    console.log("editedDescription:", editedDescription);
+    TransactionsApi.patchTransactionDescription(
+      selectedTransaction.id,
+      editedDescription
+    )
+      .then((response) => {
+        console.log("response:", response);
+        setSelectedTransaction({
+          ...selectedTransaction,
+          description: editedDescription,
+        });
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
+
   if (selectedTransaction) {
     return (
       <Card sx={{ minWidth: 275 }}>
-        {/* Mostrar la información completa de la transacción seleccionada */}
-        {/* Por ejemplo: */}
         <CardContent>
-        <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: "#1693a5" }} aria-label="">
-          <Typography sx={{ fontSize: 13 }} color="white">#{selectedTransaction.id}</Typography>
-          </Avatar>
-        }
-    
-        title={selectedTransaction.description ? selectedTransaction.description : "Título predeterminado"}
-        subheader={`Fecha: ${selectedTransaction.transactionDate.split('T')[0]} | Hora:${selectedTransaction.transactionDate.split('T')[1]} ` }
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: "#1693a5" }} aria-label="">
+                <Typography sx={{ fontSize: 13 }} color="white">
+                  #{selectedTransaction.id}
+                </Typography>
+              </Avatar>
+            }
+            action={
+              <IconButton
+                aria-label="settings"
+                onClick={() => handleEditClick(selectedTransaction.description)}
+              >
+                <EditIcon />
+              </IconButton>
+            }
+            title={
+              selectedTransaction.description
+                ? selectedTransaction.description
+                : "Título predeterminado"
+            }
+            subheader={`Fecha: ${
+              selectedTransaction.transactionDate.split("T")[0]
+            } | Hora: ${selectedTransaction.transactionDate.split("T")[1]} `}
+          />
 
-       
-      />
-      
-        <Typography sx={{ fontSize: 14 }} color="WHITE" gutterBottom variant="h6">Id: {selectedTransaction.id}</Typography>
-        
-        <Typography variant="h6" component="div">
-         Detalles: 
-         
-        </Typography>
-        <Card >
-        <Typography variant="body2"> <b>Monto:</b> {selectedTransaction.amount}</Typography>
-        <Typography variant="body2"><b>Tipo:</b>  {selectedTransaction.type}</Typography>
-        <Typography variant="body2"><b>Descripción:</b>  {selectedTransaction.description}</Typography>
-
-        <Typography variant="body2"><b>Monto:</b>  {selectedTransaction.account.id}</Typography>
-        
-        </Card>
-
+          <Grid container spacing={2}>
+            <Grid item xs={1.2} />
+            <Grid item xs={3}>
+              <Typography variant="body2">
+                <b>Monto:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>Tipo:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>Descripción:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>CBU destino:</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="body2">
+                {selectedTransaction.amount}{" "}
+                {selectedTransaction.account.currency}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.type}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.description}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.account.cbu}
+              </Typography>
+            </Grid>
+          </Grid>
         </CardContent>
         <Button onClick={() => setSelectedTransaction(null)}>Cerrar</Button>
+        <EditModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveDescription}
+          currentDescription={selectedTransaction.description}
+        />
       </Card>
     );
   }

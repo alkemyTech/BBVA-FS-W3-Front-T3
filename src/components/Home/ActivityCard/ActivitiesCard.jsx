@@ -1,28 +1,30 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import {
   Card,
   CardActionArea,
   CardContent,
   Grid,
   Typography,
-  Avatar,
   ListItem,
   ListItemAvatar,
   ListItemText,
   List,
 } from "@mui/material";
 import { useState } from "react";
-import PetsIcon from '@mui/icons-material/Pets';
+import PetsIcon from "@mui/icons-material/Pets";
 
-export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency,onShowAllTransactions }) {
+export default function ActivitiesCard({
+  handleClickPlazoFijo,
+  onChangeCurrency,
+  onShowAllTransactions,
+}) {
   const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para la moneda seleccionada
-
-
 
   const handleShowAllTransactions = () => {
     setSelectedCurrency(""); // Reiniciar el filtro de moneda seleccionado
     onShowAllTransactions(); // Comunicar al componente padre (HomePage) que se deben mostrar todas las transacciones
   };
- 
 
   return (
     <Card sx={{ width: "107%", marginTop: "10px" }}>
@@ -49,18 +51,15 @@ export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency,
           <CardActionArea onClick={handleShowAllTransactions}>
             <ListItem>
               <ListItemAvatar>
-              <PetsIcon/> 
+                <PetsIcon sx={{color:"#1693a5"}} />
               </ListItemAvatar>
-              <ListItemText
-                primary="Todos mis movimientos"
-            
-              />
+              <ListItemText primary="Todos mis movimientos" />
             </ListItem>
           </CardActionArea>
           <CardActionArea>
             <ListItem>
               <ListItemAvatar>
-                 <PetsIcon/> 
+                <PetsIcon sx={{color:"#1693a5"}}/>
               </ListItemAvatar>
               <ListItemText primary="Inversiones" />
             </ListItem>
@@ -68,7 +67,7 @@ export default function ActivitiesCard({ handleClickPlazoFijo, onChangeCurrency,
           <CardActionArea onClick={handleClickPlazoFijo}>
             <ListItem>
               <ListItemAvatar>
-              <PetsIcon/> 
+                <PetsIcon sx={{color:"#1693a5"}}/>
               </ListItemAvatar>
               <ListItemText primary="Plazos Fijos" />
             </ListItem>

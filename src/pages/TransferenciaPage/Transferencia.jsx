@@ -13,8 +13,11 @@ import "../../components/Modal/Modal.css";
 import AccountsApi from "../../api/accountsApi.js";
 import TransactionsApi from "../../api/transactionsApi.js";
 import "../TransaccionesPage.css";
+import { useNavigate } from "react-router-dom";
+
 
 const Transferencia = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cbuInfo, setCbuInfo] = useState({
     user: {
@@ -94,13 +97,17 @@ const Transferencia = () => {
     });
 
     setIsModalOpen(true);
+
+    
   };
 
   const handleModalAccept = () => {
     TransactionsApi.send(transferData).then(() => {
       formik.resetForm();
       setIsModalOpen(false);
+      navigate("/inicio");
       resetCbuInfo();
+      
     });
   };
 

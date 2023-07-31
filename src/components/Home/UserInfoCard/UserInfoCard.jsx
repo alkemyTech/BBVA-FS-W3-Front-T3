@@ -10,28 +10,15 @@ import {
   styled,
   Badge,
 } from "@mui/material";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
-const CustomButton = styled(Button)(({ theme }) => ({
-  padding: "8px 16px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  boxShadow: "none",
-  border: "1px solid",
-  borderColor: theme.palette.primary.main,
-  borderRadius: 0,
-  marginLeft: "60px",
-}));
 
 export default function UserInfoCard({
   currency,
   accountARS,
   accountUSD,
   user,
-  handleForward,
   onChangeCurrency,
 }) {
   const navigate = useNavigate();
@@ -42,13 +29,13 @@ export default function UserInfoCard({
       boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
       "&::after": {
         position: "absolute",
-        top: 0,
-        left: 0,
+        top: -3,
+        left: -3,
         width: "100%",
         height: "100%",
         borderRadius: "50%",
-        animation: "ripple 1.2s infinite ease-in-out",
-        border: "1px solid currentColor",
+        animation: "ripple 1.5s infinite ease-in-out",
+        border: "3px solid currentColor",
         content: '""',
       },
     },
