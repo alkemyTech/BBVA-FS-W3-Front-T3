@@ -7,18 +7,20 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import {CircularProgress, Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
 import TransactionsApi from "../../api/transactionsApi.js";
 import "../TransaccionesPage.css";
 import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 
 
 const Transferencia = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [cbuInfo, setCbuInfo] = useState({
     user: {
       id: 0,
@@ -74,12 +76,15 @@ const Transferencia = () => {
   });
 
   const validateCbu = (value) => {
+    setIsLoading(true);
     if (value.length === 22) {
       AccountsApi.getAccountByCbu(value).then((data) => {
         setCbuInfo(data);
+        setIsLoading(false);
       });
     } else {
       resetCbuInfo();
+      setIsLoading(false);
     }
   };
 
@@ -131,6 +136,13 @@ const Transferencia = () => {
     fontWeight: "bold",
   };
 
+  const StyledDiv = styled("div")({
+    display: "inline-block",
+    marginRight: "15px", // Ajusta el valor para más o menos espacio horizontal
+    
+    
+  });
+
   return (
     <Box className="transactionBox">
       <Box className="formStyle">
@@ -158,9 +170,24 @@ const Transferencia = () => {
             onBlur={formik.handleBlur}
             error={!!(formik.touched.cbu && formik.errors.cbu)}
             helperText={
-              formik.touched.cbu && formik.errors.cbu
-                ? formik.errors.cbu
-                : `${cbuInfo.user.firstName} ${cbuInfo.user.lastName}  ${cbuInfo.currency}`
+              formik.touched.cbu && formik.errors.cbu ? (
+                formik.errors.cbu
+              ) : (
+                <>
+                  {isLoading ? (
+                    <CircularProgress />
+                  ) : cbuInfo.user.firstName && cbuInfo.user.lastName && cbuInfo.currency ? (
+                    <>
+                      <StyledDiv>
+                        <b>Destinatario:</b> {cbuInfo.user.firstName} {cbuInfo.user.lastName}
+                      </StyledDiv>
+                      <StyledDiv>
+                        <b>Cuenta:</b> {cbuInfo.currency}
+                      </StyledDiv>
+                    </>
+                  ) : null}
+                </>
+              )
             }
             type="text"
             inputProps={{ inputMode: "text" }}
@@ -259,53 +286,96 @@ const Transferencia = () => {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title={"Confirmación de tranferencia:"}
             content={
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Usted realizará una transferencia a:
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <List>
-                    <ListItem>
-                      <ListItemText
-                        primary={`Nombre y Apellido del usuario:`}
-                      />
-                      <ListItemText
-                        primary={`${userData.name || ""}`}
-                        className="name"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={`CBU de la cuenta asociada: `} />
-                      <ListItemText
-                        primary={`${userData.cbu || ""}`}
-                        className="name"
-                      />
-                    </ListItem>
-                  </List>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body1" className="tittle2">
-                    Monto a transferir:
-                  </Typography>
-                  <List className="monto">
-                    <ListItem>
-                      <ListItemText
-                        primary={`${transferData.currency} ${transferData.amount}`}
-                        className="name"
-                      />
-                    </ListItem>
-                  </List>
-                </Grid>
+              <Grid container spacing={2} sx={{ width:"500px"}} >
+              {/* First column */}
+              <Grid item xs={5}>
+                <List>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={5}>
+                        <ListItemText primary={`Destinatario:`} />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={5}>
+                        <ListItemText primary={`CBU:`} />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={5} >
+                        <ListItemText primary={`Monto:`} />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={5}>
+                        <ListItemText primary={`Motivo:`} />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                </List>
               </Grid>
+            
+              {/* Second column */}
+              <Grid item xs={7}>
+                <List>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={7}>
+                        <ListItemText
+                          primary={` ${userData.name}`}
+                          className="name"
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={7}>
+                        <ListItemText
+                          primary={` ${userData.cbu}`}
+                          className="name"
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={7}>
+                        <ListItemText
+                          primary={` ${transferData.amount} ${transferData.currency}`}
+                          className="name"
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                  <ListItem>
+                    <Grid container>
+                      <Grid item xs={7}>
+                        <ListItemText
+                          primary={` ${transferData.description}`}
+                          className="name"
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
             }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
           />
         </div>
       )}
+      
     </Box>
   );
 };

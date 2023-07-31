@@ -27,7 +27,7 @@ export default function ActivitiesCard({
   };
 
   return (
-    <Card sx={{ width: "107%", marginTop: "10px" }}>
+    <Card sx={{ width: "105%", marginTop: "10px",  boxShadow:"5px 5px 15px #CFCFCF" }}>
       <CardContent>
         <Grid
           sx={{
