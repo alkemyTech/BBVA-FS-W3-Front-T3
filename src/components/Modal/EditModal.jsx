@@ -2,16 +2,21 @@
 import { useState } from "react";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
-const EditModal = ({ isOpen, onClose, onSave, currentDescription }) => {
+const EditModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  currentDescription,
+  title,
+  label,
+}) => {
   const [editedDescription, setEditedDescription] =
     useState(currentDescription);
-
   const handleChange = (e) => {
     setEditedDescription(e.target.value);
   };
 
   const handleSave = () => {
-    console.log("editedDescription:", editedDescription);
     onSave(editedDescription);
     onClose();
   };
@@ -36,11 +41,11 @@ const EditModal = ({ isOpen, onClose, onSave, currentDescription }) => {
         }}
       >
         <Typography variant="h6" id="modal-title" gutterBottom>
-          Editar Descripción
+          Editar {title}
         </Typography>
         <TextField
           fullWidth
-          label="Nueva descripción"
+          label={label}
           value={editedDescription}
           onChange={handleChange}
           variant="outlined"
@@ -52,7 +57,7 @@ const EditModal = ({ isOpen, onClose, onSave, currentDescription }) => {
             color="secondary"
             sx={{ marginRight: "10px" }}
           >
-            Save
+            Guardar
           </Button>
           <Button onClick={onClose} variant="outlined" color="error">
             Cancelar

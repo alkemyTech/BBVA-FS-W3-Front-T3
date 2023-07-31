@@ -21,15 +21,23 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../redux/userSlice";
+import { logoutUser, changeName } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import UsersApi from "../../api/usersApi.js";
+import EditModal from "../Modal/EditModal.jsx";
 
 export default function UserInfoCard() {
   const user = useSelector((state) => state.user);
+  const [fieldToChange, setFieldToChange] = useState({ title: "", value: "" });
+  const [transferData, setTransferData] = useState({});
+  const [handleUpdate, setHandleUpdate] = useState({
+    myFunction: () => {
+      console.log("Function is called!");
+    },
+  });
 
-  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
@@ -66,12 +74,36 @@ export default function UserInfoCard() {
     },
   }));
 
-  const handleOpenNameModal = () => {
-    setIsNameModalOpen(true);
+  const handleEditFirstName = (firstName) => {
+    setTransferData({ firstName: firstName });
+    setFieldToChange({ title: "Nombre", value: firstName });
+    setHandleUpdate({ myFunction: handleUpdateFirstName });
+    handleOpenEditModal();
   };
 
-  const handleCloseNameModal = () => {
-    setIsNameModalOpen(false);
+  const handleUpdateFirstName = (data) => {
+    setTransferData({ firstName: data });
+    handleUpdateUser(transferData);
+  };
+
+  const handleEditLastName = (lastName) => {
+    setTransferData({ lastName: lastName });
+    setFieldToChange({ title: "Apellido", value: lastName });
+    setHandleUpdate({ myFunction: handleUpdateLastName });
+    handleOpenEditModal();
+  };
+
+  const handleUpdateLastName = (data) => {
+    setTransferData({ lastName: data });
+    handleUpdateUser(transferData);
+  };
+  const handleOpenEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setFieldToChange({ title: "", value: "" });
+    setIsEditModalOpen(false);
   };
 
   const handleOpenPasswordModal = () => {
@@ -98,10 +130,16 @@ export default function UserInfoCard() {
     });
   };
 
+  const handleUpdateUser = (data) => {
+    UsersApi.updateUser(user.id, data).then((user) => {
+      dispatch(changeName(user.firstName + " " + user.lastName));
+    });
+  };
+
   return (
     <Card sx={{ minWidth: 275, maxWidth: 600 }}>
       <CardHeader
-        title="Datos Usuario"
+        title="Mis Datos"
         titleTypographyProps={{ variant: "h4" }}
         sx={{ backgroundColor: "#E9FEFA" }}
         avatar={
@@ -161,7 +199,7 @@ export default function UserInfoCard() {
             <IconButton
               aria-label="delete"
               color="primary"
-              onClick={handleOpenNameModal}
+              onClick={() => handleEditFirstName(user.name.split(" ")[0])}
             >
               <EditIcon />
             </IconButton>
@@ -201,7 +239,7 @@ export default function UserInfoCard() {
             <IconButton
               aria-label="delete"
               color="primary"
-              onClick={handleOpenNameModal}
+              onClick={() => handleEditLastName(user.name.split(" ")[1])}
             >
               <EditIcon />
             </IconButton>
@@ -221,30 +259,13 @@ export default function UserInfoCard() {
           </Grid>
           <Grid
             item
-            xs={4}
+            xs={8}
             sx={{
               display: "flex",
-              placeItems: "center",
+              placeItems: "left",
             }}
           >
             <Typography variant="h6">{user.email}</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-              justifyContent: "flex-end", // Align the icon to the right
-            }}
-          >
-            <IconButton
-              aria-label="delete"
-              color="primary"
-              onClick={handleOpenNameModal}
-            >
-              <EditIcon />
-            </IconButton>
           </Grid>
         </Grid>
       </CardContent>
@@ -261,62 +282,16 @@ export default function UserInfoCard() {
         </Button>
       </CardActions>
 
-      <Formik
-        initialValues={{
-          newName: "",
-          newLastName: "",
-        }}
-        validationSchema={Yup.object().shape({
-          newName: Yup.string().required("Ingrese un nombre válido"),
-          newLastName: Yup.string().required("Ingrese un apellido válido"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values.newName, values.newLastName);
-          setSubmitting(false);
-          handleCloseNameModal();
-          toast.success("Nombre y Apellido cambiado correctamente", {
-            position: "top-center",
-            autoClose: 3000,
-          });
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Dialog open={isNameModalOpen} onClose={handleCloseNameModal}>
-            <DialogTitle>Cambiar Nombre y/o Apellido</DialogTitle>
-            <Form>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Cambiar Nombre"
-                  variant="filled"
-                  fullWidth
-                  name="newName"
-                />
-                <ErrorMessage name="newName" component="div" />
-              </DialogContent>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Cambiar Apellido"
-                  variant="filled"
-                  fullWidth
-                  name="newLastName"
-                />
-                <ErrorMessage name="newLastName" component="div" />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseNameModal} color="primary">
-                  Cancelar
-                </Button>
-                <Button type="submit" color="primary" disabled={isSubmitting}>
-                  Aceptar
-                </Button>
-              </DialogActions>
-            </Form>
-          </Dialog>
-        )}
-      </Formik>
-
+      {isEditModalOpen && (
+        <EditModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleUpdate.myFunction}
+          currentDescription={fieldToChange.value}
+          label={`Nuevo ${fieldToChange.title}`}
+          title={fieldToChange.title}
+        />
+      )}
       <Formik
         initialValues={{
           newPassword: "",
@@ -325,7 +300,9 @@ export default function UserInfoCard() {
           newPassword: Yup.string().required("Ingrese una contraseña válida"),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values.newPassword);
+          UsersApi.updateUser(user.id, {
+            password: values.newPassword,
+          });
           setSubmitting(false);
           handleClosePasswordModal();
           toast.success("Contraseña cambiada correctamente", {

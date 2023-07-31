@@ -17,4 +17,19 @@ export default class UsersApi {
         .catch((error) => reject(error));
     });
   }
+
+  static async updateUser(id, data) {
+    return new Promise((resolve, reject) => {
+      api
+        .patch(controller + "/" + id, data)
+        .then((response) => {
+          toast.success("Tu cuenta ha sido actualizada", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+          resolve(response.data);
+        })
+        .catch((error) => reject(error));
+    });
+  }
 }
