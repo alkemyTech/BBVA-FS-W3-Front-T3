@@ -17,6 +17,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import argentinaFlag from "../../assets/argentina.png";
 import usaFlag from "../../assets/usa.png";
 import "./Exchange.css";
+import TradeApi from "../../api/exchangeApi.js";
 const ExchangeCard = () => {
   const [amount, setAmount] = useState("");
   const [toUSD, setToUSD] = useState(true);
@@ -52,6 +53,9 @@ const ExchangeCard = () => {
   };
   const confirmarCambio = () => {
     if (amount.trim() !== "") {
+      TradeApi.dollarPurchase(amount).then((response) => {
+        console.log(response);
+      });
       setShowSnackbar(true);
     }
   };
