@@ -110,4 +110,33 @@ export default class TransactionsApi {
         });
     });
   }
+
+  static async patchTransactionDescription(id, description) {
+    return new Promise((resolve, reject) => {
+      const body = {
+        description: description,
+      };
+
+      api
+        .patch(constroller + "/" + id, body)
+        .then((response) => {
+          toast.success("Descripción actualizada con éxito!", toastOptions);
+          resolve(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (!error.response.data.message && error.response.status === 403) {
+            // Refrescar token
+            toast.error(
+              "Su sesión ha expirado, por favor vuelva a iniciar sesión",
+              toastOptions,
+            );
+          } else {
+            toast.error(error.response.data.message, toastOptions);
+          }
+          reject(error);
+        });
+    });
+  }
 }

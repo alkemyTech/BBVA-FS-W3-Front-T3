@@ -16,6 +16,8 @@ import { Grid, Tabs, Tab } from "@mui/material";
 import { logoutUser } from "../../redux/userSlice.js";
 import { toast } from "react-toastify";
 import logo from "../../assets/logo-no-background.svg";
+import { logoutAccountArs } from "../../redux/accountArsSlice.js";
+import { logoutAccountUsd } from "../../redux/accountUsdSlice.js";
 
 function stringToColor(string) {
   let hash = 0;
@@ -110,6 +112,8 @@ export default function Header() {
     localStorage.removeItem("token");
 
     dispatch(logoutUser());
+    dispatch(logoutAccountArs());
+    dispatch(logoutAccountUsd());
 
     toast.success("¡Cerraste sesión correctamente!", {
       position: "top-right",

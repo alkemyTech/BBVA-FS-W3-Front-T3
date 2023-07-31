@@ -17,7 +17,13 @@ export default function InvestmentCard(props) {
   };
 
   return (
-    <Card sx={{ maxWidth: 400, backgroundColor: "#1693a5" }}>
+    <Card
+      sx={{
+        maxWidth: 400,
+        backgroundColor: "#1693a5",
+        boxShadow: "30px 15px 30px gray",
+      }}
+    >
       <CardActionArea onClick={handleClickAction}>
         <CardMedia component="img" alt={alt} image={image} />
         <CardContent>

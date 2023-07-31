@@ -32,7 +32,7 @@ const Page = (props) => {
           }),
         );
       }
-    }, 100);
+    }, 0);
 
     return () => clearTimeout(timer);
   }, [dispatch, location]);

@@ -183,19 +183,15 @@ export default function PaymentPage() {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title="Confirmación de pago"
             content={
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Realizaras un pago a tu propia cuenta:
-                  </Typography>
-                </Grid>
                 <Grid item xs={12}>
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
                       <ListItemText
-                        primary={` ${transferData.amount}`}
+                        primary={` ${transferData.amount} ${transferData.currency}`}
                         className="name"
                       />
                     </ListItem>

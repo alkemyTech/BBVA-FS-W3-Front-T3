@@ -23,9 +23,16 @@ export const accountArsSlice = createSlice({
     changeBalanceArs: (state, action) => {
       state.balance = action.payload;
     },
+    logoutAccountArs: (state) => {
+      state.id = 0;
+      state.balance = 0;
+      state.cbu = "";
+      state.transactionLimit = 0;
+    },
   },
 });
 
-export const { addAccountArs, changeBalanceArs } = accountArsSlice.actions;
+export const { addAccountArs, changeBalanceArs, logoutAccountArs } =
+  accountArsSlice.actions;
 
 export default accountArsSlice.reducer;

@@ -1,97 +1,220 @@
-import { Box, Grid, List, Skeleton, Typography } from "@mui/material";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  List,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import TransactionCard from "../TransactionList/TransactionCard.jsx";
 import TransactionsApi from "../../../api/transactionsApi.js";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import EditIcon from "@mui/icons-material/Edit";
+import EditModal from "../../Modal/EditModal.jsx";
 
-export default function TransactionList() {
+export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true); // Estado para la carga inicial
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  const [selectedTransaction, setSelectedTransaction] = useState(null); // Estado para la transacción seleccionada
   const user = useSelector((state) => state.user);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editedDescription, setEditedDescription] = useState("");
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
   };
 
+  const handleCardClick = (transaction) => {
+    setSelectedTransaction(transaction); // Actualizar la transacción seleccionada al hacer clic
+  };
+
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
-      TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
-        .then((data) => {
-          console.log(data);
-          setTransactions(data?._embedded?.transactionList || []);
-          setTotalPages(data?.page?.totalPages || 0);
-          setLoading(false);
-          if (initialLoading) {
-            setInitialLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading(false);
-          if (initialLoading) {
-            setInitialLoading(false);
-          }
-        });
+      // Mostrar todas las transacciones sin filtrar si showAllTransactions es true
+      if (showAllTransactions) {
+        TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
+          .then((data) => {
+            setTransactions(data?._embedded?.transactionList || []);
+            setTotalPages(data?.page?.totalPages || 0);
+            setLoading(false);
+            if (initialLoading) {
+              setInitialLoading(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+            if (initialLoading) {
+              setInitialLoading(false);
+            }
+          });
+      } else {
+        // Filtrar las transacciones según la moneda seleccionada
+        TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
+          .then((data) => {
+            const filteredTransactions =
+              data?._embedded?.transactionList?.filter((transaction) => {
+                return transaction.account.currency === currency;
+              }) || [];
+            setTransactions(filteredTransactions);
+            setTotalPages(data?.page?.totalPages || 0);
+            setLoading(false);
+            if (initialLoading) {
+              setInitialLoading(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+            if (initialLoading) {
+              setInitialLoading(false);
+            }
+          });
+      }
     }, 500);
     return () => clearTimeout(timer);
-  }, [user, page, pageSize, initialLoading]);
+  }, [
+    user,
+    page,
+    pageSize,
+    currency,
+    initialLoading,
+    showAllTransactions,
+    selectedTransaction,
+  ]);
 
   if (initialLoading) {
+    const numberOfSkeletons = 10;
+    const skeletonElements = Array.from(
+      { length: numberOfSkeletons },
+      (_, index) => (
+        <Skeleton
+          key={index}
+          animation="wave"
+          sx={{ margin: "1px", padding: "35px", maxWidth: "530px" }}
+        />
+      ),
+    );
+
+    return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
+  }
+  const handleEditClick = (description) => {
+    setEditedDescription(description);
+    setIsEditModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleSaveDescription = (editedDescription) => {
+    console.log("editedDescription:", editedDescription);
+    TransactionsApi.patchTransactionDescription(
+      selectedTransaction.id,
+      editedDescription,
+    )
+      .then((response) => {
+        console.log("response:", response);
+        setSelectedTransaction({
+          ...selectedTransaction,
+          description: editedDescription,
+        });
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
+  };
+
+  if (selectedTransaction) {
     return (
-      <Box sx={{ width: 500 }}>
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: "#1693a5" }} aria-label="">
+                <Typography sx={{ fontSize: 13 }} color="white">
+                  #{selectedTransaction.id}
+                </Typography>
+              </Avatar>
+            }
+            action={
+              <IconButton
+                aria-label="settings"
+                onClick={() => handleEditClick(selectedTransaction.description)}
+              >
+                <EditIcon />
+              </IconButton>
+            }
+            title={
+              selectedTransaction.description
+                ? selectedTransaction.description
+                : "Título predeterminado"
+            }
+            subheader={`Fecha: ${
+              selectedTransaction.transactionDate.split("T")[0]
+            } | Hora: ${selectedTransaction.transactionDate.split("T")[1]} `}
+          />
+
+          <Grid container spacing={2}>
+            <Grid item xs={1.2} />
+            <Grid item xs={3}>
+              <Typography variant="body2">
+                <b>Monto:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>Tipo:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>Descripción:</b>
+              </Typography>
+              <Typography variant="body2">
+                <b>CBU destino:</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="body2">
+                {selectedTransaction.amount}{" "}
+                {selectedTransaction.account.currency}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.type}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.description}
+              </Typography>
+              <Typography variant="body2">
+                {selectedTransaction.account.cbu}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <Button onClick={() => setSelectedTransaction(null)}>Cerrar</Button>
+        <EditModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveDescription}
+          currentDescription={selectedTransaction.description}
         />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-        <Skeleton
-          animation="wave"
-          sx={{ margin: "1px", padding: "35px", width: "530px" }}
-        />
-      </Box>
+      </Card>
     );
   }
 
   return (
-    <Grid container sx={{}}>
+    <Grid container>
       <Grid item xs={10}>
         <Stack spacing={2}>
           <Pagination
@@ -105,7 +228,11 @@ export default function TransactionList() {
       <Grid item xs={10}>
         <List>
           {transactions.map((transaction) => (
-            <TransactionCard key={transaction.id} transaction={transaction} />
+            <TransactionCard
+              key={transaction.id}
+              transaction={transaction}
+              onClick={() => handleCardClick(transaction)}
+            />
           ))}
         </List>
       </Grid>

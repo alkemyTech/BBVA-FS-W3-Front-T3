@@ -43,12 +43,13 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
-export default function TranscationCard({ transaction }) {
+export default function TranscationCard({ transaction, onClick }) {
   const { type, amount, transactionDate } = transaction;
   const currency = transaction.account.currency;
   const date = formatDate(transactionDate.split("T")[0]);
   return (
     <Card
+      onClick={onClick}
       sx={{
         marginTop: "10px",
         width: "100%",

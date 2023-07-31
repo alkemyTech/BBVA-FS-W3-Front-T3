@@ -10,27 +10,15 @@ import {
   styled,
   Badge,
 } from "@mui/material";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-const CustomButton = styled(Button)(({ theme }) => ({
-  padding: "8px 16px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  boxShadow: "none",
-  border: "1px solid",
-  borderColor: theme.palette.primary.main,
-  borderRadius: 0,
-  marginLeft: "60px",
-}));
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 
 export default function UserInfoCard({
   currency,
   accountARS,
   accountUSD,
   user,
-  handleForward,
+  onChangeCurrency,
 }) {
   const navigate = useNavigate();
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -40,13 +28,13 @@ export default function UserInfoCard({
       boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
       "&::after": {
         position: "absolute",
-        top: 0,
-        left: 0,
+        top: -3,
+        left: -3,
         width: "100%",
         height: "100%",
         borderRadius: "50%",
-        animation: "ripple 1.2s infinite ease-in-out",
-        border: "1px solid currentColor",
+        animation: "ripple 1.5s infinite ease-in-out",
+        border: "3px solid currentColor",
         content: '""',
       },
     },
@@ -62,8 +50,13 @@ export default function UserInfoCard({
     },
   }));
 
+  const handleCurrencyChange = () => {
+    const newCurrency = currency === "ARS" ? "USD" : "ARS";
+    onChangeCurrency(newCurrency); // Comunicar el cambio de moneda al componente padre (HomePage)
+  };
+
   return (
-    <Card sx={{ minWidth: 300 }}>
+    <Card sx={{ minWidth: 300, boxShadow: "5px 5px 15px #CFCFCF" }}>
       <CardContent>
         <Grid
           sx={{
@@ -109,10 +102,15 @@ export default function UserInfoCard({
           </Typography>
           <br />
           <br />
-          <CustomButton onClick={handleForward}>
-            <ArrowBack /> {currency === "ARS" ? "PESOS" : "DOLARES"}
-            <ArrowForward />
-          </CustomButton>
+          <CurrencyExchangeIcon
+            fontSize="large"
+            color="primary"
+            onClick={handleCurrencyChange} // Usar la función handleCurrencyChange
+            sx={{ position: "fixed", top: "390px" }}
+          />
+          <Typography variant="h6" fontSize={"16px"} sx={{ paddingTop: "5px" }}>
+            {currency === "ARS" ? "PESOS" : "DOLARES"}
+          </Typography>
         </Typography>
       </CardContent>
       <CardActions>

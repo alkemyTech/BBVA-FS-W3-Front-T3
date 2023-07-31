@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
+import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
   Card,
@@ -20,12 +20,15 @@ import {
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
+import UsersApi from "../../api/usersApi.js";
 
 export default function UserInfoCard() {
+  const user = useSelector((state) => state.user);
+
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
@@ -89,21 +92,18 @@ export default function UserInfoCard() {
 
   const handleDeleteAccount = () => {
     setIsDeleteAccountModalOpen(false);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    dispatch(logoutUser());
-    toast.success("Tu cuenta ha sido eliminada correctamente", {
-      position: "top-center",
-      autoClose: 3000,
+    UsersApi.deleteUser(user.id).then(() => {
+      dispatch(logoutUser());
+      navigate("/");
     });
-    navigate("/register");
   };
 
   return (
-    <Card sx={{ minWidth: 275, marginTop: "50px" }}>
+    <Card sx={{ minWidth: 275, maxWidth: 600 }}>
       <CardHeader
         title="Datos Usuario"
         titleTypographyProps={{ variant: "h4" }}
+        sx={{ backgroundColor: "#E9FEFA" }}
         avatar={
           <StyledBadge
             overlap="circular"
@@ -122,29 +122,42 @@ export default function UserInfoCard() {
         <Grid
           container
           sx={{
-            backgroundColor: "#E9FEFA",
-            margin: -2,
+            display: "flex",
             padding: 2,
-            marginBottom: 1,
+            justifyContent: "space-between",
           }}
         >
-          <Grid item xs={6}>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              {/* Contenido de la tarjeta... */}
-            </Typography>
-            <Typography variant="h5" component="div">
-              Nombre
-            </Typography>
-
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Diego
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6" color="text.secondary">
+              Nombre:{" "}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6">{user.name.split(" ")[0]}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+              justifyContent: "flex-end", // Align the icon to the right
+            }}
+          >
             <IconButton
               aria-label="delete"
               color="primary"
@@ -154,15 +167,37 @@ export default function UserInfoCard() {
             </IconButton>
           </Grid>
 
-          <Grid item xs={6}>
-            <Typography variant="h5" component="div">
-              Apellido
-            </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Aprosoff
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6" color="text.secondary">
+              Apellido:{" "}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6">{user.name.split(" ")[1]}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
             <IconButton
               aria-label="delete"
               color="primary"
@@ -171,13 +206,45 @@ export default function UserInfoCard() {
               <EditIcon />
             </IconButton>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h5" component="div">
-              Email
+
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6" color="text.secondary">
+              Email:{" "}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              user@mail.com
-            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="h6">{user.email}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+              justifyContent: "flex-end", // Align the icon to the right
+            }}
+          >
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              onClick={handleOpenNameModal}
+            >
+              <EditIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </CardContent>
@@ -194,7 +261,6 @@ export default function UserInfoCard() {
         </Button>
       </CardActions>
 
-      {/* Modal Cambiar Nombre y/o Apellido */}
       <Formik
         initialValues={{
           newName: "",
@@ -251,7 +317,6 @@ export default function UserInfoCard() {
         )}
       </Formik>
 
-      {/* Modal Cambiar Contraseña */}
       <Formik
         initialValues={{
           newPassword: "",
@@ -313,18 +378,32 @@ export default function UserInfoCard() {
         )}
       </Formik>
 
-      {/* Modal Eliminar Cuenta */}
       <Dialog
         open={isDeleteAccountModalOpen}
         onClose={handleCloseDeletePasswordModal}
       >
         <DialogTitle>¿Está seguro que quiere eliminar su cuenta?</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCloseDeletePasswordModal} color="primary">
-            Cancelar
+
+        <Card>
+          <CardContent sx={{ textAlign: "center" }}>
+            <img width={"250px"} src="/src/assets/sadCat.png" alt="" />
+          </CardContent>
+        </Card>
+        <DialogActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button onClick={handleDeleteAccount} color="error">
+            ELIMINAR
           </Button>
-          <Button onClick={handleDeleteAccount} color="primary">
-            Aceptar
+          <Button
+            onClick={handleCloseDeletePasswordModal}
+            color="primary"
+            variant="outlined"
+          >
+            Cancelar
           </Button>
         </DialogActions>
       </Dialog>
