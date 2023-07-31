@@ -115,7 +115,7 @@ const ExchangeCard = () => {
             variant="contained"
             color="secondary"
             onClick={handleConfirmChange}
-            style={{ marginTop: "25px" }}
+            style={{ marginTop: "25px", marginLeft:"12px" }}
           >
             {toUSD ? "Cambiar a ARS" : "Cambiar a USD"}
           </Button>
