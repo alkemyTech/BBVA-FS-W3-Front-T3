@@ -7,8 +7,9 @@
   justify-content: center;
 }
 
-.registerBox {
+.loginBox {
   background: #45b5c4;
+  height: 98vh;
   border-radius: 12px;
   display: flex;
   justify-content: center;
