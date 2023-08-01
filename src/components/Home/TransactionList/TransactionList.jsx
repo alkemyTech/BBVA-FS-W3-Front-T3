@@ -34,8 +34,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const user = useSelector((state) => state.user);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editedDescription, setEditedDescription] = useState("");
-  const [orderType, setOrderType] = useState("desc");
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
@@ -130,7 +128,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
   }
   const handleEditClick = (description) => {
-    setEditedDescription(description);
     setIsEditModalOpen(true);
   };
   const handleCloseModal = () => {

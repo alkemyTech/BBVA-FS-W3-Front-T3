@@ -10,12 +10,11 @@ import {
   styled,
   Badge,
   Box,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import { BorderHorizontal, Gif } from "@mui/icons-material";
-
+import { useState } from "react";
 const formatNumberWithCommas = (number) => {
   return new Intl.NumberFormat("es-AR").format(number);
 };
@@ -56,8 +55,18 @@ export default function UserInfoCard({
       },
     },
   }));
+  const [isRotating, setIsRotating] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsRotating((prevState) => !prevState);
+  };
+
+  const onAnimationEnd = () => {
+    setIsRotating(false);
+  };
 
   const handleCurrencyChange = () => {
+    handleButtonClick();
     const newCurrency = currency === "ARS" ? "USD" : "ARS";
     onChangeCurrency(newCurrency); // Comunicar el cambio de moneda al componente padre (HomePage)
   };
@@ -109,25 +118,37 @@ export default function UserInfoCard({
           </Typography>
           <br />
           <br />
+          <Grid container sx={{ placeItems: "center" }}>
+            <Grid item xs={3}>
+              <IconButton>
+                <CurrencyExchangeIcon
+                  fontSize="large"
+                  color="primary"
+                  onClick={handleCurrencyChange}
+                  sx={{
+                    animation: isRotating
+                      ? "spin 0.5s linear 1 forwards" // 1 rotation in 1 second and then stays in the final position
+                      : "none", // Set 'none' to stop the animation when not rotating
+                    "@keyframes spin": {
+                      "0%": {
+                        transform: "rotate(0deg)",
+                      },
+                      "100%": {
+                        transform: "rotate(360deg)",
+                      },
+                    },
+                  }}
+                  onAnimationEnd={onAnimationEnd}
+                />
+              </IconButton>
+            </Grid>
 
-          <Grid container sx={{placeItems:"center"}}>
-          <Grid item xs={3}>
-          <IconButton>
-          <CurrencyExchangeIcon
-            fontSize="large"
-            color="primary"
-            onClick={handleCurrencyChange} // Usar la función handleCurrencyChange
-          />
-          </IconButton>
+            <Grid item xs={6}>
+              <Typography variant="h6" fontSize={"16px"}>
+                {currency === "ARS" ? "  PESOS" : "DOLARES"}
+              </Typography>
+            </Grid>
           </Grid>
-
-          <Grid item xs={6}>
-          <Typography variant="h6" fontSize={"16px"} >
-            {currency === "ARS" ? "  PESOS" : "DOLARES"}
-          </Typography>
-          </Grid>
-          </Grid>
-
         </Box>
       </CardContent>
       <CardActions>
