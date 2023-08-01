@@ -8,19 +8,23 @@ import ActivitiesCard from "../../components/Home/ActivityCard/ActivitiesCard";
 import TransactionList from "../../components/Home/TransactionList/TransactionList";
 import AccountsApi from "../../api/accountsApi";
 import PlazoFIjoCardList from "../../components/Home/PlazoFijoList/PlazoFIjoCardList";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const [currency, setCurrency] = useState("ARS");
   const [clickedPF, setClickedPF] = useState(false);
+  const [showAllTransactions, setShowAllTransactions] = useState(false); // Nuevo estado para mostrar todas las transacciones
+  const [isloading, setIsLoading] = useState(true);
   const accountARS = useSelector((state) => state.accountArs);
   const accountUSD = useSelector((state) => state.accountUsd);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [showAllTransactions, setShowAllTransactions] = useState(false); // Nuevo estado para mostrar todas las transacciones
-  const [isloading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate();
   const handleClickPlazoFijo = () => {
     setClickedPF(true);
+  };
+  const handleClickInversiones = () => {
+    navigate("/inversiones");
   };
 
   useEffect(() => {
@@ -86,6 +90,7 @@ export default function HomePage() {
             handleClickPlazoFijo={handleClickPlazoFijo}
             onChangeCurrency={handleCurrencyChange}
             onShowAllTransactions={handleShowAllTransactions}
+            handleClickInversiones={handleClickInversiones}
           />
         </Grid>
         <Grid item xs={1} />
