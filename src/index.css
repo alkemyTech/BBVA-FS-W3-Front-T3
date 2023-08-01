@@ -1,15 +1,51 @@
 .css-mskkqm-MuiGrid-root {
-    /*background image transparent*/
-   background-image: url("src/assets/bg2.png") ;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
+  /*background image transparent*/
+  background-image: url("src/assets/bg2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
-  .css-w9b7xo  {
-    /*background image transparent*/
-   background-image: url("src/assets/bg2.png") ;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
+.css-w9b7xo {
+  /*background image transparent*/
+  background-image: url("src/assets/bg2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.button_fa96._blue_e773 {
+  background-color: #7ececa;
+}
+
+._orientationRight_f1ba.wrap_bb01 {
+  right: 0;
+  padding-bottom: 100px;
+  padding-right: 20px;
+}
+
+.__client_ee3b .message_eaaa .textWrap_a5bc,
+.__client_ee3b .message_eaaa .text_c3ea {
+  color: #fff !important;
+  text-align: left;
+  background-color: #7ececa;
+}
+.main_a684.__blue_ee5c {
+  box-shadow:
+    0 3px 10px 0 rgba(0, 0, 0, 0.08),
+    0 0 1px 0 rgba(0, 0, 0, 0.22),
+    inset 0 2px 0 0 #7ececa;
+}
+
+.button_fa96 {
+  background-color: #7ececa;
+  border-radius: 4px !important;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 15px !important;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  width: 100%;
+}

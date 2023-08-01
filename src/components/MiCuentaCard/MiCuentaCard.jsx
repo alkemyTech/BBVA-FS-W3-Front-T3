@@ -99,7 +99,9 @@ export default function UserInfoCard() {
   };
 
   return (
-    <Card sx={{ minWidth: 275, maxWidth: 600, boxShadow: "5px 5px 15px #CFCFCF" }}>
+    <Card
+      sx={{ minWidth: 275, maxWidth: 600, boxShadow: "5px 5px 15px #CFCFCF" }}
+    >
       <CardHeader
         title="Datos Usuario"
         titleTypographyProps={{ variant: "h4" }}
