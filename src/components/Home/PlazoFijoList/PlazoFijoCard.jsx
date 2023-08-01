@@ -18,6 +18,20 @@ export default function PlazoFijoCard({ fixedTerm }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const calculateTotal = () => {
+    var days =
+      (new Date(fixedTerm.closingDate) - new Date(fixedTerm.creationDate)) /
+      (1000 * 60 * 60 * 24);
+    return fixedTerm.amount + fixedTerm.amount * fixedTerm.interest * days;
+  };
+
+  const calculateInterest = () => {
+    var days =
+      (new Date(fixedTerm.closingDate) - new Date(fixedTerm.creationDate)) /
+      (1000 * 60 * 60 * 24);
+    return fixedTerm.amount * fixedTerm.interest * days;
+  };
+
   const handleModalAccept = () => {
     FixedTermApi.cancelFixedTermDeposit(fixedTerm.id).then(() => {
       setIsModalOpen(false);
@@ -39,7 +53,7 @@ export default function PlazoFijoCard({ fixedTerm }) {
         title={`${fixedTerm.account.currency} $${fixedTerm.amount}`}
         sx={{
           textAlign: "center",
-          backgroundColor: "#1ea49d",
+          backgroundColor: "#45b5c4",
           color: "white",
         }}
       />
@@ -75,11 +89,26 @@ export default function PlazoFijoCard({ fixedTerm }) {
           </Grid>
           <Grid item xs={6}>
             <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography gutterBottom> INTERESES: </Typography>
+            <Typography gutterBottom>
+              {" "}
+              INTERESES: {fixedTerm.interest * 100}%{" "}
+            </Typography>
           </Grid>
           <Grid item xs={6}>
             <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography color="#1ea49d">{fixedTerm.interest * 100}%</Typography>
+            <Typography color="#1ea49d">
+              {calculateInterest().toFixed(2)}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+            <Typography gutterBottom> TOTAL: </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+            <Typography color="#1ea49d">
+              {fixedTerm.account.currency} {calculateTotal().toFixed(2)}
+            </Typography>
           </Grid>
         </Grid>
       </CardContent>
