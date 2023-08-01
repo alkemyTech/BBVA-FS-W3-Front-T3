@@ -32,7 +32,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [selectedTransaction, setSelectedTransaction] = useState(null); // Estado para la transacción seleccionada
   const user = useSelector((state) => state.user);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editedDescription, setEditedDescription] = useState("");
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
@@ -114,7 +113,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
   }
   const handleEditClick = (description) => {
-    setEditedDescription(description);
     setIsEditModalOpen(true);
   };
   const handleCloseModal = () => {
@@ -242,26 +240,25 @@ export default function TransactionList({ currency, showAllTransactions }) {
           </Grid>
         </>
       ) : (
-          <Grid
-            item
-            xs={8}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center" >
-              <Card sx={{boxShadow: "5px 5px 15px #BBBBBB"}}>
-                <img
-                  className="img-fluid"
-                  src="/src/assets/SleepCat.png"
-                  width="100%"
-                  alt="Un gato durmiendo"
-                />
-              </Card>
-            </Box>
-          </Grid>
-      
+        <Grid
+          item
+          xs={8}
+          sx={{
+            display: "flex",
+            placeItems: "center",
+          }}
+        >
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Card sx={{ boxShadow: "5px 5px 15px #BBBBBB" }}>
+              <img
+                className="img-fluid"
+                src="/src/assets/SleepCat.png"
+                width="100%"
+                alt="Un gato durmiendo"
+              />
+            </Card>
+          </Box>
+        </Grid>
       )}
     </Grid>
   );
