@@ -9,6 +9,7 @@ import TransactionList from "../../components/Home/TransactionList/TransactionLi
 import AccountsApi from "../../api/accountsApi";
 import PlazoFIjoCardList from "../../components/Home/PlazoFijoList/PlazoFIjoCardList";
 
+
 export default function HomePage() {
   const [currency, setCurrency] = useState("ARS");
   const [clickedPF, setClickedPF] = useState(false);

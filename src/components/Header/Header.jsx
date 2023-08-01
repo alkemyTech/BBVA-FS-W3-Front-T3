@@ -78,7 +78,8 @@ export default function Header() {
 
   useEffect(() => {
     const path = location.pathname;
-    const activeTab = routes.findIndex((route) => route.path === path);
+    const isInvestmentLoan = path.includes("/inversiones");
+    const activeTab = routes.findIndex((route) => route.path === (isInvestmentLoan ? "/inversiones" : path));
     setValue(activeTab !== -1 ? activeTab : 0);
   }, [location]);
 

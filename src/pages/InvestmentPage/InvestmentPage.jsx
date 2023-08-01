@@ -7,7 +7,7 @@ import "./InvestmentPage.css";
 
 export default function BasicCard() {
   return (
-    <Grid container direction="row" spacing={2} className="inversionesGrid">
+    <Grid container direction="row" spacing={2} className="inversionesGrid" backgroundColor="#EAEAEA">
       <Grid item xs={2} />
       <Grid item xs={3}>
         <LoanCard />

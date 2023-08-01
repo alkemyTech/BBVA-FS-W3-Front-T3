@@ -144,7 +144,7 @@ const Transferencia = () => {
   });
 
   return (
-    <Box className="transactionBox">
+    <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
         <Typography
           sx={{

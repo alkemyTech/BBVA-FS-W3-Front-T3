@@ -13,6 +13,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 
+const formatNumberWithCommas = (number) => {
+  return new Intl.NumberFormat("es-AR").format(number);
+};
+
 export default function UserInfoCard({
   currency,
   accountARS,
@@ -91,8 +95,8 @@ export default function UserInfoCard({
           <Typography variant="h4" marginTop={-5}>
             <br />
             {currency === "ARS"
-              ? `$ ${accountARS.balance.toFixed(2)}`
-              : `u$s ${accountUSD.balance.toFixed(2)}`}
+              ? `$ ${formatNumberWithCommas(accountARS.balance.toFixed(2))}`
+              : `u$s ${formatNumberWithCommas(accountUSD.balance.toFixed(2))}`}
           </Typography>
           <br />
           <Typography variant="body1">
