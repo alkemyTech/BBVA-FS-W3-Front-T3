@@ -84,8 +84,10 @@ const ExchangeCard = () => {
   };
 
   return (
-    <Box className="exchangeBox">
-      <Card variant="outlined">
+    
+    <Grid container className="exchangeBox"  >
+      <Grid item xs={4} />
+      <Card variant="outlined" sx={{ boxShadow: "5px 5px 15px #CFCFCF"}}>
         <CardHeader
           title={`Cambio de Moneda - ${currencyTitle}`}
           subheader={
@@ -239,7 +241,7 @@ const ExchangeCard = () => {
           />
         )}
       </Card>
-    </Box>
+    </Grid>
   );
 };
 export default ExchangeCard;

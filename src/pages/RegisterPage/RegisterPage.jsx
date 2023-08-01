@@ -50,8 +50,10 @@ const validationSchema = Yup.object().shape({
   age: Yup.string()
     .required("Debe ingresar una edad.")
     .matches(/^[0-9]+$/, "Debe ingresar un número.")
-    .min(2, "Debe ser mayor a 1 digitos")
-    .max(120),
+    .test("age", "Debe ser mayor a 18 años", (value) => {
+      const ageNumber = parseInt(value);
+      return ageNumber >= 18;
+    }),
   email: Yup.string()
     .email("La dirección de email no es valida.")
     .required("El email es necesario."),

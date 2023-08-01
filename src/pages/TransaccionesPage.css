@@ -1,9 +1,10 @@
 .transactionBox {
   display: flex;
   justify-content: center;
-  height: 89vh;
+  height: 93vh;
   position: relative;
   align-items: center;
+  background-image: url("src/assets/bg2.png");
 }
 
 .formStyle {

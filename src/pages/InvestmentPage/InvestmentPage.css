@@ -2,4 +2,5 @@
   place-items: center;
   align-items: center;
   height: 93vh;
+  background-image: url("src/assets/bg2.png");
 }
