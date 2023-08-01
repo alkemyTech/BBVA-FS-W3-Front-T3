@@ -9,9 +9,12 @@ import {
   Avatar,
   styled,
   Badge,
+  Box,
+  IconButton
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import { BorderHorizontal, Gif } from "@mui/icons-material";
 
 const formatNumberWithCommas = (number) => {
   return new Intl.NumberFormat("es-AR").format(number);
@@ -90,7 +93,7 @@ export default function UserInfoCard({
             {user.email}
           </Typography>
         </Grid>
-        <Typography variant="body1">
+        <Box variant="body1">
           Dinero disponible en cuenta <b></b>: <br />
           <Typography variant="h4" marginTop={-5}>
             <br />
@@ -106,16 +109,26 @@ export default function UserInfoCard({
           </Typography>
           <br />
           <br />
+
+          <Grid container sx={{placeItems:"center"}}>
+          <Grid item xs={3}>
+          <IconButton>
           <CurrencyExchangeIcon
             fontSize="large"
             color="primary"
             onClick={handleCurrencyChange} // Usar la función handleCurrencyChange
-            sx={{ position: "fixed", top: "390px" }}
           />
-          <Typography variant="h6" fontSize={"16px"} sx={{ paddingTop: "5px" }}>
-            {currency === "ARS" ? "PESOS" : "DOLARES"}
+          </IconButton>
+          </Grid>
+
+          <Grid item xs={6}>
+          <Typography variant="h6" fontSize={"16px"} >
+            {currency === "ARS" ? "  PESOS" : "DOLARES"}
           </Typography>
-        </Typography>
+          </Grid>
+          </Grid>
+
+        </Box>
       </CardContent>
       <CardActions>
         <Button
