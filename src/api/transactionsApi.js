@@ -83,11 +83,19 @@ export default class TransactionsApi {
     });
   }
 
-  static async getTransactionsByUserId(id, page = 0, pageSize = 10) {
+  static async getTransactionsByUserId(
+    id,
+    page = 0,
+    pageSize = 10,
+    orderType,
+    currency,
+  ) {
     return new Promise((resolve, reject) => {
       const params = {
         page: page,
         size: pageSize,
+        orderBy: orderType,
+        currency: currency,
       };
 
       api

@@ -21,25 +21,32 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import EditModal from "../../Modal/EditModal.jsx";
+import TransactionBasicMenu from "./TransactionBasicMenu.jsx";
+
 
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [initialLoading, setInitialLoading] = useState(true); // Estado para la carga inicial
+  const [initialLoading, setInitialLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [selectedTransaction, setSelectedTransaction] = useState(null); // Estado para la transacción seleccionada
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const user = useSelector((state) => state.user);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedDescription, setEditedDescription] = useState("");
+  const [orderType, setOrderType] = useState("desc");
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
   };
 
   const handleCardClick = (transaction) => {
-    setSelectedTransaction(transaction); // Actualizar la transacción seleccionada al hacer clic
+    setSelectedTransaction(transaction);
+  };
+
+  const handleOrderChange = (order) => {
+    setOrderType(order);
   };
 
   useEffect(() => {
@@ -47,7 +54,12 @@ export default function TransactionList({ currency, showAllTransactions }) {
     const timer = setTimeout(() => {
       // Mostrar todas las transacciones sin filtrar si showAllTransactions es true
       if (showAllTransactions) {
-        TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
+        TransactionsApi.getTransactionsByUserId(
+          user.id,
+          page,
+          pageSize,
+          orderType,
+        )
           .then((data) => {
             setTransactions(data?._embedded?.transactionList || []);
             setTotalPages(data?.page?.totalPages || 0);
@@ -65,12 +77,15 @@ export default function TransactionList({ currency, showAllTransactions }) {
           });
       } else {
         // Filtrar las transacciones según la moneda seleccionada
-        TransactionsApi.getTransactionsByUserId(user.id, page, pageSize)
+        TransactionsApi.getTransactionsByUserId(
+          user.id,
+          page,
+          pageSize,
+          orderType,
+          currency,
+        )
           .then((data) => {
-            const filteredTransactions =
-              data?._embedded?.transactionList?.filter((transaction) => {
-                return transaction.account.currency === currency;
-              }) || [];
+            const filteredTransactions = data?._embedded?.transactionList;
             setTransactions(filteredTransactions);
             setTotalPages(data?.page?.totalPages || 0);
             setLoading(false);
@@ -96,10 +111,11 @@ export default function TransactionList({ currency, showAllTransactions }) {
     initialLoading,
     showAllTransactions,
     selectedTransaction,
+    orderType,
   ]);
 
   if (initialLoading) {
-    const numberOfSkeletons = 10;
+    const numberOfSkeletons = 8;
     const skeletonElements = Array.from(
       { length: numberOfSkeletons },
       (_, index) => (
@@ -217,10 +233,11 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
   return (
     <Grid container>
-      {transactions.length != 0 ? (
+      {transactions ? (
         <>
           <Grid item xs={10}>
-            <Stack spacing={2}>
+            <Stack spacing={3}>
+
               <Pagination
                 count={totalPages}
                 page={page + 1}
@@ -229,6 +246,11 @@ export default function TransactionList({ currency, showAllTransactions }) {
               />
             </Stack>
           </Grid>
+
+      <Grid item xs={1}>
+        <TransactionBasicMenu onOrderChange={handleOrderChange} />
+      </Grid>
+
           <Grid item xs={10}>
             <List>
               {transactions.map((transaction) => (
@@ -250,18 +272,16 @@ export default function TransactionList({ currency, showAllTransactions }) {
               placeItems: "center",
             }}
           >
-            <Box display="flex" justifyContent="center" alignItems="center" >
-              <Card sx={{boxShadow: "5px 5px 15px #BBBBBB"}}>
-                <img
+            <Box display="flex" justifyContent="center" alignItems="center" sx={{}} >
+              
+                <img 
                   className="img-fluid"
                   src="/src/assets/SleepCat.png"
                   width="100%"
                   alt="Un gato durmiendo"
                 />
-              </Card>
             </Box>
           </Grid>
-      
       )}
     </Grid>
   );
