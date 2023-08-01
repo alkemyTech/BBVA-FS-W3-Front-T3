@@ -215,27 +215,52 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
   return (
     <Grid container>
-      <Grid item xs={10}>
-        <Stack spacing={2}>
-          <Pagination
-            count={totalPages}
-            page={page + 1}
-            color="primary"
-            onChange={handlePageChange}
-          />
-        </Stack>
-      </Grid>
-      <Grid item xs={10}>
-        <List>
-          {transactions.map((transaction) => (
-            <TransactionCard
-              key={transaction.id}
-              transaction={transaction}
-              onClick={() => handleCardClick(transaction)}
-            />
-          ))}
-        </List>
-      </Grid>
+      {transactions.length != 0 ? (
+        <>
+          <Grid item xs={10}>
+            <Stack spacing={2}>
+              <Pagination
+                count={totalPages}
+                page={page + 1}
+                color="primary"
+                onChange={handlePageChange}
+              />
+            </Stack>
+          </Grid>
+          <Grid item xs={10}>
+            <List>
+              {transactions.map((transaction) => (
+                <TransactionCard
+                  key={transaction.id}
+                  transaction={transaction}
+                  onClick={() => handleCardClick(transaction)}
+                />
+              ))}
+            </List>
+          </Grid>
+        </>
+      ) : (
+          <Grid
+            item
+            xs={8}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Box display="flex" justifyContent="center" alignItems="center" >
+              <Card sx={{boxShadow: "5px 5px 15px #BBBBBB"}}>
+                <img
+                  className="img-fluid"
+                  src="/src/assets/SleepCat.png"
+                  width="100%"
+                  alt="Un gato durmiendo"
+                />
+              </Card>
+            </Box>
+          </Grid>
+      
+      )}
     </Grid>
   );
 }
