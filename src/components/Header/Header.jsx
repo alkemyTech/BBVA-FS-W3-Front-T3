@@ -132,12 +132,14 @@ export default function Header() {
       <Toolbar>
         <Grid container sx={{ placeItems: "center" }} spacing={2}>
           <Grid item xs={1} onClick={handleClickLogo}>
-            <Box
-              component="img"
-              sx={{ height: 40 }}
-              alt="Your logo."
-              src={logo}
-            />
+            <IconButton style={{ backgroundColor: "transparent" }}>
+              <Box
+                component="img"
+                sx={{ height: 40 }}
+                alt="Your logo."
+                src={logo}
+              />
+            </IconButton>
           </Grid>
           <Grid item xs={8}>
             <Tabs
