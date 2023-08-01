@@ -5,22 +5,21 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText, formGroupClasses } from "@mui/material";
-import { toast } from "react-toastify";
+import {
+  Grid,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loan } from "../../api/loanApi";
-import { blue } from "@mui/material/colors";
-
 import "../TransaccionesPage.css";
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [simulation, setSimulation] = useState({
-      monthlyPayment: 0,
-      totalPayment: 0,
-      interestRate: 0
-  })
+    monthlyPayment: 0,
+    totalPayment: 0,
+    interestRate: 0,
+  });
   const navigate = useNavigate();
 
   const initialValues = {
@@ -36,14 +35,12 @@ export default function PrestamoPage() {
   });
 
   const onSubmit = (values) => {
-    
     handleSimulation(values)
-      
       .then((data) => {
         setSimulation({
           monthlyPayment: data.monthlyPayment,
           totalPayment: data.totalPayment,
-          interestRate: data.interestRate
+          interestRate: data.interestRate,
         });
         setIsModalOpen(true);
       })
@@ -58,7 +55,6 @@ export default function PrestamoPage() {
     onSubmit,
   });
 
-
   const handleSimulation = (values) => {
     const { amount, closingDate } = values;
     const fechaCierre = new Date(closingDate);
@@ -69,29 +65,23 @@ export default function PrestamoPage() {
       return;
     }
 
-    let montoConInteres = parseFloat(amount); // Convertimos el monto a número
-
     const mesesFaltantes =
       (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
       (fechaCierre.getMonth() - fechaActual.getMonth());
 
     return Loan.simulate({
       amount: values.amount,
-      term: mesesFaltantes
+      term: mesesFaltantes,
     });
   };
 
   const handleModalAccept = () => {
-
     formik.resetForm();
     setIsModalOpen(false);
 
     navigate("/inicio");
-
-    ;
   };
 
-  
   const handleModalCancel = () => {
     // Cerrar el modal sin realizar ninguna acción si se hace clic en "Cancelar"
     setIsModalOpen(false);
@@ -155,14 +145,10 @@ export default function PrestamoPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                !!(
-                  formik.touched.closingDate &&
-                  formik.errors.closingDate
-                )
+                !!(formik.touched.closingDate && formik.errors.closingDate)
               }
               helperText={
-                formik.touched.closingDate &&
-                formik.errors.closingDate
+                formik.touched.closingDate && formik.errors.closingDate
                   ? formik.errors.closingDate
                   : ""
               }
@@ -188,7 +174,6 @@ export default function PrestamoPage() {
             open={isModalOpen}
             content={
               <Grid container spacing={2}>
-                
                 <Grid item xs={12}>
                   <Typography variant="h6" className="tittle">
                     Realizaras un prestamo personal:
@@ -196,49 +181,31 @@ export default function PrestamoPage() {
                 </Grid>
 
                 <Grid item xs={12} container>
-
                   <Grid item xs={6}>
-                  <Typography >
-                  Pago mensual:
-                  </Typography>
+                    <Typography>Pago mensual:</Typography>
                   </Grid>
 
                   <Grid item xs={6}>
-                  <Typography >
-                  {simulation.monthlyPayment}
-                  </Typography>
-                  </Grid>
-
-                
-                  <Grid item xs={6}>
-                  <Typography>
-                  Pago total:
-                  </Typography>
+                    <Typography>{simulation.monthlyPayment}</Typography>
                   </Grid>
 
                   <Grid item xs={6}>
-                  <Typography>
-                   {simulation.totalPayment}
-                  </Typography>
+                    <Typography>Pago total:</Typography>
                   </Grid>
 
                   <Grid item xs={6}>
-                  <Typography>
-                  Interes:
-                  </Typography>
+                    <Typography>{simulation.totalPayment}</Typography>
                   </Grid>
 
                   <Grid item xs={6}>
-                  <Typography>
-                  {simulation.interestRate}
-                  </Typography>
+                    <Typography>Interes:</Typography>
                   </Grid>
 
-                  
+                  <Grid item xs={6}>
+                    <Typography>{simulation.interestRate}</Typography>
+                  </Grid>
                 </Grid>
-
               </Grid>
-              
             }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
@@ -248,4 +215,3 @@ export default function PrestamoPage() {
     </Box>
   );
 }
-
