@@ -237,6 +237,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
         <>
           <Grid item xs={10}>
             <Stack spacing={3}>
+
               <Pagination
                 count={totalPages}
                 page={page + 1}
@@ -245,6 +246,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
               />
             </Stack>
           </Grid>
+
       <Grid item xs={1}>
         <TransactionBasicMenu onOrderChange={handleOrderChange} />
       </Grid>
@@ -273,16 +275,13 @@ export default function TransactionList({ currency, showAllTransactions }) {
             <Box display="flex" justifyContent="center" alignItems="center" sx={{}} >
               
                 <img 
-              
                   className="img-fluid"
                   src="/src/assets/SleepCat.png"
                   width="100%"
                   alt="Un gato durmiendo"
                 />
-              
             </Box>
           </Grid>
-
       )}
     </Grid>
   );
