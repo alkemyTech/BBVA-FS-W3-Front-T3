@@ -208,6 +208,8 @@ export default function TransactionList({ currency, showAllTransactions }) {
           onClose={handleCloseModal}
           onSave={handleSaveDescription}
           currentDescription={selectedTransaction.description}
+          label={"Nueva Descripción"}
+          title={"Descripción"}
         />
       </Card>
     );
