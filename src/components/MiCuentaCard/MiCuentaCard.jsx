@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import {
   Card,
   CardContent,
@@ -14,9 +12,7 @@ import {
   CardHeader,
   Dialog,
   DialogTitle,
-  DialogContent,
   DialogActions,
-  TextField,
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -26,15 +22,19 @@ import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import UsersApi from "../../api/usersApi.js";
 import EditModal from "../Modal/EditModal.jsx";
+import PasswordEditDialog from "./PasswordEditDialgog.jsx";
 
 export default function UserInfoCard() {
   const user = useSelector((state) => state.user);
   const [fieldToChange, setFieldToChange] = useState({ title: "", value: "" });
   const [transferData, setTransferData] = useState({});
+  const [passwordData, setPasswordData] = useState({
+    actualPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
+  });
   const [handleUpdate, setHandleUpdate] = useState({
-    myFunction: () => {
-      console.log("Function is called!");
-    },
+    myFunction: () => {},
   });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -106,12 +106,39 @@ export default function UserInfoCard() {
     setIsEditModalOpen(false);
   };
 
+  const handleChangePassword = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleOpenPasswordModal = () => {
     setIsPasswordModalOpen(true);
   };
 
   const handleClosePasswordModal = () => {
     setIsPasswordModalOpen(false);
+    setPasswordData({
+      actualPassword: "",
+      newPassword: "",
+      repeatNewPassword: "",
+    });
+  };
+
+  const handleSubmitPassword = () => {
+    console.log("submit");
+
+    UsersApi.updateUser(user.id, { password: passwordData.newPassword }).then(
+      () => {
+        handleClosePasswordModal();
+        toast.success("Contraseña cambiada correctamente", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      },
+    );
   };
 
   const handleOpenDeleteModal = () => {
@@ -206,21 +233,21 @@ export default function UserInfoCard() {
             </IconButton>
           </Grid>
 
-          <Grid item xs={3} sx={{height:"40px"}}>
+          <Grid item xs={3} sx={{ height: "40px" }}>
             <Typography variant="h6" color="text.secondary">
               Email:{" "}
             </Typography>
           </Grid>
-          <Grid item xs={9} sx={{height:"40px"}} >
+          <Grid item xs={9} sx={{ height: "40px" }}>
             <Typography variant="h6">{user.email}</Typography>
           </Grid>
 
-          <Grid item xs={3} sx={{height:"40px"}}>
+          <Grid item xs={3} sx={{ height: "40px" }}>
             <Typography variant="h6" color="text.secondary">
               Contraseña:{" "}
             </Typography>
           </Grid>
-          <Grid item xs={9} sx={{height:"40px"}}>
+          <Grid item xs={9} sx={{ height: "40px" }}>
             <Typography variant="h6">*****</Typography>
           </Grid>
         </Grid>
@@ -248,68 +275,14 @@ export default function UserInfoCard() {
           title={fieldToChange.title}
         />
       )}
-      <Formik
-        initialValues={{
-          newPassword: "",
-        }}
-        validationSchema={Yup.object().shape({
-          newPassword: Yup.string().required("Ingrese una contraseña válida"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          UsersApi.updateUser(user.id, {
-            password: values.newPassword,
-          });
-          setSubmitting(false);
-          handleClosePasswordModal();
-          toast.success("Contraseña cambiada correctamente", {
-            position: "top-center",
-            autoClose: 3000,
-          });
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Dialog open={isPasswordModalOpen} onClose={handleClosePasswordModal}>
-            <DialogTitle>Cambiar Contraseña</DialogTitle>
-            <Form>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Ingrese su contraseña anterior"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <Field
-                  as={TextField}
-                  label="Ingrese su nueva contraseña"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <Field
-                  as={TextField}
-                  label="Repita su nueva contraseña"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <ErrorMessage name="newPassword" component="div" />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClosePasswordModal} color="primary">
-                  Cancelar
-                </Button>
-                <Button type="submit" color="primary" disabled={isSubmitting}>
-                  Aceptar
-                </Button>
-              </DialogActions>
-            </Form>
-          </Dialog>
-        )}
-      </Formik>
+
+      <PasswordEditDialog
+        isOpen={isPasswordModalOpen}
+        onClose={handleClosePasswordModal}
+        passwordData={passwordData}
+        handleChangePassword={handleChangePassword}
+        handleSubmitPassword={handleSubmitPassword}
+      />
 
       <Dialog
         open={isDeleteAccountModalOpen}
