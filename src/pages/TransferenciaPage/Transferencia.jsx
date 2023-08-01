@@ -58,6 +58,7 @@ const Transferencia = () => {
   };
   const validationSchema = Yup.object().shape({
     cbu: Yup.number()
+      .max(22, "El CBU debe tener 22 dígitos")
       .positive("La cuenta debe ser un número positivo")
       .required("Campo requerido"),
     monto: Yup.number()
@@ -70,7 +71,9 @@ const Transferencia = () => {
       )
       .required("Campo requerido")
       .ensure(),
-    concepto: Yup.string().required("Campo requerido"),
+    concepto: Yup.string()
+      .required("Campo requerido")
+      .max(25, "El concepto no debe ser mayor a 25 caracteres"),
   });
 
   const validateCbu = (value) => {
