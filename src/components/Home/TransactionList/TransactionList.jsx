@@ -23,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditModal from "../../Modal/EditModal.jsx";
 import TransactionBasicMenu from "./TransactionBasicMenu.jsx";
 
+
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -232,7 +233,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
   return (
     <Grid container>
-      {transactions.length != 0 ? (
+      {transactions ? (
         <>
           <Grid item xs={10}>
             <Stack spacing={3}>
@@ -269,15 +270,16 @@ export default function TransactionList({ currency, showAllTransactions }) {
               placeItems: "center",
             }}
           >
-            <Box display="flex" justifyContent="center" alignItems="center" >
-              <Card sx={{boxShadow: "5px 5px 15px #BBBBBB"}}>
-                <img
+            <Box display="flex" justifyContent="center" alignItems="center" sx={{}} >
+              
+                <img 
+              
                   className="img-fluid"
                   src="/src/assets/SleepCat.png"
                   width="100%"
                   alt="Un gato durmiendo"
                 />
-              </Card>
+              
             </Box>
           </Grid>
 
