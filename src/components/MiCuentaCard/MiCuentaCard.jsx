@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import {
   Card,
   CardContent,
@@ -14,22 +12,32 @@ import {
   CardHeader,
   Dialog,
   DialogTitle,
-  DialogContent,
   DialogActions,
-  TextField,
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../redux/userSlice";
+import { logoutUser, changeName } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import UsersApi from "../../api/usersApi.js";
+import EditModal from "../Modal/EditModal.jsx";
+import PasswordEditDialog from "./PasswordEditDialgog.jsx";
 
 export default function UserInfoCard() {
   const user = useSelector((state) => state.user);
+  const [fieldToChange, setFieldToChange] = useState({ title: "", value: "" });
+  const [transferData, setTransferData] = useState({});
+  const [passwordData, setPasswordData] = useState({
+    actualPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
+  });
+  const [handleUpdate, setHandleUpdate] = useState({
+    myFunction: () => {},
+  });
 
-  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
@@ -66,12 +74,44 @@ export default function UserInfoCard() {
     },
   }));
 
-  const handleOpenNameModal = () => {
-    setIsNameModalOpen(true);
+  const handleEditFirstName = (firstName) => {
+    setTransferData({ firstName: firstName });
+    setFieldToChange({ title: "Nombre", value: firstName });
+    setHandleUpdate({ myFunction: handleUpdateFirstName });
+    handleOpenEditModal();
   };
 
-  const handleCloseNameModal = () => {
-    setIsNameModalOpen(false);
+  const handleUpdateFirstName = (data) => {
+    setTransferData({ firstName: data });
+    handleUpdateUser(transferData);
+  };
+
+  const handleEditLastName = (lastName) => {
+    setTransferData({ lastName: lastName });
+    setFieldToChange({ title: "Apellido", value: lastName });
+    setHandleUpdate({ myFunction: handleUpdateLastName });
+    handleOpenEditModal();
+  };
+
+  const handleUpdateLastName = (data) => {
+    setTransferData({ lastName: data });
+    handleUpdateUser(transferData);
+  };
+  const handleOpenEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setFieldToChange({ title: "", value: "" });
+    setIsEditModalOpen(false);
+  };
+
+  const handleChangePassword = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleOpenPasswordModal = () => {
@@ -80,6 +120,25 @@ export default function UserInfoCard() {
 
   const handleClosePasswordModal = () => {
     setIsPasswordModalOpen(false);
+    setPasswordData({
+      actualPassword: "",
+      newPassword: "",
+      repeatNewPassword: "",
+    });
+  };
+
+  const handleSubmitPassword = () => {
+    console.log("submit");
+
+    UsersApi.updateUser(user.id, { password: passwordData.newPassword }).then(
+      () => {
+        handleClosePasswordModal();
+        toast.success("Contraseña cambiada correctamente", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      },
+    );
   };
 
   const handleOpenDeleteModal = () => {
@@ -98,12 +157,18 @@ export default function UserInfoCard() {
     });
   };
 
+  const handleUpdateUser = (data) => {
+    UsersApi.updateUser(user.id, data).then((user) => {
+      dispatch(changeName(user.firstName + " " + user.lastName));
+    });
+  };
+
   return (
     <Card
       sx={{ minWidth: 275, maxWidth: 600, boxShadow: "5px 5px 15px #CFCFCF" }}
     >
       <CardHeader
-        title="Datos Usuario"
+        title="Mis Datos"
         titleTypographyProps={{ variant: "h4" }}
         sx={{ backgroundColor: "#E9FEFA" }}
         avatar={
@@ -123,130 +188,69 @@ export default function UserInfoCard() {
       <CardContent>
         <Grid
           container
+          justifyContent="space-between"
           sx={{
-            display: "flex",
             padding: 2,
-            justifyContent: "space-between",
           }}
         >
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3}>
             <Typography variant="h6" color="text.secondary">
               Nombre:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={8}>
             <Typography variant="h6">{user.name.split(" ")[0]}</Typography>
           </Grid>
           <Grid
             item
-            xs={4}
+            xs={1}
             sx={{
-              display: "flex",
-              placeItems: "center",
               justifyContent: "flex-end", // Align the icon to the right
             }}
           >
             <IconButton
               aria-label="delete"
               color="primary"
-              onClick={handleOpenNameModal}
+              onClick={() => handleEditFirstName(user.name.split(" ")[0])}
             >
               <EditIcon />
             </IconButton>
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3}>
             <Typography variant="h6" color="text.secondary">
               Apellido:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={8}>
             <Typography variant="h6">{user.name.split(" ")[1]}</Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
+          <Grid item xs={1}>
             <IconButton
               aria-label="delete"
               color="primary"
-              onClick={handleOpenNameModal}
+              onClick={() => handleEditLastName(user.name.split(" ")[1])}
             >
               <EditIcon />
             </IconButton>
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={3} sx={{ height: "40px" }}>
             <Typography variant="h6" color="text.secondary">
               Email:{" "}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
-          >
+          <Grid item xs={9} sx={{ height: "40px" }}>
             <Typography variant="h6">{user.email}</Typography>
           </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-              justifyContent: "flex-end", // Align the icon to the right
-            }}
-          >
-            <IconButton
-              aria-label="delete"
-              color="primary"
-              onClick={handleOpenNameModal}
-            >
-              <EditIcon />
-            </IconButton>
+
+          <Grid item xs={3} sx={{ height: "40px" }}>
+            <Typography variant="h6" color="text.secondary">
+              Contraseña:{" "}
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sx={{ height: "40px" }}>
+            <Typography variant="h6">*****</Typography>
           </Grid>
         </Grid>
       </CardContent>
@@ -263,122 +267,24 @@ export default function UserInfoCard() {
         </Button>
       </CardActions>
 
-      <Formik
-        initialValues={{
-          newName: "",
-          newLastName: "",
-        }}
-        validationSchema={Yup.object().shape({
-          newName: Yup.string().required("Ingrese un nombre válido"),
-          newLastName: Yup.string().required("Ingrese un apellido válido"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values.newName, values.newLastName);
-          setSubmitting(false);
-          handleCloseNameModal();
-          toast.success("Nombre y Apellido cambiado correctamente", {
-            position: "top-center",
-            autoClose: 3000,
-          });
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Dialog open={isNameModalOpen} onClose={handleCloseNameModal}>
-            <DialogTitle>Cambiar Nombre y/o Apellido</DialogTitle>
-            <Form>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Cambiar Nombre"
-                  variant="filled"
-                  fullWidth
-                  name="newName"
-                />
-                <ErrorMessage name="newName" component="div" />
-              </DialogContent>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Cambiar Apellido"
-                  variant="filled"
-                  fullWidth
-                  name="newLastName"
-                />
-                <ErrorMessage name="newLastName" component="div" />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseNameModal} color="primary">
-                  Cancelar
-                </Button>
-                <Button type="submit" color="primary" disabled={isSubmitting}>
-                  Aceptar
-                </Button>
-              </DialogActions>
-            </Form>
-          </Dialog>
-        )}
-      </Formik>
+      {isEditModalOpen && (
+        <EditModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleUpdate.myFunction}
+          currentDescription={fieldToChange.value}
+          label={`Nuevo ${fieldToChange.title}`}
+          title={fieldToChange.title}
+        />
+      )}
 
-      <Formik
-        initialValues={{
-          newPassword: "",
-        }}
-        validationSchema={Yup.object().shape({
-          newPassword: Yup.string().required("Ingrese una contraseña válida"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values.newPassword);
-          setSubmitting(false);
-          handleClosePasswordModal();
-          toast.success("Contraseña cambiada correctamente", {
-            position: "top-center",
-            autoClose: 3000,
-          });
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Dialog open={isPasswordModalOpen} onClose={handleClosePasswordModal}>
-            <DialogTitle>Cambiar Contraseña</DialogTitle>
-            <Form>
-              <DialogContent>
-                <Field
-                  as={TextField}
-                  label="Ingrese su contraseña anterior"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <Field
-                  as={TextField}
-                  label="Ingrese su nueva contraseña"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <Field
-                  as={TextField}
-                  label="Repita su nueva contraseña"
-                  variant="filled"
-                  fullWidth
-                  name="newPassword"
-                  type="password"
-                />
-                <ErrorMessage name="newPassword" component="div" />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClosePasswordModal} color="primary">
-                  Cancelar
-                </Button>
-                <Button type="submit" color="primary" disabled={isSubmitting}>
-                  Aceptar
-                </Button>
-              </DialogActions>
-            </Form>
-          </Dialog>
-        )}
-      </Formik>
+      <PasswordEditDialog
+        isOpen={isPasswordModalOpen}
+        onClose={handleClosePasswordModal}
+        passwordData={passwordData}
+        handleChangePassword={handleChangePassword}
+        handleSubmitPassword={handleSubmitPassword}
+      />
 
       <Dialog
         open={isDeleteAccountModalOpen}

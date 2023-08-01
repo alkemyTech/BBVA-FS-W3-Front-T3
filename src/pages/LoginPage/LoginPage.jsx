@@ -100,7 +100,7 @@ const LoginPage = () => {
   };
   return (
     <>
-      <Box className="registerBox">
+      <Box className="loginBox">
         <Box className="contextBox">
           <Box className="flexBox justifyBox">
             <img
