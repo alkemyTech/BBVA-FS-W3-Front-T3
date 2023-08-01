@@ -7,6 +7,10 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   IconButton,
   List,
@@ -23,7 +27,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditModal from "../../Modal/EditModal.jsx";
 import TransactionBasicMenu from "./TransactionBasicMenu.jsx";
 
-
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +39,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedDescription, setEditedDescription] = useState("");
   const [orderType, setOrderType] = useState("desc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
@@ -43,10 +47,25 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
   const handleCardClick = (transaction) => {
     setSelectedTransaction(transaction);
+    handleOpenModal(); // Agregar esta línea para abrir el modal cuando se seleccione una transacción
   };
 
   const handleOrderChange = (order) => {
     setOrderType(order);
+  };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleOpenEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  // Función para cerrar el modal de edición
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
   };
 
   useEffect(() => {
@@ -129,13 +148,12 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
   }
+
   const handleEditClick = (description) => {
     setEditedDescription(description);
     setIsEditModalOpen(true);
   };
-  const handleCloseModal = () => {
-    setIsEditModalOpen(false);
-  };
+
 
   const handleSaveDescription = (editedDescription) => {
     console.log("editedDescription:", editedDescription);
@@ -155,9 +173,11 @@ export default function TransactionList({ currency, showAllTransactions }) {
       });
   };
 
-  if (selectedTransaction) {
-    return (
-      <Card sx={{ minWidth: 275 }}>
+  return (
+    <>
+      {selectedTransaction && (
+        <Dialog open={isModalOpen} onClose={handleCloseModal} fullWidth>
+           <Card sx={{ minWidth: 275 }}>
         <CardContent>
           <CardHeader
             avatar={
@@ -228,10 +248,9 @@ export default function TransactionList({ currency, showAllTransactions }) {
           title={"Descripción"}
         />
       </Card>
-    );
-  }
+        </Dialog>
+      )}
 
-  return (
     <Grid container>
       {transactions ? (
         <>
@@ -284,5 +303,14 @@ export default function TransactionList({ currency, showAllTransactions }) {
           </Grid>
       )}
     </Grid>
+    <EditModal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveDescription}
+        currentDescription={selectedTransaction ? selectedTransaction.description : ""}
+        title="Descripción"
+        label="Descripción"
+      />
+    </>
   );
 }
