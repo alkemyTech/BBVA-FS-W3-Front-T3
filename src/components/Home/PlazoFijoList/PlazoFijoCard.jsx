@@ -119,7 +119,7 @@ export default function PlazoFijoCard({ fixedTerm }) {
         }}
       >
         <Button error sx={{ color: "#ff2c69" }} onClick={handleModalOpen}>
-          Cancelar
+          Deshacer
         </Button>
       </CardActions>
       {isModalOpen && (
