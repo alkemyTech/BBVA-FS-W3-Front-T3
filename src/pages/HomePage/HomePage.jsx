@@ -96,7 +96,7 @@ export default function HomePage() {
         <Grid item xs={1} />
         <Grid item xs={5} s={{}}>
           {clickedPF ? (
-            <PlazoFIjoCardList />
+            <PlazoFIjoCardList onCancel={() => setClickedPF(false)} />
           ) : (
             <TransactionList
               currency={currency}

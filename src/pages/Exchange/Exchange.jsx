@@ -21,7 +21,7 @@ import "./Exchange.css";
 import TradeApi from "../../api/exchangeApi.js";
 import GenericModal from "../../components/Modal/GenericModal.jsx";
 import { useNavigate } from "react-router-dom";
-const ExchangeCard = () => {
+export default function ExchangeCard() {
   const [amount, setAmount] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -203,5 +203,4 @@ const ExchangeCard = () => {
       </Card>
     </Grid>
   );
-};
-export default ExchangeCard;
+}
