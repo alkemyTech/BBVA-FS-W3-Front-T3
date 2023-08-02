@@ -18,7 +18,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, changeName } from "../../redux/userSlice";
-import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import UsersApi from "../../api/usersApi.js";
 import EditModal from "../Modal/EditModal.jsx";
@@ -119,15 +118,12 @@ export default function UserInfoCard() {
   };
 
   const handleSubmitPassword = () => {
-    UsersApi.updateUser(user.id, { password: passwordData.newPassword }).then(
-      () => {
-        handleClosePasswordModal();
-        toast.success("Contraseña cambiada correctamente", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-      },
-    );
+    UsersApi.updateUser(user.id, {
+      password: passwordData.newPassword,
+      oldPassword: passwordData.actualPassword,
+    }).then(() => {
+      handleClosePasswordModal();
+    });
   };
 
   const handleOpenDeleteModal = () => {
