@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid } from "@mui/material";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loan } from "../../api/loanApi";
@@ -96,6 +96,15 @@ export default function PrestamoPage() {
     fontWeight: "bold",
   };
 
+  const interest = simulation.interestRate * 100;
+
+  const fechaActual = new Date();
+  const fechaCierre = new Date(formik.values.closingDate);
+  const mesesFaltantes =
+    (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
+    (fechaCierre.getMonth() - fechaActual.getMonth());
+
+
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
@@ -171,41 +180,57 @@ export default function PrestamoPage() {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title="Simulación de prestamo"
             content={
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Realizaras un prestamo personal:
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} container>
-                  <Grid item xs={6}>
-                    <Typography>Pago mensual:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.monthlyPayment}</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>Pago total:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.totalPayment}</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>Interes:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.interestRate}</Typography>
-                  </Grid>
-                </Grid>
+              <Grid item xs={8}>
+                <List>
+                  <ListItem>
+                    <ListItemText primary={`Cuota Mensual:`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Total a abonar: `} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Cantidad de cuotas: `} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={`Interes mensual: `} />
+                  </ListItem>
+              
+                </List>
               </Grid>
-            }
+              <Grid item xs={4}>
+                <List>
+                  <ListItem>
+                    <ListItemText
+                      primary={"$" + simulation.monthlyPayment}
+                      className="name"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary={"$" +simulation.totalPayment}
+                      className="name"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary={mesesFaltantes}
+                      className="name"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary={interest.toFixed(2) + "%"}
+                      className="name"
+                    />
+                  </ListItem>
+                </List>
+              
+              </Grid>
+            </Grid>
+          }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
           />

@@ -35,7 +35,7 @@ const SimuladorPlazoFijo = () => {
     closingDate: Yup.date()
       .min(
         new Date(),
-        "La fecha de finalización debe ser mayor a la fecha actual.",
+        "La fecha de finalización debe ser mayor a la fecha actual."
       )
       .required("Campo requerido"),
   });
@@ -95,6 +95,8 @@ const SimuladorPlazoFijo = () => {
   const labelStyle = {
     fontWeight: "bold",
   };
+
+  const interest = simulation.interest * 100;
 
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
@@ -163,56 +165,65 @@ const SimuladorPlazoFijo = () => {
           </Button>
         </form>
       </Box>
-      {isModalOpen && (
+      {isModalOpen && formik.isValid && (
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title={"Confirmación de Plazo Fijo"}
             content={
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Confirmacion de plazo fijo:
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto inicial:`} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Desde: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Hasta: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Interes diario: `} />
+                    </ListItem>
+                    <ListItem>
+
+                    <ListItemText primary={"Monto a recibir: "}/>
+                  </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={6}>
+                  <List>
+                    <ListItem>
                       <ListItemText
-                        primary={simulation.amount}
+                        primary={"$" + simulation.amount}
                         className="name"
                       />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary={`Desde: `} />
                       <ListItemText
                         primary={simulation.creationDate}
                         className="name"
                       />
-                      <ListItemText primary={`Hasta: `} />
+                    </ListItem>
+                    <ListItem>
                       <ListItemText
                         primary={simulation.closingDate}
                         className="name"
                       />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary={`Interes diario: `} />
                       <ListItemText
-                        primary={simulation.interest}
+                        primary={interest.toFixed(2) + "%"}
                         className="name"
                       />
                     </ListItem>
                   </List>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body1" className="tittle2">
-                    Monto a recibir al finalizar:
-                  </Typography>
-                  <List className="monto">
+                 
                     <ListItem>
-                      <ListItemText primary={simulation.total} />
+                      <ListItemText primary={"$" + simulation.total} 
+                      className="name"/>
                     </ListItem>
-                  </List>
                 </Grid>
               </Grid>
             }
