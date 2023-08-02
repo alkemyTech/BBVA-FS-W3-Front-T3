@@ -5,12 +5,16 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid } from "@mui/material";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loan } from "../../api/loanApi";
 
 import "../TransaccionesPage.css";
+
+const formatNumberWithCommas = (number) => {
+  return new Intl.NumberFormat("es-AR").format(number);
+};
 
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,6 +100,14 @@ export default function PrestamoPage() {
     fontWeight: "bold",
   };
 
+  const interest = simulation.interestRate * 100;
+
+  const fechaActual = new Date();
+  const fechaCierre = new Date(formik.values.closingDate);
+  const mesesFaltantes =
+    (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
+    (fechaCierre.getMonth() - fechaActual.getMonth());
+
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
@@ -171,38 +183,54 @@ export default function PrestamoPage() {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title="Simulación de prestamo"
             content={
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Realizaras un prestamo personal:
-                  </Typography>
+              <Grid container spacing={1} sx={{ paddingRight: "15px" }}>
+                <Grid item xs={8}>
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={`Cuota Mensual:`} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Cantidad de cuotas: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Interes mensual: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Total a abonar: `} />
+                    </ListItem>
+                  </List>
                 </Grid>
-
-                <Grid item xs={12} container>
-                  <Grid item xs={6}>
-                    <Typography>Pago mensual:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.monthlyPayment}</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>Pago total:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.totalPayment}</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>Interes:</Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography>{simulation.interestRate}</Typography>
-                  </Grid>
+                <Grid item xs={4}>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary={
+                          "$" +
+                          formatNumberWithCommas(simulation.monthlyPayment)
+                        }
+                        className="name"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={mesesFaltantes} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary={interest.toFixed(2) + "%"}
+                        className="name"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary={
+                          "$" + formatNumberWithCommas(simulation.totalPayment)
+                        }
+                        className="name"
+                      />
+                    </ListItem>
+                  </List>
                 </Grid>
               </Grid>
             }

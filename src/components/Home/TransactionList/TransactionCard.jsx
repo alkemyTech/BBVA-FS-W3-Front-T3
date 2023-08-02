@@ -11,6 +11,12 @@ const colors = {
   DEPOSIT: "#cbe65b",
 };
 
+const name = {
+  INCOME: "INGRESO",
+  PAYMENT: "PAGO",
+  DEPOSIT: "DEPOSITO",
+};
+
 const icons = {
   INCOME: (
     <AddCircleIcon
@@ -79,7 +85,7 @@ export default function TranscationCard({ transaction, onClick }) {
             }}
           >
             {icons[type]}
-            <Typography paddingLeft={"10px"}>{type}</Typography>
+            <Typography paddingLeft={"10px"}>{name[type]}</Typography>
           </Grid>
           <Grid
             item

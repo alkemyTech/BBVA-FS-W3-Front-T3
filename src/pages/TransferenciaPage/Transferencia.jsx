@@ -57,10 +57,11 @@ const Transferencia = () => {
     });
   };
   const validationSchema = Yup.object().shape({
-    cbu: Yup.number()
-      .max(22, "El CBU debe tener 22 dígitos")
-      .positive("La cuenta debe ser un número positivo")
-      .required("Campo requerido"),
+    cbu: Yup.string()
+      .matches(/^[0-9]+$/, "Debe ingresar solo numeros.")
+      .required("Campo requerido")
+      .min(22, "El CBU debe tener 22 dígitos")
+      .max(22, "El CBU debe tener 22 dígitos"),
     monto: Yup.number()
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),

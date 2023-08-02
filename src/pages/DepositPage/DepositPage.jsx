@@ -189,15 +189,21 @@ export default function DepositPage() {
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
-            title={"Realizaras un deposito a tu propia cuenta:"}
+            title={"Ingreso de dinero a tu cuenta:"}
             content={
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={7}>
                   <List>
                     <ListItem>
                       <ListItemText primary={`Monto a acreditar:`} />
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={5}>
+                  <List>
+                    <ListItem>
                       <ListItemText
-                        primary={` ${transferData.amount}`}
+                        primary={`${transferData.currency} ${transferData.amount}`}
                         className="name"
                       />
                     </ListItem>

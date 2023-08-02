@@ -6,11 +6,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FixedTermApi } from "../../api/fixedTermApi.js";
 
 import "../TransaccionesPage.css";
+
+const formatNumberWithCommas = (number) => {
+  return new Intl.NumberFormat("es-AR").format(number);
+};
 
 const SimuladorPlazoFijo = () => {
   const navigate = useNavigate();
@@ -163,56 +167,111 @@ const SimuladorPlazoFijo = () => {
           </Button>
         </form>
       </Box>
-      {isModalOpen && (
+      {isModalOpen && formik.isValid && (
         <div className="boxModal">
           <GenericModal
             open={isModalOpen}
+            title={"Confirmación de Plazo Fijo"}
             content={
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" className="tittle">
-                    Confirmacion de plazo fijo:
-                  </Typography>
+              <Grid
+                container
+                spacing={2}
+                sx={{ placeItems: "center", maxWidth: "100%" }}
+              >
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Monto Inicial:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      $ {formatNumberWithCommas(simulation.amount)}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <List>
-                    <ListItem>
-                      <ListItemText primary={`Monto inicial:`} />
-                      <ListItemText
-                        primary={simulation.amount}
-                        className="name"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={`Desde: `} />
-                      <ListItemText
-                        primary={simulation.creationDate}
-                        className="name"
-                      />
-                      <ListItemText primary={`Hasta: `} />
-                      <ListItemText
-                        primary={simulation.closingDate}
-                        className="name"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={`Interes diario: `} />
-                      <ListItemText
-                        primary={simulation.interest}
-                        className="name"
-                      />
-                    </ListItem>
-                  </List>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Inicio:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      {simulation.creationDate}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body1" className="tittle2">
-                    Monto a recibir al finalizar:
-                  </Typography>
-                  <List className="monto">
-                    <ListItem>
-                      <ListItemText primary={simulation.total} />
-                    </ListItem>
-                  </List>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Cierre:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      {simulation.closingDate}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Interés:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        color: "#1693a5",
+                      }}
+                      gutterBottom
+                    >
+                      {simulation.interest * 100} %
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Total a acreditar:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        color: "#1693a5",
+                      }}
+                      gutterBottom
+                    >
+                      $ {formatNumberWithCommas(simulation.total)}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             }

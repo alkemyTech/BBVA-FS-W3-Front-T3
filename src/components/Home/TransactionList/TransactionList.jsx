@@ -7,6 +7,10 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   IconButton,
   List,
@@ -35,16 +39,43 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedDescription, setEditedDescription] = useState("");
   const [orderType, setOrderType] = useState("desc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
   };
 
   const handleCardClick = (transaction) => {
     setSelectedTransaction(transaction);
+    handleOpenModal();
   };
 
   const handleOrderChange = (order) => {
     setOrderType(order);
+  };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleOpenEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+
+  // Función para cerrar el modal de edición
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
+  const name = {
+    INCOME: "INGRESO",
+    PAYMENT: "PAGO",
+    DEPOSIT: "DEPOSITO",
   };
 
   useEffect(() => {
@@ -128,10 +159,8 @@ export default function TransactionList({ currency, showAllTransactions }) {
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
   }
   const handleEditClick = (description) => {
+    setEditedDescription(description);
     setIsEditModalOpen(true);
-  };
-  const handleCloseModal = () => {
-    setIsEditModalOpen(false);
   };
 
   const handleSaveDescription = (editedDescription) => {
@@ -152,137 +181,154 @@ export default function TransactionList({ currency, showAllTransactions }) {
       });
   };
 
-  if (selectedTransaction) {
-    return (
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: "#1693a5" }} aria-label="">
-                <Typography sx={{ fontSize: 13 }} color="white">
-                  #{selectedTransaction.id}
-                </Typography>
-              </Avatar>
-            }
-            action={
-              <IconButton
-                aria-label="settings"
-                onClick={() => handleEditClick(selectedTransaction.description)}
-              >
-                <EditIcon />
-              </IconButton>
-            }
-            title={
-              selectedTransaction.description
-                ? selectedTransaction.description
-                : "Título predeterminado"
-            }
-            subheader={`Fecha: ${
-              selectedTransaction.transactionDate.split("T")[0]
-            } | Hora: ${selectedTransaction.transactionDate.split("T")[1]} `}
-          />
-
-          <Grid container spacing={2}>
-            <Grid item xs={1.2} />
-            <Grid item xs={3}>
-              <Typography variant="body2">
-                <b>Monto:</b>
-              </Typography>
-              <Typography variant="body2">
-                <b>Tipo:</b>
-              </Typography>
-              <Typography variant="body2">
-                <b>Descripción:</b>
-              </Typography>
-              <Typography variant="body2">
-                <b>CBU destino:</b>
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="body2">
-                {selectedTransaction.amount}{" "}
-                {selectedTransaction.account.currency}
-              </Typography>
-              <Typography variant="body2">
-                {selectedTransaction.type}
-              </Typography>
-              <Typography variant="body2">
-                {selectedTransaction.description}
-              </Typography>
-              <Typography variant="body2">
-                {selectedTransaction.account.cbu}
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Button onClick={() => setSelectedTransaction(null)}>Cerrar</Button>
-        <EditModal
-          isOpen={isEditModalOpen}
-          onClose={handleCloseModal}
-          onSave={handleSaveDescription}
-          currentDescription={selectedTransaction.description}
-          label={"Nueva Descripción"}
-          title={"Descripción"}
-        />
-      </Card>
-    );
-  }
-
   return (
-    <Grid container>
-      {transactions ? (
-        <>
-          <Grid item xs={10}>
-            <Stack spacing={3}>
-              <Pagination
-                count={totalPages}
-                page={page + 1}
-                color="primary"
-                onChange={handlePageChange}
+    <>
+      {selectedTransaction && (
+        <Dialog open={isModalOpen} onClose={handleCloseModal} fullWidth>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: "#1693a5" }} aria-label="">
+                    <Typography sx={{ fontSize: 13 }} color="white">
+                      #{selectedTransaction.id}
+                    </Typography>
+                  </Avatar>
+                }
+                action={
+                  <IconButton
+                    aria-label="settings"
+                    onClick={() =>
+                      handleEditClick(selectedTransaction.description)
+                    }
+                  >
+                    <EditIcon />
+                  </IconButton>
+                }
+                title={
+                  selectedTransaction.description
+                    ? selectedTransaction.description
+                    : "Título predeterminado"
+                }
+                titleTypographyProps={{ variant: "h6" }}
+                subheader={`Fecha: ${
+                  formatDate(selectedTransaction.transactionDate.split("T")[0])
+                } | Hora: ${
+                  selectedTransaction.transactionDate.split("T")[1]
+                } `}
               />
-            </Stack>
-          </Grid>
 
-          <Grid item xs={1}>
-            <TransactionBasicMenu onOrderChange={handleOrderChange} />
-          </Grid>
-
-          <Grid item xs={10}>
-            <List>
-              {transactions.map((transaction) => (
-                <TransactionCard
-                  key={transaction.id}
-                  transaction={transaction}
-                  onClick={() => handleCardClick(transaction)}
-                />
-              ))}
-            </List>
-          </Grid>
-        </>
-      ) : (
-        <Grid
-          item
-          xs={8}
-          sx={{
-            display: "flex",
-            placeItems: "center",
-          }}
-        >
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{}}
-          >
-            <img
-              className="img-fluid"
-              src="/src/assets/SleepCat.png"
-              width="100%"
-              alt="Un gato durmiendo"
+              <Grid container spacing={2}>
+                <Grid item xs={1.2} />
+                <Grid item xs={3}>
+                  <Typography variant="body2">
+                    <b>Monto:</b>
+                  </Typography>
+                  <Typography variant="body2">
+                    <b>Tipo:</b>
+                  </Typography>
+                  <Typography variant="body2">
+                    <b>Descripción:</b>
+                  </Typography>
+                  <Typography variant="body2">
+                    <b>CBU destino:</b>
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography variant="body2">
+                    {selectedTransaction.amount}{" "}
+                    {selectedTransaction.account.currency}
+                  </Typography>
+                  <Typography variant="body2">
+                    {name[selectedTransaction.type]}
+                  </Typography>
+                  <Typography variant="body2">
+                    {selectedTransaction.description}
+                  </Typography>
+                  <Typography variant="body2">
+                    {selectedTransaction.account.cbu}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <Button onClick={() => setSelectedTransaction(null)}>Cerrar</Button>
+            <EditModal
+              isOpen={isEditModalOpen}
+              onClose={handleCloseModal}
+              onSave={handleSaveDescription}
+              currentDescription={selectedTransaction.description}
+              label={"Nueva Descripción"}
+              title={"Descripción"}
             />
-          </Box>
-        </Grid>
+          </Card>
+        </Dialog>
       )}
-    </Grid>
+
+      <Grid container>
+        {transactions ? (
+          <>
+            <Grid item xs={10}>
+              <Stack spacing={3}>
+                <Pagination
+                  count={totalPages}
+                  page={page + 1}
+                  color="primary"
+                  onChange={handlePageChange}
+                />
+              </Stack>
+            </Grid>
+
+            <Grid item xs={1}>
+              <TransactionBasicMenu onOrderChange={handleOrderChange} />
+            </Grid>
+
+            <Grid item xs={10}>
+              <List>
+                {transactions.map((transaction) => (
+                  <TransactionCard
+                    key={transaction.id}
+                    transaction={transaction}
+                    onClick={() => handleCardClick(transaction)}
+                  />
+                ))}
+              </List>
+            </Grid>
+          </>
+        ) : (
+          <Grid
+            item
+            xs={8}
+            sx={{
+              display: "flex",
+              placeItems: "center",
+            }}
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{}}
+            >
+              <img
+                className="img-fluid"
+                src="/src/assets/SleepCat.png"
+                width="100%"
+                alt="Un gato durmiendo"
+              />
+            </Box>
+          </Grid>
+        )}
+      </Grid>
+      <EditModal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveDescription}
+        currentDescription={
+          selectedTransaction ? selectedTransaction.description : ""
+        }
+        title="Descripción"
+        label="Descripción"
+      />
+    </>
   );
 }

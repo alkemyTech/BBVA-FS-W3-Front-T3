@@ -103,7 +103,9 @@ export default function UserInfoCard({
           </Typography>
         </Grid>
         <Box variant="body1">
-          Dinero disponible en cuenta <b></b>: <br />
+          <Typography variant="h6" fontSize={"16px"}>
+            Dinero disponible en cuenta <b></b>: <br />
+          </Typography>
           <Typography variant="h4" marginTop={-5}>
             <br />
             {currency === "ARS"
