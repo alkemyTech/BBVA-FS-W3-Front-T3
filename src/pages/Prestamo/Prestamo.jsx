@@ -12,6 +12,11 @@ import { Loan } from "../../api/loanApi";
 
 import "../TransaccionesPage.css";
 
+
+const formatNumberWithCommas = (number) => {
+  return new Intl.NumberFormat("es-AR").format(number);
+};
+
 export default function PrestamoPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [simulation, setSimulation] = useState({
@@ -21,10 +26,13 @@ export default function PrestamoPage() {
   });
   const navigate = useNavigate();
 
+
+
   const initialValues = {
     amount: "",
     closingDate: "",
   };
+
 
   const validationSchema = Yup.object().shape({
     amount: Yup.number()
@@ -104,7 +112,6 @@ export default function PrestamoPage() {
     (fechaCierre.getFullYear() - fechaActual.getFullYear()) * 12 +
     (fechaCierre.getMonth() - fechaActual.getMonth());
 
-
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
@@ -182,14 +189,11 @@ export default function PrestamoPage() {
             open={isModalOpen}
             title="Simulación de prestamo"
             content={
-              <Grid container spacing={2}>
+              <Grid container spacing={1} sx={{paddingRight:"15px"}}>
               <Grid item xs={8}>
                 <List>
                   <ListItem>
                     <ListItemText primary={`Cuota Mensual:`} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Total a abonar: `} />
                   </ListItem>
                   <ListItem>
                     <ListItemText primary={`Cantidad de cuotas: `} />
@@ -197,33 +201,37 @@ export default function PrestamoPage() {
                   <ListItem>
                     <ListItemText primary={`Interes mensual: `} />
                   </ListItem>
-              
+                  <ListItem>
+                    <ListItemText primary={`Total a abonar: `} />
+                  </ListItem>
+
                 </List>
               </Grid>
               <Grid item xs={4}>
                 <List>
                   <ListItem>
                     <ListItemText
-                      primary={"$" + simulation.monthlyPayment}
-                      className="name"
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary={"$" +simulation.totalPayment}
+                      primary={"$" + formatNumberWithCommas(simulation.monthlyPayment)}
                       className="name"
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText
                       primary={mesesFaltantes}
-                      className="name"
+                    
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText
                       primary={interest.toFixed(2) + "%"}
                       className="name"
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary={"$" + formatNumberWithCommas(simulation.totalPayment)}
+                      className="name"
+                      
                     />
                   </ListItem>
                 </List>

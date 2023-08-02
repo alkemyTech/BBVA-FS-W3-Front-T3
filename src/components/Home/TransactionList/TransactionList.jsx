@@ -199,6 +199,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
                 ? selectedTransaction.description
                 : "Título predeterminado"
             }
+            titleTypographyProps={{ variant: "h6" }}
             subheader={`Fecha: ${
               selectedTransaction.transactionDate.split("T")[0]
             } | Hora: ${selectedTransaction.transactionDate.split("T")[1]} `}
