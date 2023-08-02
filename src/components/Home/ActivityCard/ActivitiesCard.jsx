@@ -13,25 +13,19 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
-import { useNavigate } from "react-router-dom";
 
 export default function ActivitiesCard({
   handleClickPlazoFijo,
-  onChangeCurrency,
+  handleClickInversiones,
   onShowAllTransactions,
 }) {
   const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para la moneda seleccionada
-  const navigate = useNavigate();
 
   const handleShowAllTransactions = () => {
     setSelectedCurrency(""); // Reiniciar el filtro de moneda seleccionado
     onShowAllTransactions(); // Comunicar al componente padre (HomePage) que se deben mostrar todas las transacciones
   };
 
-  const handleClickInversiones = () => { 
-    navigate("/inversiones");
-  }
- 
   return (
     <Card
       sx={{
@@ -68,7 +62,7 @@ export default function ActivitiesCard({
               <ListItemText primary="Todos mis movimientos" />
             </ListItem>
           </CardActionArea>
-          <CardActionArea onClick={handleClickInversiones} >
+          <CardActionArea onClick={handleClickInversiones}>
             <ListItem>
               <ListItemAvatar>
                 <PetsIcon sx={{ color: "#1693a5" }} />

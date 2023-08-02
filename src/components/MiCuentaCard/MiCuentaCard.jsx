@@ -18,7 +18,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, changeName } from "../../redux/userSlice";
-import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import UsersApi from "../../api/usersApi.js";
 import EditModal from "../Modal/EditModal.jsx";
@@ -27,17 +26,14 @@ import PasswordEditDialog from "./PasswordEditDialgog.jsx";
 export default function UserInfoCard() {
   const user = useSelector((state) => state.user);
   const [fieldToChange, setFieldToChange] = useState({ title: "", value: "" });
-  const [transferData, setTransferData] = useState({});
   const [passwordData, setPasswordData] = useState({
     actualPassword: "",
     newPassword: "",
     repeatNewPassword: "",
   });
-  const [handleUpdate, setHandleUpdate] = useState({
-    myFunction: () => {},
-  });
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isNameEditModalOpen, setIsNameEditModalOpen] = useState(false);
+  const [isLastNameEditModalOpen, setIsLastNameEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
@@ -75,35 +71,29 @@ export default function UserInfoCard() {
   }));
 
   const handleEditFirstName = (firstName) => {
-    setTransferData({ firstName: firstName });
     setFieldToChange({ title: "Nombre", value: firstName });
-    setHandleUpdate({ myFunction: handleUpdateFirstName });
-    handleOpenEditModal();
+    setIsLastNameEditModalOpen(false);
+    setIsNameEditModalOpen(true);
   };
 
-  const handleUpdateFirstName = (data) => {
-    setTransferData({ firstName: data });
-    handleUpdateUser(transferData);
+  const handleUpdateName = (data) => {
+    handleUpdateUser({ firstName: data });
   };
 
   const handleEditLastName = (lastName) => {
-    setTransferData({ lastName: lastName });
     setFieldToChange({ title: "Apellido", value: lastName });
-    setHandleUpdate({ myFunction: handleUpdateLastName });
-    handleOpenEditModal();
+    setIsNameEditModalOpen(false);
+    setIsLastNameEditModalOpen(true);
   };
 
   const handleUpdateLastName = (data) => {
-    setTransferData({ lastName: data });
-    handleUpdateUser(transferData);
-  };
-  const handleOpenEditModal = () => {
-    setIsEditModalOpen(true);
+    handleUpdateUser({ lastName: data });
   };
 
   const handleCloseModal = () => {
+    setIsLastNameEditModalOpen(false);
+    setIsNameEditModalOpen(false);
     setFieldToChange({ title: "", value: "" });
-    setIsEditModalOpen(false);
   };
 
   const handleChangePassword = (e) => {
@@ -128,17 +118,12 @@ export default function UserInfoCard() {
   };
 
   const handleSubmitPassword = () => {
-    console.log("submit");
-
-    UsersApi.updateUser(user.id, { password: passwordData.newPassword }).then(
-      () => {
-        handleClosePasswordModal();
-        toast.success("Contraseña cambiada correctamente", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-      },
-    );
+    UsersApi.updateUser(user.id, {
+      password: passwordData.newPassword,
+      oldPassword: passwordData.actualPassword,
+    }).then(() => {
+      handleClosePasswordModal();
+    });
   };
 
   const handleOpenDeleteModal = () => {
@@ -160,6 +145,7 @@ export default function UserInfoCard() {
   const handleUpdateUser = (data) => {
     UsersApi.updateUser(user.id, data).then((user) => {
       dispatch(changeName(user.firstName + " " + user.lastName));
+      localStorage.setItem("user", JSON.stringify(user));
     });
   };
 
@@ -267,14 +253,25 @@ export default function UserInfoCard() {
         </Button>
       </CardActions>
 
-      {isEditModalOpen && (
+      {isNameEditModalOpen && (
         <EditModal
-          isOpen={isEditModalOpen}
+          isOpen={isNameEditModalOpen}
           onClose={handleCloseModal}
-          onSave={handleUpdate.myFunction}
+          onSave={handleUpdateName}
           currentDescription={fieldToChange.value}
-          label={`Nuevo ${fieldToChange.title}`}
-          title={fieldToChange.title}
+          label={`Nuevo Nombre`}
+          title={"Nombre"}
+        />
+      )}
+
+      {isLastNameEditModalOpen && (
+        <EditModal
+          isOpen={isLastNameEditModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleUpdateLastName}
+          currentDescription={fieldToChange.value}
+          label={`Nuevo Apellido`}
+          title={"Apellido"}
         />
       )}
 

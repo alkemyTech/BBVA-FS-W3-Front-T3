@@ -7,13 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import GenericModal from "../../components/Modal/GenericModal";
-import {
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
@@ -25,7 +19,6 @@ import { styled } from "styled-components";
 const Transferencia = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [cbuInfo, setCbuInfo] = useState({
     user: {
       id: 0,
@@ -65,6 +58,7 @@ const Transferencia = () => {
   };
   const validationSchema = Yup.object().shape({
     cbu: Yup.number()
+      .max(22, "El CBU debe tener 22 dígitos")
       .positive("La cuenta debe ser un número positivo")
       .required("Campo requerido"),
     monto: Yup.number()
@@ -77,19 +71,18 @@ const Transferencia = () => {
       )
       .required("Campo requerido")
       .ensure(),
-    concepto: Yup.string().required("Campo requerido"),
+    concepto: Yup.string()
+      .required("Campo requerido")
+      .max(25, "El concepto no debe ser mayor a 25 caracteres"),
   });
 
   const validateCbu = (value) => {
-    setIsLoading(true);
     if (value.length === 22) {
       AccountsApi.getAccountByCbu(value).then((data) => {
         setCbuInfo(data);
-        setIsLoading(false);
       });
     } else {
       resetCbuInfo();
-      setIsLoading(false);
     }
   };
 
@@ -174,11 +167,9 @@ const Transferencia = () => {
                 formik.errors.cbu
               ) : (
                 <>
-                  {isLoading ? (
-                    <CircularProgress />
-                  ) : cbuInfo.user.firstName &&
-                    cbuInfo.user.lastName &&
-                    cbuInfo.currency ? (
+                  {cbuInfo.user.firstName &&
+                  cbuInfo.user.lastName &&
+                  cbuInfo.currency ? (
                     <>
                       <StyledDiv>
                         <b>Destinatario:</b> {cbuInfo.user.firstName}{" "}

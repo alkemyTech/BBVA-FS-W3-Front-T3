@@ -43,6 +43,10 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
+const formatNumberWithCommas = (number) => {
+  return new Intl.NumberFormat("es-AR").format(number);
+};
+
 export default function TranscationCard({ transaction, onClick }) {
   const { type, amount, transactionDate } = transaction;
   const currency = transaction.account.currency;
@@ -104,7 +108,7 @@ export default function TranscationCard({ transaction, onClick }) {
                 }
                 sx={{ letterSpacing: "0.2rem" }}
               >
-                {`$${amount}`}
+                {`$${formatNumberWithCommas(amount)}`}
               </Typography>
             </CardContent>
           </Grid>

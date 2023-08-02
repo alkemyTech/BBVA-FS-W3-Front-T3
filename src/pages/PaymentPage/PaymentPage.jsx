@@ -42,7 +42,9 @@ export default function PaymentPage() {
       .positive("El monto debe ser un número positivo")
       .required("Campo requerido"),
     tipo: Yup.string().required("Campo requerido"),
-    concepto: Yup.string().required("Campo requerido"),
+    concepto: Yup.string()
+      .required("Campo requerido")
+      .max(25, "El concepto no debe ser mayor a 25 caracteres"),
   });
 
   const onSubmit = (values) => {

@@ -47,7 +47,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
   const handleCardClick = (transaction) => {
     setSelectedTransaction(transaction);
-    handleOpenModal(); // Agregar esta línea para abrir el modal cuando se seleccione una transacción
+    handleOpenModal();
   };
 
   const handleOrderChange = (order) => {
@@ -148,7 +148,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
 
     return <Box sx={{ width: 500 }}>{skeletonElements}</Box>;
   }
-
   const handleEditClick = (description) => {
     setEditedDescription(description);
     setIsEditModalOpen(true);
@@ -256,7 +255,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
         <>
           <Grid item xs={10}>
             <Stack spacing={3}>
-
               <Pagination
                 count={totalPages}
                 page={page + 1}
@@ -266,9 +264,9 @@ export default function TransactionList({ currency, showAllTransactions }) {
             </Stack>
           </Grid>
 
-      <Grid item xs={1}>
-        <TransactionBasicMenu onOrderChange={handleOrderChange} />
-      </Grid>
+          <Grid item xs={1}>
+            <TransactionBasicMenu onOrderChange={handleOrderChange} />
+          </Grid>
 
           <Grid item xs={10}>
             <List>
@@ -283,24 +281,28 @@ export default function TransactionList({ currency, showAllTransactions }) {
           </Grid>
         </>
       ) : (
-          <Grid
-            item
-            xs={8}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
+        <Grid
+          item
+          xs={8}
+          sx={{
+            display: "flex",
+            placeItems: "center",
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{}}
           >
-            <Box display="flex" justifyContent="center" alignItems="center" sx={{}} >
-              
-                <img 
-                  className="img-fluid"
-                  src="/src/assets/SleepCat.png"
-                  width="100%"
-                  alt="Un gato durmiendo"
-                />
-            </Box>
-          </Grid>
+            <img
+              className="img-fluid"
+              src="/src/assets/SleepCat.png"
+              width="100%"
+              alt="Un gato durmiendo"
+            />
+          </Box>
+        </Grid>
       )}
     </Grid>
     <EditModal

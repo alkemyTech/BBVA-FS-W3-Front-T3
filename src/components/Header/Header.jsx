@@ -188,7 +188,7 @@ export default function Header() {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={handleClickAccount}>
-                <Typography textAlign="center">Mi Cuenta</Typography>
+                <Typography textAlign="center">Mi Perfil</Typography>
               </MenuItem>
               <MenuItem onClick={handleClickLogOut}>
                 <Typography textAlign="center">Cerrar sesión</Typography>

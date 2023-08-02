@@ -14,7 +14,7 @@ import { useState } from "react";
 import { FixedTermApi } from "../../../api/fixedTermApi.js";
 import { useNavigate } from "react-router-dom";
 
-export default function PlazoFijoCard({ fixedTerm }) {
+export default function PlazoFijoCard({ fixedTerm, onCancel }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +35,8 @@ export default function PlazoFijoCard({ fixedTerm }) {
   const handleModalAccept = () => {
     FixedTermApi.cancelFixedTermDeposit(fixedTerm.id).then(() => {
       setIsModalOpen(false);
-      navigate("/inicio");
+      onCancel();
+      navigate("/");
     });
   };
 
@@ -119,7 +120,7 @@ export default function PlazoFijoCard({ fixedTerm }) {
         }}
       >
         <Button error sx={{ color: "#ff2c69" }} onClick={handleModalOpen}>
-          Cancelar
+          Deshacer
         </Button>
       </CardActions>
       {isModalOpen && (
