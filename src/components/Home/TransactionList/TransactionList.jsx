@@ -67,6 +67,16 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
   };
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
+  const name = {
+    INCOME: "INGRESO",
+    PAYMENT: "PAGO",
+    DEPOSIT: "DEPOSITO",
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -202,7 +212,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
                 }
                 titleTypographyProps={{ variant: "h6" }}
                 subheader={`Fecha: ${
-                  selectedTransaction.transactionDate.split("T")[0]
+                  formatDate(selectedTransaction.transactionDate.split("T")[0])
                 } | Hora: ${
                   selectedTransaction.transactionDate.split("T")[1]
                 } `}
@@ -230,7 +240,7 @@ export default function TransactionList({ currency, showAllTransactions }) {
                     {selectedTransaction.account.currency}
                   </Typography>
                   <Typography variant="body2">
-                    {selectedTransaction.type}
+                    {name[selectedTransaction.type]}
                   </Typography>
                   <Typography variant="body2">
                     {selectedTransaction.description}
