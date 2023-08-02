@@ -16,7 +16,7 @@ import PetsIcon from "@mui/icons-material/Pets";
 
 export default function ActivitiesCard({
   handleClickPlazoFijo,
-  onChangeCurrency,
+  handleClickInversiones,
   onShowAllTransactions,
 }) {
   const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para la moneda seleccionada
@@ -62,7 +62,7 @@ export default function ActivitiesCard({
               <ListItemText primary="Todos mis movimientos" />
             </ListItem>
           </CardActionArea>
-          <CardActionArea>
+          <CardActionArea onClick={handleClickInversiones}>
             <ListItem>
               <ListItemAvatar>
                 <PetsIcon sx={{ color: "#1693a5" }} />

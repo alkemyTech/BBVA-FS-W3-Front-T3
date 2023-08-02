@@ -7,9 +7,7 @@ import {
   Grid,
   Avatar,
   Button,
-  Box,
   CardHeader,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -17,20 +15,16 @@ import {
   Divider,
 } from "@mui/material";
 import { Flag as FlagIcon } from "@mui/icons-material";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 import argentinaFlag from "../../assets/argentina.png";
 import usaFlag from "../../assets/usa.png";
 import "./Exchange.css";
 import TradeApi from "../../api/exchangeApi.js";
 import GenericModal from "../../components/Modal/GenericModal.jsx";
 import { useNavigate } from "react-router-dom";
-const ExchangeCard = () => {
+export default function ExchangeCard() {
   const [amount, setAmount] = useState("");
-  const [toUSD, setToUSD] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currencyTitle, setCurrencyTitle] = useState("ARS");
-  const [currencyFlag, setCurrencyFlag] = useState("argentina");
   const [exchangeRate, setExchangeRate] = useState(547);
   const [tradeData, setTradeData] = useState({});
   const navigate = useNavigate();
@@ -46,24 +40,9 @@ const ExchangeCard = () => {
   };
 
   const handleExchange = () => {
-    if (toUSD) {
-      return (amount / exchangeRate).toFixed(2);
-    } else {
-      return (amount * exchangeRate).toFixed(2);
-    }
+    return (amount / exchangeRate).toFixed(2);
   };
 
-  const handleToggleCurrency = () => {
-    if (toUSD) {
-      setCurrencyTitle("USD");
-      setCurrencyFlag("usa");
-    } else {
-      setCurrencyTitle("ARS");
-      setCurrencyFlag("argentina");
-    }
-    setToUSD((prevToUSD) => !prevToUSD);
-    setAmount("");
-  };
   const confirmarCambio = () => {
     setIsLoading(true);
     setShowModal(true);
@@ -84,15 +63,14 @@ const ExchangeCard = () => {
   };
 
   return (
-    
-    <Grid container className="exchangeBox"  >
+    <Grid container className="exchangeBox">
       <Grid item xs={4} />
-      <Card variant="outlined" sx={{ boxShadow: "5px 5px 15px #CFCFCF"}}>
+      <Card variant="outlined" sx={{ boxShadow: "5px 5px 15px #CFCFCF" }}>
         <CardHeader
-          title={`Cambio de Moneda - ${currencyTitle}`}
+          title={`Cambio de Moneda - ARS`}
           subheader={
             <Typography>
-              Cotización del Dólar Oficial: <strong>{currencyTitle}</strong>{" "}
+              Cotización del Dólar Oficial: <strong>ARS</strong>{" "}
               <strong>{exchangeRate}</strong>
             </Typography>
           }
@@ -101,60 +79,42 @@ const ExchangeCard = () => {
           <Grid container spacing={2}>
             <Grid container item xs={12}>
               <Grid item xs={2}>
-                <Avatar
-                  src={currencyFlag === "argentina" ? argentinaFlag : usaFlag}
-                >
+                <Avatar src={argentinaFlag}>
                   <FlagIcon />
                 </Avatar>
                 <Typography variant="h6" gutterBottom>
-                  {currencyTitle}
+                  ARS
                 </Typography>
               </Grid>
               <Grid item xs={10}>
                 <TextField
-                  label={`Moneda ${currencyTitle}`}
+                  label={`Moneda ARS`}
                   type="number"
                   value={amount}
                   onChange={handleChangeAmount}
-                  placeholder={`Ingrese monto en ${currencyTitle}`}
+                  placeholder={`Ingrese monto en ARS`}
                   fullWidth
                 />
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={5.5} />
-              <Grid item xs={2}>
-                <IconButton>
-                  <SwapVertIcon
-                    onClick={handleToggleCurrency}
-                    fontSize="large"
-                    sx={{ color: "#1693A5" }}
-                  />
-                </IconButton>
-              </Grid>
-              <Grid item xs={5} />
-            </Grid>
             <Grid container item xs={12}>
               <Grid item xs={2}>
-                <Avatar
-                  src={currencyFlag === "argentina" ? usaFlag : argentinaFlag}
-                >
+                <Avatar src={usaFlag}>
                   <FlagIcon />
                 </Avatar>
                 <Typography variant="h6" component="h3" gutterBottom>
-                  {toUSD ? "USD" : "ARS"}
+                  {"USD"}
                 </Typography>
               </Grid>
               <Grid item xs={10}>
                 <TextField
-                  label={`${toUSD ? "Dólares" : "Pesos"} ${
-                    toUSD ? "USD" : "ARS"
-                  }`}
+                  label={`${"Dólares"} ${"USD"}`}
                   type="number"
                   value={handleExchange()}
                   InputProps={{
                     readOnly: true,
                   }}
+                  disabled
                   fullWidth
                 />
               </Grid>
@@ -243,5 +203,4 @@ const ExchangeCard = () => {
       </Card>
     </Grid>
   );
-};
-export default ExchangeCard;
+}

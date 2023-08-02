@@ -23,7 +23,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import EditModal from "../../Modal/EditModal.jsx";
 import TransactionBasicMenu from "./TransactionBasicMenu.jsx";
 
-
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +33,8 @@ export default function TransactionList({ currency, showAllTransactions }) {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const user = useSelector((state) => state.user);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  const [editedDescription, setEditedDescription] = useState("");
+  const [orderType, setOrderType] = useState("desc");
   const handlePageChange = (event, newPage) => {
     setPage(newPage - 1);
   };
@@ -234,7 +234,6 @@ export default function TransactionList({ currency, showAllTransactions }) {
         <>
           <Grid item xs={10}>
             <Stack spacing={3}>
-
               <Pagination
                 count={totalPages}
                 page={page + 1}
@@ -244,9 +243,9 @@ export default function TransactionList({ currency, showAllTransactions }) {
             </Stack>
           </Grid>
 
-      <Grid item xs={1}>
-        <TransactionBasicMenu onOrderChange={handleOrderChange} />
-      </Grid>
+          <Grid item xs={1}>
+            <TransactionBasicMenu onOrderChange={handleOrderChange} />
+          </Grid>
 
           <Grid item xs={10}>
             <List>
@@ -261,24 +260,28 @@ export default function TransactionList({ currency, showAllTransactions }) {
           </Grid>
         </>
       ) : (
-          <Grid
-            item
-            xs={8}
-            sx={{
-              display: "flex",
-              placeItems: "center",
-            }}
+        <Grid
+          item
+          xs={8}
+          sx={{
+            display: "flex",
+            placeItems: "center",
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{}}
           >
-            <Box display="flex" justifyContent="center" alignItems="center" sx={{}} >
-              
-                <img 
-                  className="img-fluid"
-                  src="/src/assets/SleepCat.png"
-                  width="100%"
-                  alt="Un gato durmiendo"
-                />
-            </Box>
-          </Grid>
+            <img
+              className="img-fluid"
+              src="/src/assets/SleepCat.png"
+              width="100%"
+              alt="Un gato durmiendo"
+            />
+          </Box>
+        </Grid>
       )}
     </Grid>
   );

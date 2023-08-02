@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PlazoFijoCard from "./PlazoFijoCard";
 import AccountsApi from "../../../api/accountsApi";
 
-export default function PlazoFijoCardList() {
+export default function PlazoFijoCardList({ onCancel }) {
   const [fixedTerms, setFixedTerms] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,9 @@ export default function PlazoFijoCardList() {
     <Grid container spacing={5}>
       {fixedTerms.map((fixedTerm) => (
         <Grid item xs={6} key={fixedTerm.id}>
-          {fixedTerm && <PlazoFijoCard fixedTerm={fixedTerm} />}
+          {fixedTerm && (
+            <PlazoFijoCard fixedTerm={fixedTerm} onCancel={onCancel} />
+          )}
         </Grid>
       ))}
     </Grid>

@@ -108,7 +108,7 @@ export default function PrestamoPage() {
             textAlign: "center",
           }}
         >
-          PIDE TU PRESTAMO
+          SIMULAR PRESTAMO
         </Typography>
         <form onSubmit={formik.handleSubmit}>
           <TextField

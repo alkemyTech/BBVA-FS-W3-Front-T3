@@ -1,6 +1,12 @@
 import api from "./axios.js";
 import { toast } from "react-toastify";
 const controller = "/users";
+const toastOptions = {
+  position: "top-center",
+  autoClose: 3000,
+  closeOnClick: true,
+  draggable: false,
+};
 export default class UsersApi {
   static async deleteUser(id) {
     return new Promise((resolve, reject) => {
@@ -8,13 +14,13 @@ export default class UsersApi {
         .delete(controller + `/${id}`)
         .then((response) => {
           localStorage.clear();
-          toast.warn("Tu cuenta ha sido eliminada", {
-            position: "top-center",
-            autoClose: 3000,
-          });
+          toast.warn("Tu cuenta ha sido eliminada", toastOptions);
           resolve(response.data);
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          toast.error(error.response.data.message, toastOptions);
+          reject(error);
+        });
     });
   }
 
@@ -23,13 +29,13 @@ export default class UsersApi {
       api
         .patch(controller + "/" + id, data)
         .then((response) => {
-          toast.success("Tu cuenta ha sido actualizada", {
-            position: "top-center",
-            autoClose: 3000,
-          });
+          toast.success("Tu cuenta ha sido actualizada", toastOptions);
           resolve(response.data);
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          toast.error(error.response.data.message, toastOptions);
+          reject(error);
+        });
     });
   }
 }
