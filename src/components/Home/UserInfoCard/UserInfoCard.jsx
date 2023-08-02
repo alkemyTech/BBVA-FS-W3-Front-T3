@@ -104,7 +104,7 @@ export default function UserInfoCard({
         </Grid>
         <Box variant="body1">
           <Typography variant="h6" fontSize={"16px"}>
-          Dinero disponible en cuenta <b></b>: <br />
+            Dinero disponible en cuenta <b></b>: <br />
           </Typography>
           <Typography variant="h4" marginTop={-5}>
             <br />

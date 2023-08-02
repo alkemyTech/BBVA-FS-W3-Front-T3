@@ -39,7 +39,7 @@ const SimuladorPlazoFijo = () => {
     closingDate: Yup.date()
       .min(
         new Date(),
-        "La fecha de finalización debe ser mayor a la fecha actual."
+        "La fecha de finalización debe ser mayor a la fecha actual.",
       )
       .required("Campo requerido"),
   });
@@ -99,8 +99,6 @@ const SimuladorPlazoFijo = () => {
   const labelStyle = {
     fontWeight: "bold",
   };
-
-
 
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
@@ -176,118 +174,113 @@ const SimuladorPlazoFijo = () => {
             title={"Confirmación de Plazo Fijo"}
             content={
               <Grid
-              container
-              spacing={2}
-              sx={{  placeItems: "center", maxWidth:"100%" }
-              }
-            >
-              <Grid container item xs={12} >
-                <Grid item xs={6}>
-                  <Typography   
-                    sx={{
-                      fontWeight: "bold",
-                    }} gutterBottom>
-                    Monto Inicial:
-                  </Typography>
+                container
+                spacing={2}
+                sx={{ placeItems: "center", maxWidth: "100%" }}
+              >
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Monto Inicial:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      $ {formatNumberWithCommas(simulation.amount)}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                    gutterBottom
-                  
-                  >
-               $ {formatNumberWithCommas(simulation.amount)}
-                  </Typography>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Inicio:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      {simulation.creationDate}
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid container item xs={12}>
-                <Grid item xs={6}>
-                  <Typography 
-                    sx={{
-                      fontWeight: "bold",
-                    }} gutterBottom>
-                    Inicio:
-                  </Typography>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Cierre:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography gutterBottom>
+                      {simulation.closingDate}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                    
-                  
-                    gutterBottom
-                  >
-                    {simulation.creationDate}
-                  </Typography>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Interés:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        color: "#1693a5",
+                      }}
+                      gutterBottom
+                    >
+                      {simulation.interest * 100} %
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid container item xs={12}>
-                <Grid item xs={6}>
-                  <Typography sx={{
-                      fontWeight: "bold",
-                    }} gutterBottom>
-                    Cierre:
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                   
-                    
-                    gutterBottom
-                  >
-                    {simulation.closingDate}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container item xs={12}>
-                <Grid item xs={6}>
-                  <Typography   sx={{
-                      
-                      fontWeight: "bold",
-                    }} gutterBottom>
-                    Interés:
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                  
-                  sx={{
-                    
-                    color: "#1693a5",
-                  }}
-                    gutterBottom
-                  >
-                    {simulation.interest * 100} %
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container item xs={12}>
-                <Grid item xs={6}>
-                  <Typography  
-                    sx={{
-                      fontWeight: "bold",
-                    }} gutterBottom>
-                    Total a acreditar:
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                   sx={{
-                    color: "#1693a5",
-                    
-                  }}
-                    gutterBottom
-                  >
-                  $ {formatNumberWithCommas(simulation.total)}
-                  </Typography>
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                      gutterBottom
+                    >
+                      Total a acreditar:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        color: "#1693a5",
+                      }}
+                      gutterBottom
+                    >
+                      $ {formatNumberWithCommas(simulation.total)}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             }
-      onAccept={handleModalAccept}
-      onClose={handleModalCancel}
+            onAccept={handleModalAccept}
+            onClose={handleModalCancel}
           />
-    </div>
-  )
-}
-    </Box >
+        </div>
+      )}
+    </Box>
   );
 };
 export default SimuladorPlazoFijo;

@@ -12,7 +12,6 @@ import { Loan } from "../../api/loanApi";
 
 import "../TransaccionesPage.css";
 
-
 const formatNumberWithCommas = (number) => {
   return new Intl.NumberFormat("es-AR").format(number);
 };
@@ -26,13 +25,10 @@ export default function PrestamoPage() {
   });
   const navigate = useNavigate();
 
-
-
   const initialValues = {
     amount: "",
     closingDate: "",
   };
-
 
   const validationSchema = Yup.object().shape({
     amount: Yup.number()
@@ -189,56 +185,55 @@ export default function PrestamoPage() {
             open={isModalOpen}
             title="Simulación de prestamo"
             content={
-              <Grid container spacing={1} sx={{paddingRight:"15px"}}>
-              <Grid item xs={8}>
-                <List>
-                  <ListItem>
-                    <ListItemText primary={`Cuota Mensual:`} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Cantidad de cuotas: `} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Interes mensual: `} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={`Total a abonar: `} />
-                  </ListItem>
-
-                </List>
+              <Grid container spacing={1} sx={{ paddingRight: "15px" }}>
+                <Grid item xs={8}>
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={`Cuota Mensual:`} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Cantidad de cuotas: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Interes mensual: `} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={`Total a abonar: `} />
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={4}>
+                  <List>
+                    <ListItem>
+                      <ListItemText
+                        primary={
+                          "$" +
+                          formatNumberWithCommas(simulation.monthlyPayment)
+                        }
+                        className="name"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={mesesFaltantes} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary={interest.toFixed(2) + "%"}
+                        className="name"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary={
+                          "$" + formatNumberWithCommas(simulation.totalPayment)
+                        }
+                        className="name"
+                      />
+                    </ListItem>
+                  </List>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <List>
-                  <ListItem>
-                    <ListItemText
-                      primary={"$" + formatNumberWithCommas(simulation.monthlyPayment)}
-                      className="name"
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary={mesesFaltantes}
-                    
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary={interest.toFixed(2) + "%"}
-                      className="name"
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary={"$" + formatNumberWithCommas(simulation.totalPayment)}
-                      className="name"
-                      
-                    />
-                  </ListItem>
-                </List>
-              
-              </Grid>
-            </Grid>
-          }
+            }
             onAccept={handleModalAccept}
             onClose={handleModalCancel}
           />
