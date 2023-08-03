@@ -1,13 +1,23 @@
 import { LoadingButton } from "@mui/lab";
-import { Card, Checkbox, Grid, TextField } from "@mui/material";
+import {
+  Card,
+  Checkbox,
+  Dialog,
+  DialogTitle,
+  Grid,
+  TextField,
+  DialogActions,
+  DialogContentText,
+} from "@mui/material";
 import { Box, styled, Typography, Button } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TermsAndConditionsModal from "../../components/terms/TermsAndConditionsModal.jsx";
 import AuthApi from "../../api/authApi.js";
 import "../RegisterPage/RegisterPage.css";
+import WarningIcon from "@mui/icons-material/Warning";
 
 const FlexBox = styled(Box)(() => ({ display: "flex", alignItems: "center" }));
 
@@ -91,6 +101,8 @@ const RegisterPage = () => {
 
   const [openTermsModal, setOpenTermsModal] = useState(false);
 
+  const [openWarningModal, setOpenWarningModal] = useState(false);
+
   const handleOpenTermsModal = () => {
     setOpenTermsModal(true);
   };
@@ -100,20 +112,29 @@ const RegisterPage = () => {
   };
 
   const handleRegister = (values) => {
-    AuthApi.register(values)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((registered) => {
-        if (registered) {
+    if (!values.remember) {
+      setOpenWarningModal(true);
+    } else {
+      AuthApi.register(values)
+        .then(() => {
           navigate("/");
-        }
-      });
+        })
+        .catch((registered) => {
+          if (registered) {
+            navigate("/");
+          }
+        });
+    }
   };
 
   const handleClickLogIn = () => {
     navigate("/");
   };
+  const handleAcceptTerms = () => {
+    setOpenWarningModal(false);
+    formik.handleSubmit();
+  };
+  const formik = useFormikContext();
 
   return (
     <>
@@ -248,7 +269,7 @@ const RegisterPage = () => {
                             touched.confirmPassword && errors.confirmPassword
                           }
                           error={Boolean(
-                            errors.confirmPassword && touched.confirmPassword,
+                            errors.confirmPassword && touched.confirmPassword
                           )}
                           sx={{ mb: 3, width: "100%" }}
                         />
@@ -258,7 +279,6 @@ const RegisterPage = () => {
                             <Checkbox
                               size="small"
                               name="remember"
-                              required={true}
                               onChange={handleChange}
                               checked={values.remember}
                             />
@@ -299,6 +319,35 @@ const RegisterPage = () => {
                       </form>
                     )}
                   </Formik>
+                  <Dialog
+                    open={openWarningModal}
+                    onClose={() => setOpenWarningModal(false)}
+                  >
+                    <DialogTitle textAlign={"center"}>
+                      <WarningIcon
+                        sx={{
+                          color: "red",
+                          fontSize: "3rem",
+                          marginBottom: "-40px",
+                          marginTop: "10px",
+                        }}
+                      />
+                    </DialogTitle>
+                    <DialogTitle
+                      sx={{ marginBottom: "-30px", marginTop: "10px" }}
+                      textAlign={"center"}
+                    >
+                      Advertencia
+                    </DialogTitle>
+                    <DialogContentText sx={{ padding: "20px" }}>
+                      Debes aceptar los términos y condiciones para registrarte.
+                    </DialogContentText>
+                    <DialogActions>
+                      <Button onClick={handleAcceptTerms} color="primary">
+                        Ok
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </ContentBox>
               </Card>
             </Grid>
