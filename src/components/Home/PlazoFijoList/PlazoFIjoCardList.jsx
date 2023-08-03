@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import PlazoFijoCard from "./PlazoFijoCard";
 import AccountsApi from "../../../api/accountsApi";
+import { Grid } from "@mui/material";
 
 export default function PlazoFijoCardList({ onCancel }) {
   const [fixedTerms, setFixedTerms] = useState([]);

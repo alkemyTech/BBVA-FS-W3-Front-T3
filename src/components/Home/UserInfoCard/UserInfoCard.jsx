@@ -11,10 +11,12 @@ import {
   Badge,
   Box,
   IconButton,
+  Collapse,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const formatNumberWithCommas = (number) => {
   return new Intl.NumberFormat("es-AR").format(number);
 };
@@ -26,6 +28,7 @@ export default function UserInfoCard({
   user,
   onChangeCurrency,
 }) {
+  const [showBalance, setShowBalance] = useState(true);
   const navigate = useNavigate();
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
@@ -71,106 +74,133 @@ export default function UserInfoCard({
     onChangeCurrency(newCurrency); // Comunicar el cambio de moneda al componente padre (HomePage)
   };
 
-  return (
-    <Card sx={{ minWidth: 300, boxShadow: "5px 5px 15px #CFCFCF" }}>
-      <CardContent>
-        <Grid
-          sx={{
-            backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
-          }}
-        >
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            <StyledBadge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              variant="dot"
-            >
-              <Avatar
-                sx={{ backgroundColor: "#E9FEFA" }}
-                alt="kitty"
-                src="/src/assets/avatarCat1.png"
-              />
-            </StyledBadge>
-          </Typography>
-          <Typography variant="h5" component="div">
-            Hola {user.name}!
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {user.email}
-          </Typography>
-        </Grid>
-        <Box variant="body1">
-          <Typography variant="h6" fontSize={"16px"}>
-            Dinero disponible en cuenta <b></b>: <br />
-          </Typography>
-          <Typography variant="h4" marginTop={-5}>
-            <br />
-            {currency === "ARS"
-              ? `$ ${formatNumberWithCommas(accountARS.balance.toFixed(2))}`
-              : `u$s ${formatNumberWithCommas(accountUSD.balance.toFixed(2))}`}
-          </Typography>
-          <br />
-          <Typography variant="body1">
-            {currency === "ARS"
-              ? `CBU: ${accountARS.cbu}`
-              : `CBU: ${accountUSD.cbu}`}
-          </Typography>
-          <br />
-          <br />
-          <Grid container sx={{ placeItems: "center" }}>
-            <Grid item xs={3}>
-              <IconButton>
-                <CurrencyExchangeIcon
-                  fontSize="large"
-                  color="primary"
-                  onClick={handleCurrencyChange}
-                  sx={{
-                    animation: isRotating
-                      ? "spin 0.5s linear 1 forwards" // 1 rotation in 1 second and then stays in the final position
-                      : "none", // Set 'none' to stop the animation when not rotating
-                    "@keyframes spin": {
-                      "0%": {
-                        transform: "rotate(0deg)",
-                      },
-                      "100%": {
-                        transform: "rotate(360deg)",
-                      },
-                    },
-                  }}
-                  onAnimationEnd={onAnimationEnd}
-                />
-              </IconButton>
-            </Grid>
+  const [load, setLoad] = useState(false);
 
-            <Grid item xs={6}>
-              <Typography variant="h6" fontSize={"16px"}>
-                {currency === "ARS" ? "  PESOS" : "DOLARES"}
+  setTimeout(() => {
+    setLoad(true);
+  }, 0);
+
+  const handleToggleBalance = () => {
+    setShowBalance((prevShowBalance) => !prevShowBalance);
+  };
+
+  return (
+    <Box>
+      <Collapse in={load} timeout={1200}>
+        <Card sx={{ minWidth: 300, boxShadow: "5px 5px 15px #CFCFCF" }}>
+          <CardContent>
+            <Grid
+              sx={{
+                backgroundColor: "#E9FEFA",
+                margin: -2,
+                padding: 2,
+                marginBottom: 1,
+              }}
+            >
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                <StyledBadge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  variant="dot"
+                >
+                  <Avatar
+                    sx={{ backgroundColor: "#E9FEFA" }}
+                    alt="kitty"
+                    src="/src/assets/avatarCat1.png"
+                  />
+                </StyledBadge>
+              </Typography>
+              <Typography variant="h5" component="div">
+                Hola {user.name}!
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {user.email}
               </Typography>
             </Grid>
-          </Grid>
-        </Box>
-      </CardContent>
-      <CardActions>
-        <Button
-          size="small"
-          onClick={() => {
-            navigate("/depositos");
-          }}
-        >
-          Ingresar Dinero
-        </Button>
-        <Button
-          size="small"
-          onClick={() => {
-            navigate("/transferencias");
-          }}
-        >
-          Transferir Dinero
-        </Button>
-      </CardActions>
-    </Card>
+            <Box variant="body1">
+              <Typography variant="h6" fontSize={"16px"}>
+                Dinero disponible en cuenta :{" "}
+                <IconButton
+                  sx={{ marginLeft: "15px" }}
+                  color="primary"
+                  size="small"
+                  onClick={handleToggleBalance}
+                >
+                  {showBalance ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+                <br />
+              </Typography>
+              {showBalance ? (
+                <Typography variant="h4" marginTop={-5}>
+                  <br />
+                  {currency === "ARS"
+                    ? `$ ${formatNumberWithCommas(
+                        accountARS.balance.toFixed(2),
+                      )}`
+                    : `u$s ${formatNumberWithCommas(
+                        accountUSD.balance.toFixed(2),
+                      )}`}
+                </Typography>
+              ) : (
+                <Typography variant="h4" marginTop={-5}>
+                  <br />
+                  {currency === "ARS" ? "$ *********" : "u$s *********"}
+                </Typography>
+              )}
+              <br />
+              <Typography variant="body1">
+                {currency === "ARS"
+                  ? `CBU: ${accountARS.cbu}`
+                  : `CBU: ${accountUSD.cbu}`}
+              </Typography>
+              <br />
+              <br />
+              <Grid container sx={{ placeItems: "center" }}>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <CurrencyExchangeIcon
+                      fontSize="large"
+                      color="primary"
+                      onClick={handleCurrencyChange}
+                      sx={{
+                        animation: isRotating
+                          ? "spin 0.5s linear 1 forwards" // 1 rotation in 1 second and then stays in the final position
+                          : "none", // Set 'none' to stop the animation when not rotating
+                        "@keyframes spin": {
+                          "0%": {
+                            transform: "rotate(0deg)",
+                          },
+                          "100%": {
+                            transform: "rotate(360deg)",
+                          },
+                        },
+                      }}
+                      onAnimationEnd={onAnimationEnd}
+                    />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="h6" fontSize={"16px"}>
+                    {currency === "ARS" ? "  PESOS" : "DOLARES"}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={() => navigate("/depositos")}>
+              Ingresar Dinero
+            </Button>
+            <Button size="small" onClick={() => navigate("/transferencias")}>
+              Transferir Dinero
+            </Button>
+          </CardActions>
+        </Card>
+      </Collapse>
+    </Box>
   );
 }

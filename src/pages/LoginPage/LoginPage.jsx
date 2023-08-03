@@ -6,6 +6,9 @@ import {
   Button,
   IconButton,
   InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { Box, styled, Typography } from "@mui/material";
 import { Formik } from "formik";
@@ -54,6 +57,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("remember"))) {
@@ -97,6 +101,13 @@ const LoginPage = () => {
           handleClickRegister(values.email);
         }
       });
+  };
+
+  const handleClickNewPassword = () => {
+    setOpenForgotPassword(true);
+  };
+  const handleCloseForgotPasswordClose = () => {
+    setOpenForgotPassword(false);
   };
   return (
     <>
@@ -197,8 +208,8 @@ const LoginPage = () => {
                           }}
                         />
 
-                        <Box justifyContent="space-between">
-                          <Box>
+                        <Grid container justifyContent="space-between">
+                          <Grid item xs={6}>
                             <Checkbox
                               size="small"
                               name="remember"
@@ -207,8 +218,21 @@ const LoginPage = () => {
                               sx={{ padding: 0 }}
                             />{" "}
                             Recordar
-                          </Box>
-                        </Box>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            sx={{ textAlign: "right", color: "#1693a5" }}
+                          >
+                            <RegisterLink
+                              onClick={() =>
+                                handleClickNewPassword(values.email)
+                              }
+                            >
+                              ¿Olvidaste tu contraseña?
+                            </RegisterLink>
+                          </Grid>
+                        </Grid>
                         <Button
                           type="submit"
                           variant="contained"
@@ -233,6 +257,34 @@ const LoginPage = () => {
                       </form>
                     )}
                   </Formik>
+                  <Dialog
+                    open={openForgotPassword}
+                    onClose={() => setOpenForgotPassword(false)}
+                    sx={{ textAlign: "center" }}
+                  >
+                    <DialogTitle
+                      sx={{ marginBottom: "-30px", marginTop: "10px" }}
+                      textAlign={"center"}
+                    >
+                      <img
+                        style={{ width: "200px" }}
+                        src="/src/assets/flat_750x_075_f-pad_750x1000_f8f8f8-removebg-preview (1).png"
+                        alt=""
+                      />
+                    </DialogTitle>
+                    <DialogTitle sx={{ padding: "20px" }}>
+                      Por favor, contacta con nuestro chat de soporte para
+                      recuperar tu contraseña.
+                    </DialogTitle>
+                    <DialogActions>
+                      <Button
+                        onClick={handleCloseForgotPasswordClose}
+                        color="primary"
+                      >
+                        Ok
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Box>
               </Card>
             </Grid>

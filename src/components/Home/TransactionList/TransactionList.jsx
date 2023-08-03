@@ -26,6 +26,7 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import EditModal from "../../Modal/EditModal.jsx";
 import TransactionBasicMenu from "./TransactionBasicMenu.jsx";
+import "/src/index.css";
 
 export default function TransactionList({ currency, showAllTransactions }) {
   const [transactions, setTransactions] = useState([]);
@@ -211,9 +212,9 @@ export default function TransactionList({ currency, showAllTransactions }) {
                     : "Título predeterminado"
                 }
                 titleTypographyProps={{ variant: "h6" }}
-                subheader={`Fecha: ${
-                  formatDate(selectedTransaction.transactionDate.split("T")[0])
-                } | Hora: ${
+                subheader={`Fecha: ${formatDate(
+                  selectedTransaction.transactionDate.split("T")[0],
+                )} | Hora: ${
                   selectedTransaction.transactionDate.split("T")[1]
                 } `}
               />

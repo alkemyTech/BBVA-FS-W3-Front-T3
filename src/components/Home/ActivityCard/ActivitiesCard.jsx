@@ -10,6 +10,8 @@ import {
   ListItemAvatar,
   ListItemText,
   List,
+  Box,
+  Collapse,
 } from "@mui/material";
 import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
@@ -26,60 +28,70 @@ export default function ActivitiesCard({
     onShowAllTransactions(); // Comunicar al componente padre (HomePage) que se deben mostrar todas las transacciones
   };
 
+  const [appear, setAppear] = useState(false);
+
+  setTimeout(() => {
+    setAppear(true);
+  }, 0);
+
   return (
-    <Card
-      sx={{
-        width: "105%",
-        marginTop: "10px",
-        boxShadow: "5px 5px 15px #CFCFCF",
-      }}
-    >
-      <CardContent>
-        <Grid
+    <Box>
+      <Collapse in={appear}>
+        <Card
           sx={{
-            backgroundColor: "#E9FEFA",
-            margin: -2,
-            padding: 2,
-            marginBottom: 1,
+            width: "105%",
+            marginTop: "10px",
+            boxShadow: "5px 5px 15px #CFCFCF",
           }}
         >
-          <Typography gutterBottom variant="h5" component="div">
-            Actividad
-          </Typography>
-        </Grid>
-        <List
-          sx={{
-            width: "100%",
-            maxWidth: 360,
-            bgcolor: "background.paper",
-          }}
-        >
-          <CardActionArea onClick={handleShowAllTransactions}>
-            <ListItem>
-              <ListItemAvatar>
-                <PetsIcon sx={{ color: "#1693a5" }} />
-              </ListItemAvatar>
-              <ListItemText primary="Todos mis movimientos" />
-            </ListItem>
-          </CardActionArea>
-          <CardActionArea onClick={handleClickInversiones}>
-            <ListItem>
-              <ListItemAvatar>
-                <PetsIcon sx={{ color: "#1693a5" }} />
-              </ListItemAvatar>
-              <ListItemText primary="Inversiones" />
-            </ListItem>
-          </CardActionArea>
-          <CardActionArea onClick={handleClickPlazoFijo}>
-            <ListItem>
-              <ListItemAvatar>
-                <PetsIcon sx={{ color: "#1693a5" }} />
-              </ListItemAvatar>
-              <ListItemText primary="Plazos Fijos" />
-            </ListItem>
-          </CardActionArea>
-        </List>
-      </CardContent>
-    </Card>
+          <CardContent>
+            <Grid
+              sx={{
+                backgroundColor: "#E9FEFA",
+                margin: -2,
+                padding: 2,
+                marginBottom: 1,
+              }}
+            >
+              <Typography gutterBottom variant="h5" component="div">
+                Actividad
+              </Typography>
+            </Grid>
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: 360,
+                bgcolor: "background.paper",
+              }}
+            >
+              <CardActionArea onClick={handleShowAllTransactions}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <PetsIcon sx={{ color: "#1693a5" }} />
+                  </ListItemAvatar>
+                  <ListItemText primary="Todos mis movimientos" />
+                </ListItem>
+              </CardActionArea>
+              <CardActionArea onClick={handleClickInversiones}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <PetsIcon sx={{ color: "#1693a5" }} />
+                  </ListItemAvatar>
+                  <ListItemText primary="Inversiones" />
+                </ListItem>
+              </CardActionArea>
+              <CardActionArea onClick={handleClickPlazoFijo}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <PetsIcon sx={{ color: "#1693a5" }} />
+                  </ListItemAvatar>
+                  <ListItemText primary="Plazos Fijos" />
+                </ListItem>
+              </CardActionArea>
+            </List>
+          </CardContent>
+        </Card>
+      </Collapse>
+    </Box>
   );
 }

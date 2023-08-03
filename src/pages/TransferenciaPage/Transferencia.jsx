@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Collapse, Grid, List, ListItem, ListItemText } from "@mui/material";
 import "../../components/Modal/Modal.css";
 
 import AccountsApi from "../../api/accountsApi.js";
@@ -137,145 +137,153 @@ const Transferencia = () => {
     marginRight: "15px", // Ajusta el valor para más o menos espacio horizontal
   });
 
+  const [load, setLoad] = useState(false);
+
+  setTimeout(() => {
+    setLoad(true);
+  }, 0);
+
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
-        <Typography
-          sx={{
-            fontSize: "2.5rem",
-            fontWeight: "bold",
-            fontFamily: "Helvetica",
-            color: "#1693a5",
-            textAlign: "center",
-          }}
-        >
-          TRANSFERENCIA
-        </Typography>
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            label="CBU"
-            name="cbu"
-            variant="filled"
-            value={formik.values.cbu}
-            onChange={(e) => {
-              formik.handleChange(e);
-              validateCbu(e.target.value);
+        <Collapse in={load} timeout={1000}>
+          <Typography
+            sx={{
+              fontSize: "2.5rem",
+              fontWeight: "bold",
+              fontFamily: "Helvetica",
+              color: "#1693a5",
+              textAlign: "center",
             }}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.cbu && formik.errors.cbu)}
-            helperText={
-              formik.touched.cbu && formik.errors.cbu ? (
-                formik.errors.cbu
-              ) : (
-                <>
-                  {cbuInfo.user.firstName &&
-                  cbuInfo.user.lastName &&
-                  cbuInfo.currency ? (
-                    <>
-                      <StyledDiv>
-                        <b>Destinatario:</b> {cbuInfo.user.firstName}{" "}
-                        {cbuInfo.user.lastName}
-                      </StyledDiv>
-                      <StyledDiv>
-                        <b>Cuenta:</b> {cbuInfo.currency}
-                      </StyledDiv>
-                    </>
-                  ) : null}
-                </>
-              )
-            }
-            type="text"
-            inputProps={{ inputMode: "text" }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
-          <TextField
-            variant="filled"
-            label="Monto"
-            name="monto"
-            value={formik.values.monto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.monto && formik.errors.monto)}
-            helperText={
-              formik.touched.monto && formik.errors.monto
-                ? formik.errors.monto
-                : ""
-            }
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-              inputMode: "numeric",
-              pattern: "[0-9]*",
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
-          <TextField
-            select
-            label="Moneda"
-            name="moneda"
-            variant="filled"
-            value={formik.values.moneda}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.moneda && formik.errors.moneda)}
-            helperText={
-              formik.touched.moneda && formik.errors.moneda
-                ? formik.errors.moneda
-                : ""
-            }
-            fullWidth
-            SelectProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
           >
-            <MenuItem value="">
-              <em>Seleccionar</em>
-            </MenuItem>
-            <MenuItem value="ARS">ARS</MenuItem>
-            <MenuItem value="USD">USD</MenuItem>
-          </TextField>
-          <TextField
-            label="Concepto"
-            name="concepto"
-            variant="filled"
-            value={formik.values.concepto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.concepto && formik.errors.concepto)}
-            helperText={
-              formik.touched.concepto && formik.errors.concepto
-                ? formik.errors.concepto
-                : ""
-            }
-            type="text"
-            inputProps={{ inputMode: "text" }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
-          <Button variant="contained" type="submit" fullWidth>
-            Enviar
-          </Button>
-        </form>
+            TRANSFERENCIA
+          </Typography>
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              label="CBU"
+              name="cbu"
+              variant="filled"
+              value={formik.values.cbu}
+              onChange={(e) => {
+                formik.handleChange(e);
+                validateCbu(e.target.value);
+              }}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.cbu && formik.errors.cbu)}
+              helperText={
+                formik.touched.cbu && formik.errors.cbu ? (
+                  formik.errors.cbu
+                ) : (
+                  <>
+                    {cbuInfo.user.firstName &&
+                    cbuInfo.user.lastName &&
+                    cbuInfo.currency ? (
+                      <>
+                        <StyledDiv>
+                          <b>Destinatario:</b> {cbuInfo.user.firstName}{" "}
+                          {cbuInfo.user.lastName}
+                        </StyledDiv>
+                        <StyledDiv>
+                          <b>Cuenta:</b> {cbuInfo.currency}
+                        </StyledDiv>
+                      </>
+                    ) : null}
+                  </>
+                )
+              }
+              type="text"
+              inputProps={{ inputMode: "text" }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            />
+            <TextField
+              variant="filled"
+              label="Monto"
+              name="monto"
+              value={formik.values.monto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.monto && formik.errors.monto)}
+              helperText={
+                formik.touched.monto && formik.errors.monto
+                  ? formik.errors.monto
+                  : ""
+              }
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            />
+            <TextField
+              select
+              label="Moneda"
+              name="moneda"
+              variant="filled"
+              value={formik.values.moneda}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.moneda && formik.errors.moneda)}
+              helperText={
+                formik.touched.moneda && formik.errors.moneda
+                  ? formik.errors.moneda
+                  : ""
+              }
+              fullWidth
+              SelectProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>Seleccionar</em>
+              </MenuItem>
+              <MenuItem value="ARS">ARS</MenuItem>
+              <MenuItem value="USD">USD</MenuItem>
+            </TextField>
+            <TextField
+              label="Concepto"
+              name="concepto"
+              variant="filled"
+              value={formik.values.concepto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.concepto && formik.errors.concepto)}
+              helperText={
+                formik.touched.concepto && formik.errors.concepto
+                  ? formik.errors.concepto
+                  : ""
+              }
+              type="text"
+              inputProps={{ inputMode: "text" }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            />
+            <Button variant="contained" type="submit" fullWidth>
+              Enviar
+            </Button>
+          </form>
+        </Collapse>
       </Box>
       {isModalOpen && formik.isValid && (
         <div className="boxModal">

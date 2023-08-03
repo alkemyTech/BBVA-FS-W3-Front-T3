@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Skeleton } from "@mui/material";
+import { Collapse, Grid, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { addAccountArs } from "../../redux/accountArsSlice";
 import { addAccountUsd } from "../../redux/accountUsdSlice";
@@ -77,14 +77,16 @@ export default function HomePage() {
           {isloading ? (
             <Skeleton variant="rectangular" width={300} height={300} />
           ) : (
-            <UserInfoCard
-              currency={currency}
-              accountARS={accountARS}
-              accountUSD={accountUSD}
-              user={user}
-              handleForward={handleForward}
-              onChangeCurrency={handleCurrencyChange}
-            />
+            <Collapse in={!isloading} timeout={1000}>
+              <UserInfoCard
+                currency={currency}
+                accountARS={accountARS}
+                accountUSD={accountUSD}
+                user={user}
+                handleForward={handleForward}
+                onChangeCurrency={handleCurrencyChange}
+              />
+            </Collapse>
           )}
           <ActivitiesCard
             handleClickPlazoFijo={handleClickPlazoFijo}

@@ -269,7 +269,7 @@ const RegisterPage = () => {
                             touched.confirmPassword && errors.confirmPassword
                           }
                           error={Boolean(
-                            errors.confirmPassword && touched.confirmPassword
+                            errors.confirmPassword && touched.confirmPassword,
                           )}
                           sx={{ mb: 3, width: "100%" }}
                         />

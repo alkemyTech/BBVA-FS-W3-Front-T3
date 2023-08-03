@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardHeader,
+  Collapse,
   Divider,
   Grid,
+  Grow,
   Typography,
 } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
@@ -48,111 +51,122 @@ export default function PlazoFijoCard({ fixedTerm, onCancel }) {
     setIsModalOpen(true);
   };
 
+  const [load, setLoad] = useState(false);
+
+  setTimeout(() => {
+    setLoad(true);
+  }, 0);
+
   return (
-    <Card>
-      <CardHeader
-        title={`${fixedTerm.account.currency} $${fixedTerm.amount}`}
-        sx={{
-          textAlign: "center",
-          backgroundColor: "#45b5c4",
-          color: "white",
-        }}
-      />
-      <CardContent>
-        <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid item xs={12}>
-            <Typography variant="h6" sx={{ color: "black" }}>
-              CBU
-            </Typography>
-            <Typography
-              gutterBottom
-              variant="body1"
-              color="text.secondary"
-              align="center"
-            >
-              {fixedTerm.account.cbu}
-            </Typography>
-            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography gutterBottom sx={{ color: "black" }}>
-              INICIO:{" "}
-            </Typography>
-            <Typography color="text.secondary">
-              {fixedTerm.creationDate.split("T")[0]}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography gutterBottom>CIERRE: </Typography>
-            <Typography gutterBottom color="#1ea49d">
-              {fixedTerm.closingDate.split("T")[0]}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography gutterBottom>
-              {" "}
-              INTERESES: {fixedTerm.interest * 100}%{" "}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography color="#1ea49d">
-              {calculateInterest().toFixed(2)}
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography gutterBottom> TOTAL: </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
-            <Typography color="#1ea49d">
-              {fixedTerm.account.currency} {calculateTotal().toFixed(2)}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          justifyContent: "right",
-        }}
-      >
-        <Button error sx={{ color: "#ff2c69" }} onClick={handleModalOpen}>
-          Deshacer
-        </Button>
-      </CardActions>
-      {isModalOpen && (
-        <div className="boxModal">
-          <GenericModal
-            open={isModalOpen}
-            title={"Cancelar Plazo Fijo"}
-            content={
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography gutterBottom variant="h5" align="center">
-                    ¿Esta seguro de cancelar el plazo fijo?
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography gutterBottom variant="h6">
-                    Monto a rescatar:
-                  </Typography>
-                  <Typography gutterBottom variant="body1" align="center">
-                    {fixedTerm.account.currency} {fixedTerm.amount}
-                  </Typography>
-                  <Typography variant="body2" color="#ff2c69">
-                    No se acreditarán los intereses
-                  </Typography>
-                </Grid>
-              </Grid>
-            }
-            onAccept={handleModalAccept}
-            onClose={handleModalCancel}
+    <Box>
+      <Grow in={load} timeout={1000}>
+        <Card>
+          <CardHeader
+            title={`${fixedTerm.account.currency} $${fixedTerm.amount}`}
+            sx={{
+              textAlign: "center",
+              backgroundColor: "#45b5c4",
+              color: "white",
+            }}
           />
-        </div>
-      )}
-    </Card>
+          <CardContent>
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+              <Grid item xs={12}>
+                <Typography variant="h6" sx={{ color: "black" }}>
+                  CBU
+                </Typography>
+                <Typography
+                  gutterBottom
+                  variant="body1"
+                  color="text.secondary"
+                  align="center"
+                >
+                  {fixedTerm.account.cbu}
+                </Typography>
+                <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography gutterBottom sx={{ color: "black" }}>
+                  INICIO:{" "}
+                </Typography>
+                <Typography color="text.secondary">
+                  {fixedTerm.creationDate.split("T")[0]}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography gutterBottom>CIERRE: </Typography>
+                <Typography gutterBottom color="#1ea49d">
+                  {fixedTerm.closingDate.split("T")[0]}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+                <Typography gutterBottom>
+                  {" "}
+                  INTERESES: {fixedTerm.interest * 100}%{" "}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+                <Typography color="#1ea49d">
+                  {calculateInterest().toFixed(2)}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+                <Typography gutterBottom> TOTAL: </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Divider sx={{ color: "black", mt: 1, mb: 1 }} />
+                <Typography color="#1ea49d">
+                  {fixedTerm.account.currency} {calculateTotal().toFixed(2)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+          <CardActions
+            sx={{
+              display: "flex",
+              justifyContent: "right",
+            }}
+          >
+            <Button error sx={{ color: "#ff2c69" }} onClick={handleModalOpen}>
+              Deshacer
+            </Button>
+          </CardActions>
+
+          {isModalOpen && (
+            <div className="boxModal">
+              <GenericModal
+                open={isModalOpen}
+                title={"Cancelar Plazo Fijo"}
+                content={
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography gutterBottom variant="h5" align="center">
+                        ¿Esta seguro de cancelar el plazo fijo?
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography gutterBottom variant="h6">
+                        Monto a rescatar:
+                      </Typography>
+                      <Typography gutterBottom variant="body1" align="center">
+                        {fixedTerm.account.currency} {fixedTerm.amount}
+                      </Typography>
+                      <Typography variant="body2" color="#ff2c69">
+                        No se acreditarán los intereses
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                }
+                onAccept={handleModalAccept}
+                onClose={handleModalCancel}
+              />
+            </div>
+          )}
+        </Card>
+      </Grow>
+    </Box>
   );
 }

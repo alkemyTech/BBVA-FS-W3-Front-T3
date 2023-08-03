@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GenericModal from "../../components/Modal/GenericModal";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Collapse, Grid, List, ListItem, ListItemText } from "@mui/material";
 
 import "../TransaccionesPage.css";
 import { useState } from "react";
@@ -88,102 +88,110 @@ export default function DepositPage() {
     setIsModalOpen(false);
   };
 
+  const [load, setLoad] = useState(false);
+
+  setTimeout(() => {
+    setLoad(true);
+  }, 0);
+
   return (
     <Box className="transactionBox" backgroundColor="#EAEAEA">
       <Box className="formStyle">
-        <Typography
-          sx={{
-            fontSize: "2.5rem",
-            fontWeight: "bold",
-            fontFamily: "Helvetica",
-            color: "#1693a5",
-            textAlign: "center",
-          }}
-        >
-          INGRESAR DINERO
-        </Typography>
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            variant="filled"
-            label="Monto"
-            name="monto"
-            value={formik.values.monto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.monto && formik.errors.monto)}
-            helperText={
-              formik.touched.monto && formik.errors.monto
-                ? formik.errors.monto
-                : ""
-            }
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-              inputMode: "numeric",
-              pattern: "[0-9]*",
+        <Collapse in={load} timeout={1000}>
+          <Typography
+            sx={{
+              fontSize: "2.5rem",
+              fontWeight: "bold",
+              fontFamily: "Helvetica",
+              color: "#1693a5",
+              textAlign: "center",
             }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
-          <TextField
-            select
-            label="Tipo"
-            name="tipo"
-            variant="filled"
-            value={formik.values.tipo}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.tipo && formik.errors.tipo)}
-            helperText={
-              formik.touched.tipo && formik.errors.tipo
-                ? formik.errors.tipo
-                : ""
-            }
-            fullWidth
-            SelectProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
           >
-            <MenuItem value="">
-              <em>Seleccionar</em>
-            </MenuItem>
-            <MenuItem value="ARS">ARS</MenuItem>
-            <MenuItem value="USD">USD</MenuItem>
-          </TextField>
-          <TextField
-            label="Concepto"
-            name="concepto"
-            variant="filled"
-            value={formik.values.concepto}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={!!(formik.touched.concepto && formik.errors.concepto)}
-            helperText={
-              formik.touched.concepto && formik.errors.concepto
-                ? formik.errors.concepto
-                : ""
-            }
-            type="text"
-            inputProps={{ inputMode: "text" }}
-            fullWidth
-            InputProps={{
-              style: inputStyle,
-            }}
-            InputLabelProps={{
-              style: labelStyle,
-            }}
-            sx={{ marginBottom: "20px" }}
-          />
-          <Button variant="contained" type="submit" fullWidth>
-            Enviar
-          </Button>
-        </form>
+            INGRESAR DINERO
+          </Typography>
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              variant="filled"
+              label="Monto"
+              name="monto"
+              value={formik.values.monto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.monto && formik.errors.monto)}
+              helperText={
+                formik.touched.monto && formik.errors.monto
+                  ? formik.errors.monto
+                  : ""
+              }
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            />
+            <TextField
+              select
+              label="Tipo"
+              name="tipo"
+              variant="filled"
+              value={formik.values.tipo}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.tipo && formik.errors.tipo)}
+              helperText={
+                formik.touched.tipo && formik.errors.tipo
+                  ? formik.errors.tipo
+                  : ""
+              }
+              fullWidth
+              SelectProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            >
+              <MenuItem value="">
+                <em>Seleccionar</em>
+              </MenuItem>
+              <MenuItem value="ARS">ARS</MenuItem>
+              <MenuItem value="USD">USD</MenuItem>
+            </TextField>
+            <TextField
+              label="Concepto"
+              name="concepto"
+              variant="filled"
+              value={formik.values.concepto}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={!!(formik.touched.concepto && formik.errors.concepto)}
+              helperText={
+                formik.touched.concepto && formik.errors.concepto
+                  ? formik.errors.concepto
+                  : ""
+              }
+              type="text"
+              inputProps={{ inputMode: "text" }}
+              fullWidth
+              InputProps={{
+                style: inputStyle,
+              }}
+              InputLabelProps={{
+                style: labelStyle,
+              }}
+              sx={{ marginBottom: "20px" }}
+            />
+            <Button variant="contained" type="submit" fullWidth>
+              Enviar
+            </Button>
+          </form>
+        </Collapse>
       </Box>
       {isModalOpen && formik.isValid && (
         <div className="boxModal">
